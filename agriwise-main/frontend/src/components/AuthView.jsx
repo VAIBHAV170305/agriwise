@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   ArrowLeft, ArrowRight, CheckCircle2, ShieldCheck, Mail, Lock, 
   User, Phone, MapPin, Layers, Sprout, ShoppingBag, Truck, Users, 
-  Send, RefreshCw, AlertTriangle, KeyRound, Sparkles, Check
+  Send, RefreshCw, AlertTriangle, KeyRound, Check
 } from 'lucide-react';
 import { api, DEMO_ACCOUNTS } from '../api';
 import { useLanguage } from '../i18n/LanguageContext';
@@ -975,12 +975,10 @@ export default function AuthView({ onLoginSuccess, onBackToLanding, initialMode 
                     <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 800, color: '#163326', marginBottom: '8px' }}>
                       Select Your Agri-Stack Role
                     </label>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '8px' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '10px' }}>
                       {[
-                        { id: 'Farmer', label: 'Farmer / Producer', icon: <Sprout size={16} /> },
-                        { id: 'Buyer', label: 'Mandi Buyer / Trader', icon: <ShoppingBag size={16} /> },
-                        { id: 'FPO', label: 'FPO Cooperative', icon: <Users size={16} /> },
-                        { id: 'Delivery', label: 'Logistics Partner', icon: <Truck size={16} /> }
+                        { id: 'Farmer', label: '🌾 Farmer / Producer (किसान)', desc: 'Cultivation, soil maps & produce sales', icon: <Sprout size={18} /> },
+                        { id: 'Buyer', label: '💼 Mandi Buyer / Trader (व्यापारी)', desc: 'Wholesale sourcing & forward contracts', icon: <ShoppingBag size={18} /> }
                       ].map(r => (
                         <div
                           key={r.id}
@@ -1002,7 +1000,12 @@ export default function AuthView({ onLoginSuccess, onBackToLanding, initialMode 
                           }}
                         >
                           <span style={{ color: formData.role === r.id ? '#2d6a4f' : '#6b8275' }}>{r.icon}</span>
-                          <span style={{ fontSize: '0.76rem', fontWeight: 800 }}>{r.label}</span>
+                          <span style={{ fontSize: '0.8rem', fontWeight: 800 }}>{r.label}</span>
+                          {r.desc && (
+                            <span style={{ fontSize: '0.68rem', color: formData.role === r.id ? '#2d6a4f' : '#687e72' }}>
+                              {r.desc}
+                            </span>
+                          )}
                         </div>
                       ))}
                     </div>

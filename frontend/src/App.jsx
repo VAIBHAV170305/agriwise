@@ -119,15 +119,15 @@ export default function App() {
           tabs: [
             { id: 'farms', label: t('nav.farms', 'Farms & Crops'), icon: <Layers size={16} /> },
             { id: 'crops-recommend', label: t('nav.cropsRecommend', 'AI Crop Recommendation'), icon: <RakshakIcon size={16} /> },
-            { id: 'disease', label: t('nav.disease', 'Disease Scanner'), icon: <Camera size={16} /> },
-            { id: 'weather', label: t('nav.weather', 'Weather Center'), icon: <CloudSun size={16} /> }
+            { id: 'weather', label: t('nav.weather', 'Weather Center'), icon: <CloudSun size={16} /> },
+            { id: 'disease', label: t('nav.disease', 'Disease Scanner'), icon: <Camera size={16} />, badge: 'WIP', isWip: true }
           ]
         },
         {
           group: 'commerce_money',
           groupLabel: t('nav.groupCommerce', 'Commerce & Mandi'),
           tabs: [
-            { id: 'market', label: t('nav.market', 'Demand Forecasting'), icon: <TrendingUp size={16} /> },
+            { id: 'market', label: t('nav.market', 'Live Mandi Bhav & Prices'), icon: <TrendingUp size={16} /> },
             { id: 'listings', label: t('nav.listings', 'Produce Listings'), icon: <ShoppingBag size={16} /> },
             { id: 'orders', label: t('nav.orders', 'Orders Received'), icon: <Package size={16} /> }
           ]
@@ -141,7 +141,7 @@ export default function App() {
           tabs: [
             { id: 'marketplace', label: t('nav.marketplace', 'Discover Produce'), icon: <ShoppingBag size={16} /> },
             { id: 'buyer-orders', label: t('nav.buyerOrders', 'My Orders & Tracking'), icon: <Package size={16} /> },
-            { id: 'market', label: t('nav.market', 'Mandi Demand & Trends'), icon: <TrendingUp size={16} /> }
+            { id: 'market', label: t('nav.market', 'Live Mandi Bhav & Prices'), icon: <TrendingUp size={16} /> }
           ]
         }
       ];

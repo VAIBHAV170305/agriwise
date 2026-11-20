@@ -219,8 +219,23 @@ export default function Sidebar({
                   }}>
                     {tab.label}
                   </span>
+                  {tab.badge && (
+                    <span style={{
+                      fontSize: '0.62rem',
+                      fontWeight: 800,
+                      padding: '2px 6px',
+                      borderRadius: '4px',
+                      background: isActive ? '#fef3c7' : '#fffbeb',
+                      color: '#92400e',
+                      border: '1px solid #fde68a',
+                      letterSpacing: '0.04em',
+                      flexShrink: 0
+                    }}>
+                      {tab.badge}
+                    </span>
+                  )}
                   {isActive && (
-                    <ChevronRight size={14} style={{ opacity: 0.8 }} />
+                    <ChevronRight size={14} style={{ opacity: 0.8, flexShrink: 0 }} />
                   )}
                 </button>
               );

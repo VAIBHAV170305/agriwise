@@ -188,46 +188,75 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-          gap: '14px'
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: '20px'
         }}>
-          {Object.entries(DEMO_ACCOUNTS).map(([roleKey, acc]) => (
+          {[
+            {
+              roleKey: 'Farmer',
+              title: '🌾 Farmer Field Desk (किसान पोर्टल)',
+              profile: 'Ramesh Patel • Anand, Gujarat',
+              description: 'AI crop planning, soil terrain mapping, live APMC Mandi rates, and direct harvest sales.',
+              badge: 'Primary Producer Flow',
+              iconColor: '#163326',
+              bgAccent: '#eef6f0'
+            },
+            {
+              roleKey: 'Buyer',
+              title: '💼 Wholesale Buyer Desk (व्यापारी पोर्टल)',
+              profile: 'Ananya Sharma • Wholesale Aggregator',
+              description: 'Discover verified farm produce batches, negotiate forward purchase orders, and track fulfillment.',
+              badge: 'Direct Mandi Commerce',
+              iconColor: '#b47818',
+              bgAccent: '#fdf8ec'
+            }
+          ].map(p => (
             <div
-              key={roleKey}
-              onClick={() => onRoleSwitch(roleKey)}
+              key={p.roleKey}
+              onClick={() => onRoleSwitch(p.roleKey)}
               style={{
-                background: '#fcfbf8',
-                border: '1px solid rgba(27, 56, 43, 0.08)',
-                borderRadius: 'var(--radius-md)',
-                padding: '20px',
+                background: '#ffffff',
+                border: '1.5px solid rgba(27, 56, 43, 0.12)',
+                borderRadius: '16px',
+                padding: '24px',
                 cursor: 'pointer',
-                transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)'
+                transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+                boxShadow: '0 4px 12px rgba(22, 51, 38, 0.04)'
               }}
               onMouseOver={e => {
                 e.currentTarget.style.borderColor = '#163326';
-                e.currentTarget.style.background = '#ffffff';
-                e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.boxShadow = 'var(--shadow-md)';
+                e.currentTarget.style.transform = 'translateY(-3px)';
+                e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
               }}
               onMouseOut={e => {
-                e.currentTarget.style.borderColor = 'rgba(27, 56, 43, 0.08)';
-                e.currentTarget.style.background = '#fcfbf8';
+                e.currentTarget.style.borderColor = 'rgba(27, 56, 43, 0.12)';
                 e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(22, 51, 38, 0.04)';
               }}
             >
-              <div style={{
-                width: '38px', height: '38px', borderRadius: '10px',
-                background: '#eaf2ec',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                marginBottom: '12px'
-              }}>
-                <User size={18} color="#163326" />
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px' }}>
+                <div style={{
+                  width: '42px', height: '42px', borderRadius: '12px',
+                  background: p.bgAccent,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center'
+                }}>
+                  <User size={20} color={p.iconColor} />
+                </div>
+                <span className="badge badge-emerald" style={{ fontSize: '0.72rem' }}>
+                  {p.badge}
+                </span>
               </div>
-              <h4 style={{ fontSize: '1.05rem', color: '#163326', fontWeight: 700 }}>{roleKey} Portal</h4>
-              <p style={{ fontSize: '0.78rem', color: '#687e72', marginTop: '4px' }}>{acc.label}</p>
-              <span style={{ fontSize: '0.75rem', color: '#2d5740', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px', marginTop: '10px' }}>
-                Open Desk →
+              <h4 style={{ fontSize: '1.2rem', color: '#163326', fontWeight: 800, margin: '0 0 6px', fontFamily: "'Fraunces', serif" }}>
+                {p.title}
+              </h4>
+              <p style={{ fontSize: '0.84rem', color: '#2d6a4f', fontWeight: 700, margin: '0 0 8px' }}>
+                {p.profile}
+              </p>
+              <p style={{ fontSize: '0.84rem', color: '#576c60', lineHeight: 1.5, margin: '0 0 16px' }}>
+                {p.description}
+              </p>
+              <span style={{ fontSize: '0.84rem', color: '#163326', fontWeight: 800, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                Launch Interactive Workspace <ArrowRight size={15} />
               </span>
             </div>
           ))}

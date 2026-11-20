@@ -205,6 +205,14 @@ export const api = {
 
   // Market
   getCommodities: () => api.request('/market/commodities'),
+  getMandiRates: (commodity, state, search) => {
+    const params = new URLSearchParams();
+    if (commodity) params.append('commodity', commodity);
+    if (state && state !== 'All') params.append('state', state);
+    if (search) params.append('search', search);
+    return api.request(`/market/mandi-rates?${params.toString()}`);
+  },
+  getMarketOverview: () => api.request('/market/overview'),
   getMarketForecast: (product, location) => api.request(`/market/forecast?product=${encodeURIComponent(product)}&location=${encodeURIComponent(location || 'Central Mandi Hub')}`),
 
   // Marketplace

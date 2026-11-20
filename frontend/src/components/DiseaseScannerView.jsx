@@ -110,15 +110,67 @@ export default function DiseaseScannerView() {
   };
 
   return (
-    <div className="animate-fade-in" style={{ padding: '24px 0' }}>
+    <div className="animate-fade-in" style={{ padding: '24px 0 60px' }}>
+      {/* Work In Progress (WIP) / Coming Soon Banner */}
+      <div style={{
+        background: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)',
+        border: '1.5px solid #f59e0b',
+        borderRadius: '16px',
+        padding: '18px 24px',
+        marginBottom: '24px',
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: '16px',
+        boxShadow: '0 4px 16px rgba(245, 158, 11, 0.12)'
+      }}>
+        <div style={{
+          background: '#d97706',
+          color: '#ffffff',
+          width: '42px',
+          height: '42px',
+          borderRadius: '10px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0
+        }}>
+          <Clock size={22} />
+        </div>
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', flexWrap: 'wrap' }}>
+            <span style={{
+              background: '#b45309',
+              color: '#ffffff',
+              fontSize: '0.68rem',
+              fontWeight: 800,
+              padding: '2px 8px',
+              borderRadius: '999px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.06em'
+            }}>
+              Work in Progress (WIP) • Coming Soon
+            </span>
+            <span style={{ fontSize: '0.78rem', color: '#92400e', fontWeight: 700 }}>
+              ICAR Deep-Learning Calibration in Progress
+            </span>
+          </div>
+          <h3 style={{ fontSize: '1.12rem', color: '#78350f', fontWeight: 800, margin: '2px 0 6px', fontFamily: "'Fraunces', serif" }}>
+            Tau AI Leaf Disease Scanner Under Development
+          </h3>
+          <p style={{ fontSize: '0.86rem', color: '#92400e', lineHeight: 1.5, margin: 0 }}>
+            Tau, our computer-vision leaf pathology model is currently undergoing deep-learning training and clinical field trials across 38+ regional crops with the Indian Council of Agricultural Research (ICAR) & State Agricultural Universities. Real-time live camera diagnosis will be unlocked in the upcoming release. You can test the diagnostic treatment simulator below.
+          </p>
+        </div>
+      </div>
+
       {/* Title */}
       <div style={{ marginBottom: '24px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span className="badge badge-emerald">Disease Diagnostics</span>
+          <span className="badge badge-amber">WIP Preview Simulator</span>
         </div>
         <h2 style={{ fontSize: '1.75rem', color: 'var(--text-primary)', marginTop: '6px', fontFamily: "'Fraunces', serif" }}>Crop Disease Identification & Management Advisory</h2>
         <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', maxWidth: '750px' }}>
-          Upload high-resolution crop leaf images for rapid pathogen classification, severity grading, organic biocontrol remedies, and chemical spray guidelines.
+          Test leaf specimen diagnostics for pathogen classification, severity grading, organic biocontrol remedies, and chemical spray guidelines.
         </p>
       </div>
 
@@ -187,7 +239,7 @@ export default function DiseaseScannerView() {
 
             {/* Instant Demo Leaf Buttons */}
             <div style={{ display: 'flex', gap: '8px', marginBottom: '18px', flexWrap: 'wrap' }}>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', alignSelf: 'center' }}>Test Samples:</span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', alignSelf: 'center' }}>Reference Leaf Specimens (Preview):</span>
               <button 
                 type="button"
                 onClick={() => handleLoadSampleLeaf('early_blight')} 

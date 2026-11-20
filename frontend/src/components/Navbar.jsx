@@ -213,7 +213,7 @@ export default function Navbar({
               }}>
                 ROLE:
               </span>
-              {Object.keys(DEMO_ACCOUNTS).map(roleKey => {
+              {['Farmer', 'Buyer'].map(roleKey => {
                 const isActive = currentRole === roleKey;
                 return (
                   <button
@@ -232,7 +232,7 @@ export default function Navbar({
                       boxShadow: isActive ? '0 2px 8px rgba(27, 56, 43, 0.2)' : 'none'
                     }}
                   >
-                    {roleKey}
+                    {roleKey === 'Farmer' ? '🌾 Farmer' : '💼 Buyer'}
                   </button>
                 );
               })}
@@ -360,7 +360,7 @@ export default function Navbar({
             }}>
               ROLE:
             </span>
-            {Object.keys(DEMO_ACCOUNTS).map(roleKey => {
+            {['Farmer', 'Buyer'].map(roleKey => {
               const isActive = currentRole === roleKey;
               return (
                 <button
@@ -379,7 +379,7 @@ export default function Navbar({
                     boxShadow: isActive ? '0 2px 6px rgba(27, 56, 43, 0.2)' : 'none'
                   }}
                 >
-                  {roleKey}
+                  {roleKey === 'Farmer' ? '🌾 Farmer' : '💼 Buyer'}
                 </button>
               );
             })}
