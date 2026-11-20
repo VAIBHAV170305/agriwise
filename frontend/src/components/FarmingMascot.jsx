@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sprout, Sun, CloudRain, ShieldCheck, Sparkles, TrendingUp, Award, Heart } from 'lucide-react';
+import { Sprout, Sun, CloudRain, ShieldCheck, TrendingUp, Award, Heart } from 'lucide-react';
 
 const MASCOT_TIPS = [
   {

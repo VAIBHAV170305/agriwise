@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   ArrowLeft, ArrowRight, CheckCircle2, ShieldCheck, Mail, Lock, 
   User, Phone, MapPin, Layers, Sprout, ShoppingBag, Truck, Users, 
-  Send, RefreshCw, AlertTriangle, KeyRound, Sparkles, Check
+  Send, RefreshCw, AlertTriangle, KeyRound, Check
 } from 'lucide-react';
 import { api, DEMO_ACCOUNTS } from '../api';
 import { useLanguage } from '../i18n/LanguageContext';

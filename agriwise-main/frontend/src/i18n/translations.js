@@ -166,19 +166,22 @@ export const translations = {
     nav: {
       overview: 'निर्णय बुद्धिमत्ता (डैशबोर्ड)',
       farms: 'खेत और फसलें',
-      cropsRecommend: 'AI फसल सिफ़ारिश',
+      cropsRecommend: 'AI फसल सलाह व सुझाव',
       disease: 'रोग पहचान स्कैनर',
       weather: 'मौसम केंद्र व पूर्वानुमान',
-      assistant: 'रक्षक AI कृषि विशेषज्ञ',
+      assistant: 'रक्षक AI कृषि सलाहकार',
       market: 'मंडी मांग और मूल्य पूर्वानुमान',
-      listings: 'मेरी उपज सूचियाँ',
+      listings: 'मेरी फसल बिक्री सूचियाँ',
       orders: 'प्राप्त ऑर्डर',
       marketplace: 'उपज खोजें व खरीदें',
       buyerOrders: 'मेरे ऑर्डर व ट्रैकिंग',
       fpo: 'एफपीओ अवलोकन और आपूर्ति',
       admin: 'प्लेटफ़ॉर्म टेलीमेट्री व ऑडिट',
       navigationHeader: 'प्लेटफ़ॉर्म मॉड्यूल',
-      landingLink: 'सार्वजनिक पोर्टल पर लौटें'
+      landingLink: 'सार्वजनिक पोर्टल पर लौटें',
+      groupOverview: 'अवलोकन व मुख्य डैशबोर्ड',
+      groupCropIntelligence: 'फसल स्वास्थ्य एवं कृषि सलाह',
+      groupCommerce: 'मंडी व्यापार और फसल बिक्री'
     },
     landing: {
       heroBadge: 'भारत एग्री-स्टैक और फील्ड इंटेलिजेंस नेटवर्क',

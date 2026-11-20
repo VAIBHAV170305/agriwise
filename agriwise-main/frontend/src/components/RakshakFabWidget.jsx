@@ -147,8 +147,9 @@ export default function RakshakFabWidget({ onNavigateFull }) {
         profile: prof
       });
 
-      // Construct Initial Dossier Welcome
-      const greetWord = greeting || 'Namaste';
+      // Construct Initial Dossier Welcome with Natural Phrasing (e.g. Salah instead of Sifarish)
+      const isHindi = currentLanguageObj?.code === 'hi';
+      const greetWord = greeting || (isHindi ? 'नमस्ते' : 'Namaste');
       const farmName = farmObj?.farm_name || 'Agri Farm';
       const location = farmObj?.location || (prof ? `${prof.district}, ${prof.state}` : 'Field Plots');
 
@@ -157,18 +158,25 @@ export default function RakshakFabWidget({ onNavigateFull }) {
         cropSummary = allCrops.map(c => `${c.crop_name} (${c.stage})`).slice(0, 2).join(', ');
       }
 
+      const welcomeContent = isHindi 
+        ? `${greetWord} ${cleanName} भाई! मैं रक्षक AI, आपका फसल सुरक्षा और कृषि सलाहकार हूँ। आपके खेत (${cropSummary}) और इलाके (${location}) की जानकारी मेरे पास है। फसल में कीट-रोग, खाद-पानी के सही समय या मंडी भाव के बारे में कोई भी सलाह (Salah) तुरंत पूछें!`
+        : `${greetWord} ${cleanName}! I am Rakshak AI, your dedicated agronomy & crop protection advisor. Synced with your active plots (${cropSummary}) in ${location}. Ask me anytime about pest prevention, fertilizer schedules, weather impact, or mandi prices.`;
+
       setMessages([
         {
           sender_role: 'assistant',
-          content: `${greetWord} ${cleanName}! I am Rakshak AI, your dedicated agronomy & crop protection copilot. Synced with your active plots (${cropSummary}) in ${location}. Ask me anytime about pest prevention, fertilizer schedules, weather impact, or mandi prices.`,
+          content: welcomeContent,
           sources: ['ICAR / CIBRC Agronomy Database']
         }
       ]);
     } catch {
+      const isHindi = currentLanguageObj?.code === 'hi';
       setMessages([
         {
           sender_role: 'assistant',
-          content: `${greeting || 'Namaste'}! I am Rakshak AI, your dedicated agronomy copilot. How can I assist your farm today?`,
+          content: isHindi 
+            ? `${greeting || 'नमस्ते'}! मैं रक्षक AI हूँ। आज आपकी फसल या खाद-पानी के बारे में क्या सलाह चाहिए?`
+            : `${greeting || 'Namaste'}! I am Rakshak AI, your agronomy advisor. How can I assist your farm today?`,
           sources: []
         }
       ]);
@@ -212,7 +220,13 @@ export default function RakshakFabWidget({ onNavigateFull }) {
     }
   };
 
-  const QUICK_PROMPTS = [
+  const isHindi = currentLanguageObj?.code === 'hi';
+  const QUICK_PROMPTS = isHindi ? [
+    "गेंहू में कीट व रोग से बचाव की सलाह",
+    "टमाटर में फल छेदक कीट का देसी उपचार",
+    "खाद-पानी का सही समय और N-P-K की मात्रा",
+    "आज का मंडी भाव और सरकारी MSP दरें"
+  ] : [
     "Check pest & disease risk for Wheat",
     "How to manage Tomato Fruit Borer with organic IPM?",
     "Optimal N-P-K split fertilizer dosage",
@@ -688,7 +702,11 @@ export default function RakshakFabWidget({ onNavigateFull }) {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder={isListening ? 'Listening...' : 'Ask Rakshak or tap mic to speak...'}
+                  placeholder={
+                    isListening 
+                      ? (isHindi ? 'सुन रहा हूँ, बोलिए...' : 'Listening...') 
+                      : (isHindi ? 'बोलकर या लिखकर सलाह (Salah) लें...' : 'Ask Rakshak or tap mic to speak...')
+                  }
                   style={{
                     flex: 1,
                     padding: '9px 12px',
