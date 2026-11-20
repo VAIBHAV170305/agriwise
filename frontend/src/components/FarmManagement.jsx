@@ -147,8 +147,8 @@ export default function FarmManagement() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <h2 style={{ fontSize: '1.75rem', color: '#163326', fontWeight: 800 }}>Farm & Cultivation Management</h2>
-          <p style={{ color: '#576c60', fontSize: '0.9rem' }}>
-            Multi-farm land records, crop growth phase tracking, field operations log, and granular input accounting.
+          <p style={{ color: '#576c60', fontSize: '0.85rem', marginTop: '2px' }}>
+            Manage land plots, active crops, and field operations.
           </p>
         </div>
 

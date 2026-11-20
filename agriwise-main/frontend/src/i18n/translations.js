@@ -41,7 +41,7 @@ export const translations = {
     nav: {
       overview: 'Decision Intelligence',
       farms: 'Farms & Crops',
-      cropsRecommend: 'AI Crop Recommendation',
+      cropsRecommend: 'Crop Recommendation',
       disease: 'Disease Scanner (WIP)',
       weather: 'Weather Center',
       assistant: 'Rakshak AI (Agronomist)',

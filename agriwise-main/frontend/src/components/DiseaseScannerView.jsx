@@ -164,13 +164,13 @@ export default function DiseaseScannerView() {
       </div>
 
       {/* Title */}
-      <div style={{ marginBottom: '24px' }}>
+      <div style={{ marginBottom: '20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <span className="badge badge-amber">WIP Preview Simulator</span>
         </div>
-        <h2 style={{ fontSize: '1.75rem', color: 'var(--text-primary)', marginTop: '6px', fontFamily: "'Fraunces', serif" }}>Crop Disease Identification & Management Advisory</h2>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', maxWidth: '750px' }}>
-          Test leaf specimen diagnostics for pathogen classification, severity grading, organic biocontrol remedies, and chemical spray guidelines.
+        <h2 style={{ fontSize: '1.75rem', color: 'var(--text-primary)', marginTop: '6px', fontFamily: "'Fraunces', serif" }}>Disease Scanner</h2>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', maxWidth: '750px', marginTop: '2px' }}>
+          Leaf specimen scanner for foliar disease diagnostics and organic remedies.
         </p>
       </div>
 
@@ -295,7 +295,7 @@ export default function DiseaseScannerView() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px' }}>
                   <CheckCircle size={15} color="var(--forest-800)" />
                   <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--forest-800)' }}>
-                    {Math.round(result.confidence * 100)}% Model Confidence
+                    {Math.round(result.confidence * 100)}% Diagnostic Match
                   </span>
                   <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>• {result.management_guide.causal_pathogen}</span>
                 </div>

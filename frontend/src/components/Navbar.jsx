@@ -302,7 +302,7 @@ export default function Navbar({
         gap: '16px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
       }}>
-        {/* Left: Current Active View Title & Status */}
+        {/* Left: Current Active View Title */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <h2 style={{
             fontSize: '1.25rem',
@@ -314,33 +314,11 @@ export default function Navbar({
           }}>
             {activeTabLabel || 'Dashboard'}
           </h2>
-          <span style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '5px',
-            background: '#eef4f0',
-            color: '#2d6a4f',
-            padding: '3px 10px',
-            borderRadius: '999px',
-            fontSize: '0.72rem',
-            fontWeight: 700,
-            letterSpacing: '0.02em'
-          }}>
-            <span style={{
-              width: '6px',
-              height: '6px',
-              borderRadius: '50%',
-              background: '#2d6a4f',
-              display: 'inline-block'
-            }} />
-            {t('common.systemOperational', 'System Operational')}
-          </span>
         </div>
 
-        {/* Right Controls: Location Pill + Language Selector + Role Switcher + Notifications + Profile Dropdown */}
+        {/* Right Controls: Location Pill + Role Switcher + Notifications + Profile Dropdown */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <LocationBanner variant="compact" />
-          <LanguageSelector variant="dropdown" />
           {/* Role Switcher in Organic Pill Shape */}
           <div style={{
             display: 'flex',

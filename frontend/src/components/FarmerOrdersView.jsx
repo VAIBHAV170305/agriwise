@@ -64,14 +64,13 @@ export default function FarmerOrdersView() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span className="badge badge-emerald">Orders & Agri-Logistics</span>
-            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Lifecycle State Machine & Fleet Sync</span>
+            <span className="badge badge-emerald">Orders & Dispatch</span>
           </div>
           <h2 style={{ fontSize: '1.75rem', color: 'var(--text-primary)', marginTop: '6px', fontFamily: "'Fraunces', serif" }}>
-            Received Purchase Orders & Dispatch Coordination
+            Orders Received
           </h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-            Manage wholesale orders, stage produce for Agri-Truck pickup, and track assigned delivery drivers live.
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '2px' }}>
+            Manage wholesale orders and coordinate delivery dispatches.
           </p>
         </div>
 

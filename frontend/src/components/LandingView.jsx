@@ -153,10 +153,10 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
         </div>
       </div>
 
-      {/* Multi-Lingual Regional Language Banner for Indian Farmers */}
-      <div style={{ maxWidth: '960px', margin: '0 auto' }}>
+      {/* Multi-Lingual Regional Language Banner for Indian Farmers (Restricted while regional translations are in progress) */}
+      {/* <div style={{ maxWidth: '960px', margin: '0 auto' }}>
         <LanguageSelector variant="landing-banner" />
-      </div>
+      </div> */}
 
       {/* Role Selection Launcher Box */}
       <div style={{
@@ -322,7 +322,7 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
             <RakshakIcon size={20} color="#1b382b" />
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-            <h3 style={{ fontSize: '1.18rem', color: '#163326', margin: 0 }}>AI Crop Recommender</h3>
+            <h3 style={{ fontSize: '1.18rem', color: '#163326', margin: 0 }}>Crop Recommender</h3>
             <RakshakBadge text="AI Matcher" />
           </div>
           <p style={{ fontSize: '0.86rem', color: '#576c60', lineHeight: 1.5 }}>

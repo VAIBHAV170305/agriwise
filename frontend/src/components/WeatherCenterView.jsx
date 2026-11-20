@@ -129,10 +129,10 @@ export default function WeatherCenterView() {
           </div>
 
           <h2 style={{ fontSize: '1.75rem', color: '#163326', fontWeight: 800, marginTop: '6px' }}>
-            Actionable Agricultural Weather Center
+            Weather Center
           </h2>
-          <p style={{ color: '#4b6354', fontSize: '0.88rem', maxWidth: '820px', marginTop: '2px' }}>
-            Instead of confusing raw degrees or generic wind speeds, this weather center connects live satellite forecasts directly to your <strong>standing crops (Cotton, Wheat, Tomato)</strong> to provide actionable preventive advice.
+          <p style={{ color: '#4b6354', fontSize: '0.85rem', maxWidth: '820px', marginTop: '2px' }}>
+            Live meteorological forecasts and preventive alerts for your active crops.
           </p>
         </div>
 

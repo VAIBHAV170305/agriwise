@@ -145,11 +145,8 @@ export default function FarmerDashboard({ onNavigate }) {
           </div>
 
           <h2 style={{ fontSize: '1.75rem', marginTop: '6px', color: '#163326', fontWeight: 800 }}>
-            {greeting} • {t('nav.overview', 'Farm Intelligence & Field Telemetry')}
+            {greeting}
           </h2>
-          <p style={{ color: '#4b6354', fontSize: '0.88rem', maxWidth: '720px', marginTop: '2px' }}>
-            Aggregating localized soil types, live meteorological satellites, disease scanners, and regional mandi prices into proactive farmer guidance.
-          </p>
         </div>
 
         <div style={{ display: 'flex', gap: '10px' }}>
@@ -172,7 +169,7 @@ export default function FarmerDashboard({ onNavigate }) {
             }}
           >
             <Zap size={15} /> 
-            <span>Automated Crop Advisory</span>
+            <span>Crop Advisory</span>
           </button>
           <button 
             type="button"
@@ -340,62 +337,42 @@ export default function FarmerDashboard({ onNavigate }) {
         </div>
       </div>
 
-      {/* 5. Color Glossary & Legend Card (Farmer-Centric UX) */}
+      {/* 5. Color Glossary & Legend (Compact inline strip) */}
       <div style={{
         background: '#ffffff',
-        border: '1px solid rgba(22, 51, 38, 0.1)',
-        borderRadius: '16px',
-        padding: '18px 22px',
-        marginBottom: '26px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
+        border: '1px solid rgba(22, 51, 38, 0.08)',
+        borderRadius: '12px',
+        padding: '10px 18px',
+        marginBottom: '20px',
+        display: 'flex',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '18px',
+        fontSize: '0.74rem'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-          <Info size={16} color="#2d6a4f" />
-          <span style={{ fontSize: '0.82rem', fontWeight: 800, color: '#163326', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-            Platform Color Glossary & Status Guide
-          </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, color: '#163326' }}>
+          <Info size={14} color="#2d6a4f" />
+          <span>Status Legend:</span>
         </div>
-
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-          gap: '12px',
-          fontSize: '0.76rem'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#2d6a4f', flexShrink: 0 }} />
-            <div>
-              <strong style={{ color: '#163326' }}>Green:</strong> Healthy Crops & Safe Spraying
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#7c3aed', flexShrink: 0 }} />
-            <div>
-              <strong style={{ color: '#163326' }}>Purple:</strong> AI Predictions & Growth Curves
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#0284c7', flexShrink: 0 }} />
-            <div>
-              <strong style={{ color: '#163326' }}>Blue:</strong> Weather Feeds & Irrigation
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#f59e0b', flexShrink: 0 }} />
-            <div>
-              <strong style={{ color: '#163326' }}>Gold / Amber:</strong> Harvest Opportunity & Mandi
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: 'var(--crimson-600, #d90429)', flexShrink: 0 }} />
-            <div>
-              <strong style={{ color: '#163326' }}>Crimson:</strong> Disease or Weather Risk
-            </div>
-          </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#2d6a4f', flexShrink: 0 }} />
+          <span><strong style={{ color: '#163326' }}>Green:</strong> Healthy / Safe</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#7c3aed', flexShrink: 0 }} />
+          <span><strong style={{ color: '#163326' }}>Purple:</strong> AI Advice</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#0284c7', flexShrink: 0 }} />
+          <span><strong style={{ color: '#163326' }}>Blue:</strong> Weather</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#f59e0b', flexShrink: 0 }} />
+          <span><strong style={{ color: '#163326' }}>Amber:</strong> Harvest & Mandi</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--crimson-600, #d90429)', flexShrink: 0 }} />
+          <span><strong style={{ color: '#163326' }}>Crimson:</strong> Risk Alert</span>
         </div>
       </div>
 

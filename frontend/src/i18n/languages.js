@@ -1,3 +1,8 @@
+/**
+ * Supported Languages configuration for AgriWise
+ * Keeping only functional languages (English) active for now.
+ * Non-working / partial translation languages are temporarily commented out per UI/UX cleanup requirements.
+ */
 export const SUPPORTED_LANGUAGES = [
   {
     code: 'en',
@@ -6,7 +11,9 @@ export const SUPPORTED_LANGUAGES = [
     region: 'Pan-India / Official',
     short: 'EN',
     greeting: 'Welcome Farmer Friend'
-  },
+  }
+  /*
+  // Regional languages temporarily paused while full multilingual dictionaries undergo localization
   {
     code: 'hi',
     name: 'Hindi',
@@ -35,7 +42,7 @@ export const SUPPORTED_LANGUAGES = [
     code: 'mr',
     name: 'Marathi',
     nativeName: 'मराठी',
-    region: 'Maharashtra & Western Ghats (Vidarbha, Nashik, Marathwada)',
+    region: 'Maharashtra & Western Ghats',
     short: 'म',
     greeting: 'नमस्कार शेतकरी मित्र'
   },
@@ -43,7 +50,7 @@ export const SUPPORTED_LANGUAGES = [
     code: 'te',
     name: 'Telugu',
     nativeName: 'తెలుగు',
-    region: 'Andhra Pradesh & Telangana (Krishna & Godavari Deltas)',
+    region: 'Andhra Pradesh & Telangana',
     short: 'తె',
     greeting: 'నమస్కారం రైతు సోదరులారా'
   },
@@ -75,7 +82,7 @@ export const SUPPORTED_LANGUAGES = [
     code: 'ml',
     name: 'Malayalam',
     nativeName: 'മലയാളം',
-    region: 'Kerala & Western Coast (Spices & Plantation)',
+    region: 'Kerala & Western Coast',
     short: 'മ',
     greeting: 'നമസ്കാരം കർഷക സുഹൃത്തുക്കളെ'
   },
@@ -83,10 +90,11 @@ export const SUPPORTED_LANGUAGES = [
     code: 'or',
     name: 'Odia',
     nativeName: 'ଓଡ଼ିଆ',
-    region: 'Odisha & Mahanadi Valley (Paddy Belt)',
+    region: 'Odisha & Mahanadi Valley',
     short: 'ଓ',
     greeting: 'ନମସ୍କାର ଚାଷୀ ଭାଇ ଓ ଭଉଣୀ'
   }
+  */
 ];
 
 export const DEFAULT_LANGUAGE = 'en';

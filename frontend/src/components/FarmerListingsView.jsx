@@ -84,11 +84,10 @@ export default function FarmerListingsView() {
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span className="badge badge-emerald">Produce Marketplace</span>
-            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Direct B2B & Wholesale Trading</span>
           </div>
-          <h2 style={{ fontSize: '1.75rem', color: 'var(--text-primary)', marginTop: '6px', fontFamily: "'Fraunces', serif" }}>My Agricultural Produce Listings</h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-            List harvest batches directly for verified wholesale buyers and food processing aggregators without middleman commissions.
+          <h2 style={{ fontSize: '1.75rem', color: 'var(--text-primary)', marginTop: '6px', fontFamily: "'Fraunces', serif" }}>Produce Listings</h2>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '2px' }}>
+            List harvest batches directly for verified wholesale buyers.
           </p>
         </div>
 

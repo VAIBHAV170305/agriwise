@@ -202,10 +202,10 @@ export default function CropRecommendationView() {
           </div>
 
           <h2 style={{ fontSize: '1.75rem', color: '#163326', fontWeight: 800, marginTop: '6px' }}>
-            Automated Regional Crop Recommendation
+            Crop Recommendation
           </h2>
-          <p style={{ color: '#4b6354', fontSize: '0.88rem', maxWidth: '820px', marginTop: '2px' }}>
-            Farmers do not need to fill out technical laboratory forms or guess soil pH. Your location is auto-detected, soil parameters are inferred from the <strong>National Terrain Heat Map</strong>, and live weather telemetry synthesizes the top 5 most profitable crops.
+          <p style={{ color: '#4b6354', fontSize: '0.85rem', maxWidth: '820px', marginTop: '2px' }}>
+            Recommended crops tailored to your soil terrain and live weather telemetry.
           </p>
         </div>
 

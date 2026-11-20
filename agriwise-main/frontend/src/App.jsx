@@ -119,7 +119,7 @@ export default function App() {
           groupLabel: t('nav.groupCropIntelligence', 'Crop & Intelligence'),
           tabs: [
             { id: 'farms', label: t('nav.farms', 'Farms & Crops'), icon: <Layers size={16} /> },
-            { id: 'crops-recommend', label: t('nav.cropsRecommend', 'AI Crop Recommendation'), icon: <RakshakIcon size={16} /> },
+            { id: 'crops-recommend', label: t('nav.cropsRecommend', 'Crop Recommendation'), icon: <RakshakIcon size={16} /> },
             { id: 'weather', label: t('nav.weather', 'Weather Center'), icon: <CloudSun size={16} /> },
             { id: 'disease', label: t('nav.disease', 'Disease Scanner'), icon: <Camera size={16} />, badge: 'WIP', isWip: true }
           ]
@@ -271,10 +271,10 @@ export default function App() {
         }}>
           <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
             <div>
-              <strong style={{ color: '#163326' }}>agriwise FIELD DESK</strong> • Smart Agriculture, Farm Management & Market Intelligence
+              <strong style={{ color: '#163326' }}>AgriWise</strong> • Field Desk
             </div>
             <div>
-              Enterprise Agriculture Intelligence Platform
+              © 2026 AgriWise
             </div>
           </div>
         </footer>
@@ -347,7 +347,7 @@ export default function App() {
           alignItems: 'center'
         }}>
           <div>
-            <strong style={{ color: '#163326' }}>agriwise FIELD DESK</strong> • Real-time Agronomy & Telemetry Network
+            <strong style={{ color: '#163326' }}>AgriWise</strong> • Field Desk
           </div>
           <div style={{ color: '#889e90' }}>
             Role: <strong>{currentRole}</strong> • Session Active

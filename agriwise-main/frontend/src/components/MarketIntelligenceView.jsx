@@ -92,10 +92,10 @@ export default function MarketIntelligenceView() {
           </div>
 
           <h2 style={{ fontSize: '1.85rem', color: 'var(--text-primary)', margin: '4px 0 6px', fontFamily: "'Fraunces', serif" }}>
-            Real-Time Mandi Rates & Market Intelligence
+            Live Mandi Bhav & Market Rates
           </h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', maxWidth: '780px', lineHeight: 1.5 }}>
-            Authentic wholesale auction rates, daily physical arrivals (Quintals), and official Government MSP benchmarks. Transparent mandi intelligence so farmers never sell below fair market value.
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', maxWidth: '780px', margin: 0 }}>
+            Real-time APMC auction rates, physical arrivals, and official MSP benchmarks.
           </p>
         </div>
 

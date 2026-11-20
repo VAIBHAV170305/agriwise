@@ -8,7 +8,7 @@ from ..schemas import CropRecommendRequest, CropRecommendationResponse
 from ..services.crop_recommender import crop_service
 from ..auth import get_current_user, get_optional_current_user
 
-router = APIRouter(prefix="/recommendations", tags=["AI Crop Recommendation"])
+router = APIRouter(prefix="/recommendations", tags=["Crop Recommendation"])
 
 @router.post("/crop", response_model=CropRecommendationResponse)
 def get_crop_recommendation(

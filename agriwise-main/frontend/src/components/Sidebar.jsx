@@ -244,89 +244,12 @@ export default function Sidebar({
         ))}
       </div>
 
-      {/* Pinned Bottom Footer: Language Preference Card + User Profile */}
+      {/* Pinned Bottom Footer: User Profile */}
       <div style={{
         flexShrink: 0,
         borderTop: '1px solid rgba(27, 56, 43, 0.08)',
         background: '#fcfbf8'
       }}>
-        {/* Quick Language Preference Card */}
-        <div style={{ padding: '10px 12px 6px' }}>
-          <button
-            onClick={() => setShowLangModal(true)}
-            type="button"
-            title="Click to change language / भाषा बदलें"
-            style={{
-              width: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              background: '#f5f8f6',
-              border: '1px solid rgba(27, 56, 43, 0.12)',
-              borderRadius: '10px',
-              padding: '8px 10px',
-              cursor: 'pointer',
-              textAlign: 'left',
-              transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
-              boxShadow: '0 1px 3px rgba(27, 56, 43, 0.04)'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#edf5f0';
-              e.currentTarget.style.borderColor = '#2d6a4f';
-              e.currentTarget.style.transform = 'translateY(-1px)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#f5f8f6';
-              e.currentTarget.style.borderColor = 'rgba(27, 56, 43, 0.12)';
-              e.currentTarget.style.transform = 'translateY(0)';
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
-              <span style={{ fontSize: '1.15rem' }}>🇮🇳</span>
-              <div style={{ minWidth: 0 }}>
-                <div style={{
-                  fontSize: '0.62rem',
-                  color: '#657c70',
-                  fontWeight: 700,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.06em'
-                }}>
-                  {t('common.language', 'Language')}
-                </div>
-                <div style={{
-                  fontSize: '0.84rem',
-                  fontWeight: 800,
-                  color: '#163326',
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis'
-                }}>
-                  {currentLanguageObj.nativeName}
-                  <span style={{ fontSize: '0.72rem', color: '#687e71', fontWeight: 500, marginLeft: '4px' }}>
-                    ({currentLanguageObj.short})
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <span style={{
-              background: '#ffffff',
-              border: '1px solid rgba(27, 56, 43, 0.15)',
-              color: '#2d6a4f',
-              padding: '3px 8px',
-              borderRadius: '999px',
-              fontSize: '0.7rem',
-              fontWeight: 700,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              flexShrink: 0
-            }}>
-              <Languages size={12} />
-              {t('common.edit', 'Change')}
-            </span>
-          </button>
-        </div>
 
         {/* User Card & Logout */}
         <div style={{

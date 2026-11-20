@@ -38,7 +38,7 @@ export default function AgronomyAssistantView() {
         sender_role: 'assistant',
         content: (
           `${greet}! I am Rakshak AI, your dedicated agronomy advisor for ${region}. ` +
-          `Ask me in ${nativeName} (${name}) or English about soil nutrients, crop diseases, irrigation schedules, or MSP rates.`
+          `Ask me about soil nutrients, crop diseases, irrigation schedules, or MSP rates.`
         ),
         sources: []
       }
@@ -96,25 +96,10 @@ export default function AgronomyAssistantView() {
               Rakshak AI
             </span>
             <RakshakBadge text="Agronomy Shield Active" />
-            <span style={{
-              background: '#edf5f0',
-              color: '#2d6a4f',
-              padding: '2px 8px',
-              borderRadius: '999px',
-              fontSize: '0.72rem',
-              fontWeight: 700
-            }}>
-              {currentLanguageObj?.nativeName || 'Regional'} Mode Active
-            </span>
           </div>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', marginTop: '6px' }}>
-            {t('assistant.subtitle', 'Trained on ICAR, TNAU, PAU, and state agricultural university research')}
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.82rem', marginTop: '4px' }}>
+            Trained on ICAR and state agricultural university research.
           </p>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '0.75rem', color: '#687e71', fontWeight: 600 }}>Language:</span>
-          <LanguageSelector variant="compact" />
         </div>
       </div>
 
