@@ -19,6 +19,8 @@ import DeliveryDashboard from './components/DeliveryDashboard';
 import AuthModal from './components/AuthModal';
 import ErrorBoundary from './components/ErrorBoundary';
 import { RakshakIcon } from './components/RakshakLogo';
+import RakshakFabWidget from './components/RakshakFabWidget';
+import LogoutConfirmModal from './components/LogoutConfirmModal';
 import { useToast } from './context/ToastContext';
 import { api, DEMO_ACCOUNTS } from './api';
 import { useLanguage } from './i18n/LanguageContext';
@@ -36,6 +38,7 @@ export default function App() {
   const [theme, setTheme] = useState('light');
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   // Auto-login default demo farmer on first load
   useEffect(() => {
@@ -108,45 +111,87 @@ export default function App() {
 
     if (role === 'Farmer') {
       return [
-        { id: 'overview', label: t('nav.overview', 'Decision Intelligence'), icon: <Activity size={16} /> },
-        { id: 'farms', label: t('nav.farms', 'Farms & Crops'), icon: <Layers size={16} /> },
-        { id: 'crops-recommend', label: t('nav.cropsRecommend', 'AI Crop Recommendation'), icon: <RakshakIcon size={16} /> },
-        { id: 'disease', label: t('nav.disease', 'Disease Scanner'), icon: <Camera size={16} /> },
-        { id: 'weather', label: t('nav.weather', 'Weather Center'), icon: <CloudSun size={16} /> },
-        { id: 'assistant', label: t('nav.assistant', 'Rakshak AI'), icon: <RakshakIcon size={16} /> },
-        { id: 'market', label: t('nav.market', 'Demand Forecasting'), icon: <TrendingUp size={16} /> },
-        { id: 'listings', label: t('nav.listings', 'My Produce Listings'), icon: <ShoppingBag size={16} /> },
-        { id: 'orders', label: t('nav.orders', 'Orders Received'), icon: <Package size={16} /> },
+        {
+          group: 'overview',
+          groupLabel: t('nav.groupOverview', 'Overview'),
+          tabs: [
+            { id: 'overview', label: t('nav.overview', 'Decision Intelligence'), icon: <Activity size={16} /> }
+          ]
+        },
+        {
+          group: 'crop_intelligence',
+          groupLabel: t('nav.groupCropIntelligence', 'Crop & Intelligence'),
+          tabs: [
+            { id: 'farms', label: t('nav.farms', 'Farms & Crops'), icon: <Layers size={16} /> },
+            { id: 'crops-recommend', label: t('nav.cropsRecommend', 'AI Crop Recommendation'), icon: <RakshakIcon size={16} /> },
+            { id: 'disease', label: t('nav.disease', 'Disease Scanner'), icon: <Camera size={16} /> },
+            { id: 'weather', label: t('nav.weather', 'Weather Center'), icon: <CloudSun size={16} /> }
+          ]
+        },
+        {
+          group: 'commerce_money',
+          groupLabel: t('nav.groupCommerce', 'Commerce & Mandi'),
+          tabs: [
+            { id: 'market', label: t('nav.market', 'Demand Forecasting'), icon: <TrendingUp size={16} /> },
+            { id: 'listings', label: t('nav.listings', 'Produce Listings'), icon: <ShoppingBag size={16} /> },
+            { id: 'orders', label: t('nav.orders', 'Orders Received'), icon: <Package size={16} /> }
+          ]
+        }
       ];
     } else if (role === 'Buyer') {
       return [
-        { id: 'marketplace', label: t('nav.marketplace', 'Discover Produce'), icon: <ShoppingBag size={16} /> },
-        { id: 'buyer-orders', label: t('nav.buyerOrders', 'My Orders & Tracking'), icon: <Package size={16} /> },
-        { id: 'market', label: t('nav.market', 'Mandi Trends'), icon: <TrendingUp size={16} /> },
+        {
+          group: 'commerce_money',
+          groupLabel: t('nav.groupCommerce', 'Commerce & Orders'),
+          tabs: [
+            { id: 'marketplace', label: t('nav.marketplace', 'Discover Produce'), icon: <ShoppingBag size={16} /> },
+            { id: 'buyer-orders', label: t('nav.buyerOrders', 'My Orders & Tracking'), icon: <Package size={16} /> },
+            { id: 'market', label: t('nav.market', 'Mandi Demand & Trends'), icon: <TrendingUp size={16} /> }
+          ]
+        }
       ];
     } else if (role === 'Delivery') {
       return [
-        { id: 'delivery-ops', label: t('nav.deliveryOps', 'Assigned Deliveries & Dispatch'), icon: <Truck size={16} /> },
-        { id: 'delivery-gps', label: t('nav.deliveryGps', 'Live GPS & Route Optimization'), icon: <Navigation size={16} /> },
-        { id: 'delivery-history', label: t('nav.deliveryHistory', 'Logistics History & Earnings'), icon: <CheckCircle2 size={16} /> },
+        {
+          group: 'logistics',
+          groupLabel: 'Fleet & Logistics',
+          tabs: [
+            { id: 'delivery-ops', label: t('nav.deliveryOps', 'Assigned Deliveries & Dispatch'), icon: <Truck size={16} /> },
+            { id: 'delivery-gps', label: t('nav.deliveryGps', 'Live GPS & Route Optimization'), icon: <Navigation size={16} /> },
+            { id: 'delivery-history', label: t('nav.deliveryHistory', 'Logistics History & Earnings'), icon: <CheckCircle2 size={16} /> }
+          ]
+        }
       ];
     } else if (role === 'FPO') {
       return [
-        { id: 'fpo', label: t('nav.fpo', 'FPO Overview & Supply'), icon: <Users size={16} /> },
-        { id: 'marketplace', label: t('nav.marketplace', 'Marketplace Directory'), icon: <ShoppingBag size={16} /> },
-        { id: 'market', label: t('nav.market', 'Mandi Demand Trends'), icon: <TrendingUp size={16} /> },
+        {
+          group: 'fpo_ops',
+          groupLabel: 'FPO Operations',
+          tabs: [
+            { id: 'fpo', label: t('nav.fpo', 'FPO Overview & Supply'), icon: <Users size={16} /> },
+            { id: 'marketplace', label: t('nav.marketplace', 'Marketplace Directory'), icon: <ShoppingBag size={16} /> },
+            { id: 'market', label: t('nav.market', 'Mandi Demand Trends'), icon: <TrendingUp size={16} /> }
+          ]
+        }
       ];
     } else if (role === 'Admin') {
       return [
-        { id: 'admin', label: t('nav.admin', 'Platform Telemetry & Audit'), icon: <ShieldAlert size={16} /> },
-        { id: 'farms', label: t('nav.farms', 'Farms Directory'), icon: <Layers size={16} /> },
-        { id: 'marketplace', label: t('nav.marketplace', 'Listing Moderation'), icon: <ShoppingBag size={16} /> },
+        {
+          group: 'admin_audit',
+          groupLabel: 'Platform Governance',
+          tabs: [
+            { id: 'admin', label: t('nav.admin', 'Platform Telemetry & Audit'), icon: <ShieldAlert size={16} /> },
+            { id: 'farms', label: t('nav.farms', 'Farms Directory'), icon: <Layers size={16} /> },
+            { id: 'marketplace', label: t('nav.marketplace', 'Listing Moderation'), icon: <ShoppingBag size={16} /> }
+          ]
+        }
       ];
     }
     return [];
   };
 
-  const tabs = getRoleTabs();
+  const tabGroups = getRoleTabs();
+  const tabs = tabGroups.flatMap(g => g.tabs);
 
   const handleSelectTab = (tabId) => {
     if (!currentUser) {
@@ -230,8 +275,10 @@ export default function App() {
         currentRole={currentRole}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
+        tabGroups={tabGroups}
         tabs={tabs}
         onLogout={handleLogout}
+        onRequestLogout={() => setShowLogoutModal(true)}
         onOpenProfile={() => setShowProfileModal(true)}
       />
 
@@ -245,6 +292,7 @@ export default function App() {
           setActiveTab={setActiveTab}
           onRoleSwitch={handleRoleSwitch}
           onLogout={handleLogout}
+          onRequestLogout={() => setShowLogoutModal(true)}
           onOpenLogin={() => setShowAuthModal(true)}
           activeTabLabel={activeTabObj?.label}
           showProfileModal={showProfileModal}
@@ -290,6 +338,20 @@ export default function App() {
           </div>
         </footer>
       </div>
+
+      {/* Persistent Rakshak AI Floating Copilot (Available across every page) */}
+      <RakshakFabWidget onNavigateFull={setActiveTab} />
+
+      {/* Logout Confirmation Modal */}
+      <LogoutConfirmModal 
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirmLogout={async () => {
+          setShowLogoutModal(false);
+          await handleLogout();
+        }}
+        currentUser={currentUser}
+      />
 
       {/* Auth Modal */}
       <AuthModal 

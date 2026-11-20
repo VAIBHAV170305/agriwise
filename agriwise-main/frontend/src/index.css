@@ -4,86 +4,94 @@
   --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Cohesive Theme: Botanical Forest Green, Clean Linen & High-Contrast Harvest Amber */
-  --bg-primary: #f8faf7;
-  --bg-secondary: #f0f4f1;
+  /* Theme: Warm Linen, Organic Sage & Botanical Deep Forest Green (From Reference) */
+  --bg-primary: #fbfaf6;
+  --bg-secondary: #f4f2eb;
   --bg-card: #ffffff;
-  --bg-card-hover: #fcfdfc;
+  --bg-card-hover: #fdfdfc;
   --bg-input: #ffffff;
   
-  --border-subtle: rgba(18, 53, 36, 0.14);
-  --border-card: rgba(18, 53, 36, 0.08);
-  --border-focus: #123524;
+  --border-subtle: rgba(27, 56, 43, 0.12);
+  --border-card: rgba(27, 56, 43, 0.08);
+  --border-focus: #1b382b;
 
-  /* Primary Brand: Deep Forest Emerald */
-  --forest-900: #0d261a;
-  --forest-800: #123524;
-  --forest-700: #1b4d36;
-  --forest-600: #256647;
+  --forest-900: #10241b;
+  --forest-800: #1b382b;  /* Primary brand & hero heading */
+  --forest-700: #234938;
+  --forest-600: #2d5a45;
 
-  /* High-Contrast Accents */
-  --accent-amber: #f59e0b;       /* High-contrast amber/gold (WCAG AAA) */
-  --accent-amber-light: #fef3c7;
-  --accent-amber-dark: #b45309;
+  --sage-600: #466352;
+  --sage-500: #587965;  /* Secondary hero accent ('clearer.') */
+  --sage-400: #739480;
+  --sage-300: #9cb8a7;
+  --sage-200: #c9dbd0;
+  --sage-100: #e8efe9;  /* Soft pill badge background */
+  --sage-50: #f3f7f4;
 
-  --accent-emerald: #10b981;     /* Vibrant leaf green */
-  --accent-emerald-light: #e6f9f2;
-  --accent-emerald-dark: #047857;
+  --sand-500: #b59b58;
+  --sand-200: #f1e4be;
+  --sand-100: #fbf5e2;
+  --sun-gold: #f8e59e;
 
-  --accent-rose: #ef4444;        /* Controlled critical alert */
-  --accent-rose-light: #fee2e2;
+  --amber-500: #b47818;
+  --amber-100: #fdf5e6;
 
-  --accent-sky: #0284c7;         /* Radar & satellite blue */
-  --accent-sky-light: #e0f2fe;
+  --sky-600: #22678f;
+  --sky-100: #edf5fa;
 
-  /* Typography Colors */
-  --text-primary: #123524;       /* Deep crisp forest text */
-  --text-secondary: #45594e;     /* Subdued moss text */
-  --text-muted: #6b8275;         /* Muted agronomic label text */
+  --rose-600: #a83838;
+  --rose-100: #fdf0f0;
 
-  --shadow-sm: 0 2px 8px rgba(18, 53, 36, 0.04);
-  --shadow-md: 0 10px 28px rgba(18, 53, 36, 0.07);
-  --shadow-lg: 0 18px 42px rgba(18, 53, 36, 0.11);
-  --shadow-glow: 0 0 24px rgba(16, 185, 129, 0.16);
+  /* Contrasting Crimson Accent Palette: Dedicated for Critical Alerts & Urgent Attention */
+  --crimson-600: #d90429;
+  --crimson-500: #ef233c;
+  --crimson-100: #ffe5e7;
+  --crimson-50: #fff5f5;
+  --crimson-border: #fca5a5;
+  --crimson-glow: 0 0 16px rgba(217, 4, 41, 0.28);
+
+  --text-primary: #1b382b;   /* Deep rich forest green text */
+  --text-secondary: #4a5c52; /* Calm earthy moss / charcoal */
+  --text-muted: #75867d;     /* Muted sage */
+
+  --shadow-sm: 0 2px 8px rgba(27, 56, 43, 0.04);
+  --shadow-md: 0 10px 28px rgba(27, 56, 43, 0.06);
+  --shadow-lg: 0 18px 40px rgba(27, 56, 43, 0.09);
+  --shadow-glow: 0 0 24px rgba(27, 56, 43, 0.12);
 
   --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
   --radius-full: 9999px;
 }
 
 [data-theme="dark"] {
-  --bg-primary: #0b1c14;
-  --bg-secondary: #12281e;
-  --bg-card: #162f23;
-  --bg-card-hover: #1c3a2c;
-  --bg-input: #102319;
+  --bg-primary: #0f1c16;
+  --bg-secondary: #16261f;
+  --bg-card: #192c23;
+  --bg-card-hover: #1f342a;
+  --bg-input: #14231c;
 
-  --border-subtle: rgba(147, 197, 172, 0.16);
+  --border-subtle: rgba(156, 184, 167, 0.16);
   --border-card: rgba(255, 255, 255, 0.08);
-  --border-focus: #10b981;
+  --border-focus: #739480;
 
-  --forest-800: #e6f4ec;
-  --text-primary: #f2f9f5;
-  --text-secondary: #bad3c5;
-  --text-muted: #82a391;
+  --forest-800: #e8efe9;
+  --sage-500: #9cb8a7;
+
+  --text-primary: #f4f8f5;
+  --text-secondary: #b8cbc0;
+  --text-muted: #829a8c;
 
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 
-*, *::before, *::after {
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
-}
-
-html, body, #root {
-  max-width: 100vw;
-  width: 100%;
-  overflow-x: hidden;
-  box-sizing: border-box;
 }
 
 body {
@@ -94,8 +102,8 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   background-image: 
-    radial-gradient(circle at 12% 10%, rgba(16, 185, 129, 0.035) 0%, transparent 45%),
-    radial-gradient(circle at 88% 85%, rgba(245, 158, 11, 0.035) 0%, transparent 50%);
+    radial-gradient(circle at 10% 10%, rgba(88, 121, 101, 0.04) 0%, transparent 40%),
+    radial-gradient(circle at 90% 85%, rgba(248, 229, 158, 0.05) 0%, transparent 45%);
   background-attachment: fixed;
 }
 
@@ -114,7 +122,7 @@ button, input, select, textarea {
   font-family: inherit;
 }
 
-/* Organic & Glass Cards */
+/* Organic Cards */
 .glass-card {
   background: var(--bg-card);
   border: 1px solid var(--border-card);
@@ -128,75 +136,47 @@ button, input, select, textarea {
   box-shadow: var(--shadow-md);
 }
 
-/* Interactive Dashboard Metric Cards (Hover Lift & Crisp Glow) */
-.interactive-metric-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-card);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
-  cursor: pointer;
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.interactive-metric-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--accent-emerald) !important;
-  box-shadow: 0 12px 28px rgba(18, 53, 36, 0.1), 0 2px 6px rgba(16, 185, 129, 0.15) !important;
-}
-
-/* Interactive Action Signals */
-.interactive-signal-card {
-  background: var(--bg-card);
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.interactive-signal-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 26px rgba(18, 53, 36, 0.08) !important;
-  border-color: rgba(18, 53, 36, 0.2) !important;
-}
-
 /* Buttons */
 .btn-primary {
   background: var(--forest-800);
   color: #ffffff;
   border: none;
-  padding: 10px 22px;
-  border-radius: var(--radius-full);
-  font-weight: 700;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.88rem;
-  box-shadow: 0 4px 14px rgba(18, 53, 36, 0.16);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.btn-primary:hover {
-  background: var(--forest-900);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(18, 53, 36, 0.26);
-}
-
-.btn-secondary {
-  background: #ffffff;
-  color: var(--text-primary);
-  border: 1px solid var(--border-subtle);
-  padding: 9px 18px;
+  padding: 12px 24px;
   border-radius: var(--radius-full);
   font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.86rem;
+  font-size: 0.92rem;
+  box-shadow: 0 4px 14px rgba(27, 56, 43, 0.15);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-primary:hover {
+  background: var(--forest-900);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(27, 56, 43, 0.25);
+}
+
+.btn-secondary {
+  background: #ffffff;
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  padding: 10px 20px;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
   box-shadow: var(--shadow-sm);
   transition: all 0.2s ease;
 }
 
 .btn-secondary:hover {
-  background: #f2f7f4;
+  background: var(--sage-50);
   border-color: var(--forest-700);
 }
 
@@ -204,89 +184,89 @@ button, input, select, textarea {
   background: transparent;
   color: var(--forest-800);
   border: 1px solid var(--forest-800);
-  padding: 7px 16px;
+  padding: 8px 18px;
   border-radius: var(--radius-full);
   font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.84rem;
+  font-size: 0.85rem;
   transition: all 0.2s ease;
 }
 
 .btn-outline:hover {
-  background: #edf5f0;
+  background: var(--sage-100);
 }
 
-/* Cohesive Badges with High Contrast */
+/* Badges */
 .badge {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 3px 10px;
+  padding: 4px 12px;
   border-radius: var(--radius-full);
-  font-size: 0.74rem;
+  font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.04em;
 }
 
 .badge-emerald {
-  background: #eef7f2;
+  background: var(--sage-100);
   color: var(--forest-800);
-  border: 1px solid #bce1ce;
+  border: 1px solid var(--sage-200);
 }
 
 .badge-amber {
-  background: #fef3c7;
-  color: #92400e;
-  border: 1px solid #fde68a;
+  background: var(--sand-100);
+  color: var(--amber-500);
+  border: 1px solid var(--sand-200);
 }
 
 .badge-sky {
-  background: #e0f2fe;
-  color: #0369a1;
-  border: 1px solid #bae6fd;
+  background: var(--sky-100);
+  color: var(--sky-600);
+  border: 1px solid #d4e7f3;
 }
 
 .badge-rose {
-  background: #fee2e2;
-  color: #991b1b;
-  border: 1px solid #fecaca;
+  background: var(--rose-100);
+  color: var(--rose-600);
+  border: 1px solid #fad2d2;
 }
 
-/* Provenance Tags */
+/* Provenance Tag */
 .tag-provenance {
-  font-size: 0.70rem;
+  font-size: 0.72rem;
   font-weight: 700;
   font-family: var(--font-mono);
-  padding: 2px 7px;
+  padding: 3px 8px;
   border-radius: 4px;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
 }
 
 .tag-verified {
-  background: #e8f4ed;
-  color: #123524;
-  border: 1px solid #bfe3cd;
+  background: #eaf3ed;
+  color: #1e5237;
+  border: 1px solid #c8dfd1;
 }
 
 .tag-ai {
-  background: #fef3c7;
-  color: #854d0e;
-  border: 1px solid #fde68a;
+  background: #f0edf8;
+  color: #5c3899;
+  border: 1px solid #ddd5f0;
 }
 
 .tag-external {
-  background: #e0f2fe;
-  color: #0369a1;
-  border: 1px solid #bae6fd;
+  background: #e7f3f9;
+  color: #17577c;
+  border: 1px solid #c7e3f2;
 }
 
 .tag-simulated {
-  background: #f3f4f6;
-  color: #374151;
-  border: 1px solid #e5e7eb;
+  background: #fbf3df;
+  color: #876212;
+  border: 1px solid #f2e2b9;
 }
 
 /* Inputs */
@@ -294,7 +274,7 @@ button, input, select, textarea {
   width: 100%;
   padding: 10px 14px;
   background: var(--bg-input);
-  border: 1px solid rgba(18, 53, 36, 0.16);
+  border: 1px solid rgba(27, 56, 43, 0.16);
   border-radius: var(--radius-sm);
   color: var(--text-primary);
   font-size: 0.92rem;
@@ -304,17 +284,52 @@ button, input, select, textarea {
 .form-input:focus, .form-select:focus, .form-textarea:focus {
   outline: none;
   border-color: var(--forest-800);
-  box-shadow: 0 0 0 3px rgba(18, 53, 36, 0.1);
+  box-shadow: 0 0 0 3px rgba(27, 56, 43, 0.1);
 }
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(27, 56, 43, 0.15);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--forest-800);
+}
+
+/* Dedicated Sidebar Navigation Scrollbar */
+.sidebar-nav-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(27, 56, 43, 0.2) transparent;
+}
+.sidebar-nav-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+.sidebar-nav-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sidebar-nav-scroll::-webkit-scrollbar-thumb {
+  background: rgba(27, 56, 43, 0.18);
+  border-radius: 999px;
+}
+.sidebar-nav-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--forest-800);
 }
 
 @keyframes scaleIn {
@@ -322,59 +337,97 @@ button, input, select, textarea {
   to { opacity: 1; transform: scale(1); }
 }
 
-.animate-scale-in {
-  animation: scaleIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+/* =========================================================
+   Contrasting Crimson Accent Utilities & Critical Badges
+   ========================================================= */
+.badge-critical {
+  background: var(--crimson-50);
+  color: var(--crimson-600);
+  border: 1px solid var(--crimson-border);
+  font-weight: 700;
+  box-shadow: 0 1px 4px rgba(217, 4, 41, 0.08);
 }
 
-/* Google Play Store Wavy Loading Animations */
-@keyframes wavyBarMove {
-  0% { transform: translateX(-100%); }
-  50% { transform: translateX(25%); }
+.text-critical {
+  color: var(--crimson-600) !important;
+}
+
+.border-critical {
+  border-color: var(--crimson-border) !important;
+}
+
+.card-critical {
+  background: var(--crimson-50);
+  border: 1px solid var(--crimson-border);
+  border-left: 4px solid var(--crimson-600);
+}
+
+.pulse-critical {
+  animation: criticalPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes criticalPulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(217, 4, 41, 0.4); }
+  50% { opacity: 0.88; box-shadow: 0 0 0 8px rgba(217, 4, 41, 0); }
+}
+
+/* =========================================================
+   Smooth CSS Transitions & Interactive Hovers
+   ========================================================= */
+.ease-smooth {
+  transition: all 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-hover-lift {
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.24s ease, border-color 0.2s ease;
+}
+
+.card-hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* =========================================================
+   Modern Loaders: Google Play Store Wavy Bar & WhatsApp Dots
+   ========================================================= */
+@keyframes wavySlide {
+  0% { transform: translateX(0); }
   100% { transform: translateX(100%); }
 }
 
-@keyframes wavyBarSubtleMove {
-  0% { transform: translateX(-80%); }
-  60% { transform: translateX(40%); }
-  100% { transform: translateX(120%); }
-}
-
-@keyframes wavySvgFlow {
+@keyframes wavySine {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
 
-@keyframes wavyPulse {
-  0%, 100% { transform: scale(1); opacity: 0.8; }
-  50% { transform: scale(1.3); opacity: 1; }
+@keyframes whatsappDot {
+  0%, 80%, 100% {
+    transform: scale(0.65);
+    opacity: 0.4;
+  }
+  40% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
 }
 
-.wavy-bar-indeterminate {
-  animation: wavyBarMove 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+/* Shimmer Skeleton */
+.skeleton-shimmer {
+  background: linear-gradient(90deg, rgba(27, 56, 43, 0.06) 25%, rgba(27, 56, 43, 0.12) 50%, rgba(27, 56, 43, 0.06) 75%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-.wavy-bar-subtle {
-  animation: wavyBarSubtleMove 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+@keyframes skeletonShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
-.wavy-svg-flow {
-  animation: wavySvgFlow 3.5s linear infinite;
-}
-
-.wavy-pulsing-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--accent-emerald);
-  display: inline-block;
-  animation: wavyPulse 1.6s ease-in-out infinite;
-}
-
-/* Bottom Screen Toast Notification Transitions */
+/* Toast Animations */
 @keyframes toastSlideUp {
   0% {
     opacity: 0;
-    transform: translateY(28px) scale(0.95);
+    transform: translateY(20px) scale(0.96);
   }
   100% {
     opacity: 1;
@@ -382,40 +435,13 @@ button, input, select, textarea {
   }
 }
 
-.animate-toast-in {
-  animation: toastSlideUp 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+@keyframes toastProgress {
+  0% { width: 100%; }
+  100% { width: 0%; }
 }
 
-/* Scrollbars */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: var(--bg-primary);
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(18, 53, 36, 0.16);
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--forest-800);
+@keyframes storyProgress {
+  0% { width: 0%; }
+  100% { width: 100%; }
 }
 
-.sidebar-nav-scroll {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(18, 53, 36, 0.18) transparent;
-}
-.sidebar-nav-scroll::-webkit-scrollbar {
-  width: 4px;
-}
-.sidebar-nav-scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
-.sidebar-nav-scroll::-webkit-scrollbar-thumb {
-  background: rgba(18, 53, 36, 0.18);
-  border-radius: 999px;
-}
-.sidebar-nav-scroll::-webkit-scrollbar-thumb:hover {
-  background: var(--forest-800);
-}

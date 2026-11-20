@@ -9,11 +9,47 @@ export default function Sidebar({
   activeTab,
   setActiveTab,
   tabs = [],
+  tabGroups = [],
   onLogout,
+  onRequestLogout,
   onOpenProfile
 }) {
   const { t, currentLanguageObj } = useLanguage();
   const [showLangModal, setShowLangModal] = useState(false);
+
+  // Normalize tabs into structured functional groups:
+  const normalizedGroups = React.useMemo(() => {
+    if (tabGroups && tabGroups.length > 0) {
+      return tabGroups;
+    }
+    if (!tabs || tabs.length === 0) return [];
+    
+    // Check if tabs array is already an array of group objects
+    if (tabs[0]?.tabs && Array.isArray(tabs[0].tabs)) {
+      return tabs;
+    }
+
+    // If tabs have a group property
+    const hasGroups = tabs.some(t => t.group);
+    if (!hasGroups) {
+      return [{ group: 'all', groupLabel: t('nav.navigationHeader', 'Platform Modules'), tabs }];
+    }
+
+    const groupsMap = new Map();
+    tabs.forEach(tab => {
+      const gKey = tab.group || 'default';
+      const gLabel = tab.groupLabel || (
+        gKey === 'overview' ? t('nav.groupOverview', 'Overview') :
+        gKey === 'crop_intelligence' ? t('nav.groupCropIntelligence', 'Crop & Intelligence') :
+        gKey === 'commerce_money' ? t('nav.groupCommerce', 'Commerce & Mandi') : ''
+      );
+      if (!groupsMap.has(gKey)) {
+        groupsMap.set(gKey, { group: gKey, groupLabel: gLabel, tabs: [] });
+      }
+      groupsMap.get(gKey).tabs.push(tab);
+    });
+    return Array.from(groupsMap.values());
+  }, [tabs, tabGroups, t]);
 
   return (
     <aside style={{
@@ -99,114 +135,98 @@ export default function Sidebar({
           overflowX: 'hidden',
           display: 'flex',
           flexDirection: 'column',
-          gap: '4px',
+          gap: '12px',
           overscrollBehavior: 'contain'
         }}
       >
-        <div style={{
-          fontSize: '0.64rem',
-          fontWeight: 700,
-          letterSpacing: '0.12em',
-          color: '#8b9f93',
-          textTransform: 'uppercase',
-          padding: '4px 10px 8px'
-        }}>
-          {t('nav.navigationHeader', 'Platform Modules')}
-        </div>
-
-        {tabs.map((tab) => {
-          const isActive = activeTab === tab.id;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              style={{
+        {normalizedGroups.map((group, gIdx) => (
+          <div key={group.group || gIdx} style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+            {/* Functional Group Header */}
+            {group.groupLabel && (
+              <div style={{
+                fontSize: '0.62rem',
+                fontWeight: 800,
+                letterSpacing: '0.12em',
+                color: '#718779',
+                textTransform: 'uppercase',
+                padding: '6px 10px 4px',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '11px',
-                width: '100%',
-                padding: '10px 12px',
-                borderRadius: '9px',
-                border: 'none',
-                background: isActive ? '#163326' : 'transparent',
-                color: isActive ? '#ffffff' : '#45594e',
-                fontSize: '0.84rem',
-                fontWeight: isActive ? 700 : 500,
-                textAlign: 'left',
-                cursor: 'pointer',
-                transition: 'all 0.16s ease',
-                boxShadow: isActive ? '0 2px 8px rgba(22, 51, 38, 0.16)' : 'none',
-                flexShrink: 0
-              }}
-              onMouseEnter={(e) => {
-                if (!isActive) {
-                  e.currentTarget.style.background = '#eef3ef';
-                  e.currentTarget.style.color = '#163326';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!isActive) {
-                  e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.color = '#45594e';
-                }
-              }}
-            >
-              <span style={{
-                color: isActive ? '#d5e6db' : '#6b8275',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0
+                justifyContent: 'space-between'
               }}>
-                {tab.icon}
-              </span>
-              <span style={{ 
-                flex: 1, 
-                whiteSpace: 'nowrap', 
-                overflow: 'hidden', 
-                textOverflow: 'ellipsis' 
-              }}>
-                {tab.label}
-              </span>
-              {isActive && (
-                <ChevronRight size={14} style={{ opacity: 0.8 }} />
-              )}
-            </button>
-          );
-        })}
+                <span>{group.groupLabel}</span>
+                <span style={{ 
+                  height: '1px', 
+                  background: 'rgba(27, 56, 43, 0.08)', 
+                  flex: 1, 
+                  marginLeft: '8px' 
+                }} />
+              </div>
+            )}
 
-        {/* Landing Link embedded inside navigation scroll */}
-        <div style={{ padding: '8px 0 4px', marginTop: '6px' }}>
-          <button
-            onClick={() => setActiveTab('landing')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              width: '100%',
-              padding: '8px 12px',
-              borderRadius: '8px',
-              border: '1px dashed rgba(27, 56, 43, 0.2)',
-              background: 'transparent',
-              color: '#657a6f',
-              fontSize: '0.76rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-              transition: 'all 0.15s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#f4f7f4';
-              e.currentTarget.style.color = '#163326';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'transparent';
-              e.currentTarget.style.color = '#657a6f';
-            }}
-          >
-            <ArrowLeft size={13} />
-            <span>{t('nav.landingLink', 'Exit to Public Landing')}</span>
-          </button>
-        </div>
+            {/* Navigation Tab Items */}
+            {group.tabs.map((tab) => {
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '11px',
+                    width: '100%',
+                    padding: '9px 12px',
+                    borderRadius: '9px',
+                    border: 'none',
+                    background: isActive ? '#163326' : 'transparent',
+                    color: isActive ? '#ffffff' : '#45594e',
+                    fontSize: '0.84rem',
+                    fontWeight: isActive ? 700 : 500,
+                    textAlign: 'left',
+                    cursor: 'pointer',
+                    transition: 'all 0.16s ease',
+                    boxShadow: isActive ? '0 2px 8px rgba(22, 51, 38, 0.16)' : 'none',
+                    flexShrink: 0
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isActive) {
+                      e.currentTarget.style.background = '#eef3ef';
+                      e.currentTarget.style.color = '#163326';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isActive) {
+                      e.currentTarget.style.background = 'transparent';
+                      e.currentTarget.style.color = '#45594e';
+                    }
+                  }}
+                >
+                  <span style={{
+                    color: isActive ? '#d5e6db' : '#6b8275',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }}>
+                    {tab.icon}
+                  </span>
+                  <span style={{ 
+                    flex: 1, 
+                    whiteSpace: 'nowrap', 
+                    overflow: 'hidden', 
+                    textOverflow: 'ellipsis' 
+                  }}>
+                    {tab.label}
+                  </span>
+                  {isActive && (
+                    <ChevronRight size={14} style={{ opacity: 0.8 }} />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        ))}
       </div>
 
       {/* Pinned Bottom Footer: Language Preference Card + User Profile */}
@@ -364,7 +384,7 @@ export default function Sidebar({
 
           {currentUser && (
             <button
-              onClick={onLogout}
+              onClick={onRequestLogout || onLogout}
               title="Log Out"
               style={{
                 background: 'transparent',

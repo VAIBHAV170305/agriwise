@@ -18,6 +18,7 @@ export default function Navbar({
   setActiveTab, 
   onRoleSwitch, 
   onLogout,
+  onRequestLogout,
   onOpenLogin,
   activeTabLabel,
   showProfileModal: externalShowProfileModal,
@@ -895,7 +896,11 @@ export default function Navbar({
                     <button
                       onClick={() => {
                         setShowProfileDropdown(false);
-                        onLogout();
+                        if (onRequestLogout) {
+                          onRequestLogout();
+                        } else {
+                          onLogout();
+                        }
                       }}
                       style={{
                         background: 'transparent',

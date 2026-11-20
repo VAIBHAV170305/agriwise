@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Sprout, Bell, LogOut, CheckCircle2, ChevronRight, ChevronDown,
-  User, ShieldCheck, MapPin, Layers, Phone, Mail, Sparkles,
+  User, ShieldCheck, MapPin, Layers, Phone, Mail,
   Building2, ExternalLink, ArrowRight, Award, Landmark, Eye
 } from 'lucide-react';
+import { RakshakIcon } from './RakshakLogo';
 import { api, DEMO_ACCOUNTS } from '../api';
 import FarmerProfileModal from './FarmerProfileModal';
 import { useLanguage } from '../i18n/LanguageContext';
 import LanguageSelector from './LanguageSelector';
-import LocationBanner from './LocationBanner';
-import CustomAgriLogo from './CustomAgriLogo';
 
 export default function Navbar({ 
   isLanding = false,
@@ -19,6 +18,7 @@ export default function Navbar({
   setActiveTab, 
   onRoleSwitch, 
   onLogout,
+  onRequestLogout,
   onOpenLogin,
   activeTabLabel,
   showProfileModal: externalShowProfileModal,
@@ -141,17 +141,57 @@ export default function Navbar({
           justifyContent: 'space-between',
           gap: '16px'
         }}>
-          {/* Brand Logo with Custom Agricultural Emblem */}
+          {/* Brand Logo */}
           <div 
             onClick={() => setActiveTab('landing')}
-            style={{ cursor: 'pointer' }}
+            style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }}
           >
-            <CustomAgriLogo size={38} variant="full" />
+            <div style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: '12px',
+              background: '#163326',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 10px rgba(22, 51, 38, 0.16)',
+              flexShrink: 0
+            }}>
+              {/* Exact Seedling Sprout Icon */}
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d5e6db" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M 6.5 18.5 H 17.5" />
+                <path d="M 12 18.5 V 13" />
+                <path d="M 12 13.8 C 9 14.8 6.5 12.8 7.2 10.2 C 7.8 7.8 11 8.8 12 11.8" />
+                <path d="M 12 11.8 C 13.2 8.8 15.5 6.2 17.8 7.2 C 19.2 8.5 17.5 12.5 12.5 11.8" />
+              </svg>
+            </div>
+            <div>
+              <div style={{ 
+                fontSize: '1.38rem', 
+                fontWeight: 800, 
+                letterSpacing: '-0.025em', 
+                color: '#163326',
+                lineHeight: 1.05,
+                fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif"
+              }}>
+                agriwise
+              </div>
+              <div style={{ 
+                fontSize: '0.64rem', 
+                fontWeight: 700, 
+                letterSpacing: '0.18em', 
+                color: '#718779', 
+                textTransform: 'uppercase',
+                lineHeight: 1,
+                marginTop: '4px'
+              }}>
+                FIELD DESK
+              </div>
+            </div>
           </div>
 
-          {/* Right Controls: Location Pill + Language Selector + Role Switcher Demo Buttons + Sign In / Dashboard Shortcut */}
+          {/* Right Controls: Language Selector + Role Switcher Demo Buttons + Sign In / Dashboard Shortcut */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-            <LocationBanner variant="compact" />
             <LanguageSelector variant="dropdown" />
             <div style={{
               display: 'flex',
@@ -254,33 +294,51 @@ export default function Navbar({
         zIndex: 90,
         background: '#ffffff',
         borderBottom: '1px solid rgba(27, 56, 43, 0.08)',
-        padding: '10px 24px',
+        padding: '12px 32px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        gap: '12px',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.02)',
-        maxWidth: '100%',
-        boxSizing: 'border-box'
+        gap: '16px',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
       }}>
-        {/* Left: Current Active View Title */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0, flexShrink: 0 }}>
+        {/* Left: Current Active View Title & Status */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <h2 style={{
-            fontSize: '1.2rem',
+            fontSize: '1.25rem',
             fontWeight: 800,
             color: '#163326',
             margin: 0,
             letterSpacing: '-0.02em',
-            fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif",
-            whiteSpace: 'nowrap'
+            fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif"
           }}>
             {activeTabLabel || 'Dashboard'}
           </h2>
+          <span style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '5px',
+            background: '#eef4f0',
+            color: '#2d6a4f',
+            padding: '3px 10px',
+            borderRadius: '999px',
+            fontSize: '0.72rem',
+            fontWeight: 700,
+            letterSpacing: '0.02em'
+          }}>
+            <span style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              background: '#2d6a4f',
+              display: 'inline-block'
+            }} />
+            {t('common.systemOperational', 'System Operational')}
+          </span>
         </div>
 
-        {/* Right Controls: Location Pill + Role Switcher + Notifications + Profile Dropdown */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0, justifyContent: 'flex-end' }}>
-          <LocationBanner variant="compact" />
+        {/* Right Controls: Language Selector + Role Switcher + Notifications + Profile Dropdown */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <LanguageSelector variant="dropdown" />
           {/* Role Switcher in Organic Pill Shape */}
           <div style={{
             display: 'flex',
@@ -288,9 +346,20 @@ export default function Navbar({
             background: '#eef3ef',
             border: '1px solid rgba(27, 56, 43, 0.08)',
             borderRadius: '999px',
-            padding: '2px 4px',
-            gap: '2px'
+            padding: '3px 5px',
+            gap: '3px'
           }}>
+            <span style={{ 
+              fontSize: '0.66rem', 
+              color: '#657a6f', 
+              paddingLeft: '8px', 
+              paddingRight: '4px', 
+              fontWeight: 700, 
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase'
+            }}>
+              ROLE:
+            </span>
             {Object.keys(DEMO_ACCOUNTS).map(roleKey => {
               const isActive = currentRole === roleKey;
               return (
@@ -301,14 +370,13 @@ export default function Navbar({
                     background: isActive ? '#1b382b' : 'transparent',
                     color: isActive ? '#ffffff' : '#4a5c52',
                     border: 'none',
-                    padding: '4px 10px',
+                    padding: '5px 12px',
                     borderRadius: '999px',
-                    fontSize: '0.72rem',
+                    fontSize: '0.76rem',
                     fontWeight: isActive ? 700 : 500,
                     cursor: 'pointer',
-                    transition: 'all 0.18s cubic-bezier(0.16, 1, 0.3, 1)',
-                    boxShadow: isActive ? '0 2px 6px rgba(27, 56, 43, 0.2)' : 'none',
-                    whiteSpace: 'nowrap'
+                    transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+                    boxShadow: isActive ? '0 2px 6px rgba(27, 56, 43, 0.2)' : 'none'
                   }}
                 >
                   {roleKey}
@@ -342,22 +410,26 @@ export default function Navbar({
             >
               <Bell size={17} />
               {unreadCount > 0 && (
-                <span style={{
-                  position: 'absolute',
-                  top: '-2px',
-                  right: '-2px',
-                  background: '#a83838',
-                  color: '#fff',
-                  borderRadius: '50%',
-                  fontSize: '0.65rem',
-                  fontWeight: 800,
-                  width: '18px',
-                  height: '18px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  border: '2px solid #fbfaf6'
-                }}>
+                <span 
+                  className="pulse-critical"
+                  style={{
+                    position: 'absolute',
+                    top: '-2px',
+                    right: '-2px',
+                    background: 'var(--crimson-600)',
+                    color: '#fff',
+                    borderRadius: '50%',
+                    fontSize: '0.65rem',
+                    fontWeight: 800,
+                    width: '18px',
+                    height: '18px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    border: '2px solid #fbfaf6',
+                    boxShadow: '0 0 8px rgba(217, 4, 41, 0.4)'
+                  }}
+                >
                   {unreadCount}
                 </span>
               )}
@@ -772,7 +844,7 @@ export default function Navbar({
                       onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                     >
                       <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <Sparkles size={14} color="#2d6a4f" />
+                        <RakshakIcon size={14} color="#2d6a4f" />
                         My Mandi Produce Listings
                       </span>
                       <ChevronRight size={14} color="#82968a" />
@@ -824,7 +896,11 @@ export default function Navbar({
                     <button
                       onClick={() => {
                         setShowProfileDropdown(false);
-                        onLogout();
+                        if (onRequestLogout) {
+                          onRequestLogout();
+                        } else {
+                          onLogout();
+                        }
                       }}
                       style={{
                         background: 'transparent',

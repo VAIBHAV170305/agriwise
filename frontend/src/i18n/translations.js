@@ -56,7 +56,16 @@ export const translations = {
       fpo: 'FPO Overview & Supply',
       admin: 'Platform Telemetry & Audit',
       navigationHeader: 'Platform Modules',
-      landingLink: 'Back to Public Portal'
+      landingLink: 'Back to Public Portal',
+      groupOverview: 'Overview',
+      groupCropIntelligence: 'Crop & Intelligence',
+      groupCommerce: 'Commerce & Mandi'
+    },
+    auth: {
+      logoutConfirmTitle: 'Confirm Sign-Out',
+      logoutConfirmDesc: 'Are you sure you want to end your active workspace session? You will need to sign back in to access your farm telemetry, crop diagnostics, and mandi listings.',
+      stayLoggedIn: 'Cancel & Stay Logged In',
+      confirmSignOut: 'Yes, Sign Out of Agri-Wise'
     },
     landing: {
       heroBadge: 'Bharat Agri-Stack & Field Intelligence Network',
