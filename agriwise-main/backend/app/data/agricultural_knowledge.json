@@ -1,0 +1,51 @@
+[
+  {
+    "id": 1,
+    "title": "Irrigation and Water Management for Wheat and Cereals",
+    "category": "Irrigation",
+    "source": "ICAR Handbook of Agronomy & Water Management Guidelines",
+    "content": "Wheat requires 4 to 6 critical irrigations depending on soil moisture. The Crown Root Initiation (CRI) stage, approximately 20-25 days after sowing, is the most crucial irrigation window; skipping this can reduce grain yield by up to 35%. Subsequent irrigations should align with Tillering (40-45 DAS), Late Jointing (65-70 DAS), Flowering (85-90 DAS), and Milking/Dough stage (105-115 DAS). Avoid water stagnation to protect against root rot."
+  },
+  {
+    "id": 2,
+    "title": "Soil Nutrient Management (N-P-K & Micronutrients)",
+    "category": "Soil Management",
+    "source": "National Agricultural Soil Testing and Fertigation Protocol",
+    "content": "Balanced fertilizer application follows the 4R principle: Right source, Right rate, Right time, and Right place. General cereal NPK recommendation is 120:60:40 kg/ha. Nitrogen should be split into 3 doses: 50% basal at sowing, 25% at first vegetative irrigation, and 25% at pre-flowering stage. Phosphorus and Potassium should be applied 100% basal at sowing. For alkaline soils (pH > 7.8), supplement Zinc Sulphate @ 25 kg/ha to eliminate chlorosis and stunting."
+  },
+  {
+    "id": 3,
+    "title": "Integrated Pest Management (IPM) in Tomato and Solanaceous Crops",
+    "category": "Pest & Disease",
+    "source": "Horticultural Extension Service IPM Manual",
+    "content": "Integrated Pest Management combines biological, cultural, and targeted chemical approaches. Install yellow sticky traps (15 per acre) for whiteflies and aphids, and blue traps for thrips. For Tomato Fruit Borer (Helicoverpa armigera), install pheromone traps @ 5 per acre and spray Bacillus thuringiensis (Bt) @ 2g/L or Spinosad 45% SC @ 0.3ml/L during early larval instar stages. Maintain marigold as a border trap crop to attract borers away from tomato fruit."
+  },
+  {
+    "id": 4,
+    "title": "Organic Farming and Vermicomposting Protocols",
+    "category": "Organic Practices",
+    "source": "Organic Farming Council Advisory",
+    "content": "Vermicompost provides slow-release micronutrients, enhances beneficial soil mycorrhizae, and improves moisture retention by 20-30%. Recommended application is 2 to 3 tons per acre incorporated during secondary land preparation. Supplement with Jeevamrutha or Panchagavya (3% spray) every 15 days to stimulate rhizosphere microbial activity and systemic acquired resistance against foliar pathogens."
+  },
+  {
+    "id": 5,
+    "title": "Post-Harvest Storage and Moisture Standards for Grains and Pulses",
+    "category": "Post-Harvest & Storage",
+    "source": "Food Corporation & Central Warehousing Standards",
+    "content": "Grain moisture must be dried down to 10-12% before bagging to prevent fungal mycotoxins (Aspergillus flavus / aflatoxins) and grain borer infestations. Use hermetic storage bags (Purdue Improved Crop Storage bags) for pulses to prevent bruchid beetles without chemical fumigation. Store bags on wooden pallets at least 50 cm away from warehouse walls to prevent moisture seepage."
+  },
+  {
+    "id": 6,
+    "title": "Weather Adaptation and Frost/Heat Shock Management",
+    "category": "Weather Advisory",
+    "source": "Agro-Meteorological Advisory Bulletin",
+    "content": "When sudden ground frost is forecast (temperatures falling below 4°C with clear skies), conduct light evening irrigation across farm blocks. The higher specific heat capacity of water buffers soil temperature, reducing frost freeze damage to tender buds. During extreme summer heatwaves (>40°C), apply light foliar sprays of 1% Potassium Nitrate (KNO3) to preserve cell turgidity and delay leaf scorch."
+  },
+  {
+    "id": 7,
+    "title": "Crop Rotation Strategies for Legumes and Soil Health",
+    "category": "Agronomy",
+    "source": "Sustainable Cropping Systems Research",
+    "content": "Rotating cereal crops (Wheat, Paddy, Maize) with leguminous pulses (Chickpea, Moong, Pigeonpea) fixes between 40 to 80 kg of atmospheric Nitrogen per hectare through Rhizobium symbiosis. It also breaks weed and pathogen cycles specific to monocultures. Deep-rooted legumes break compact hardpans and improve soil organic carbon."
+  }
+]
