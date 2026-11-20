@@ -5,23 +5,42 @@ import {
 } from 'lucide-react';
 import { api } from '../api';
 import { useLanguage } from '../i18n/LanguageContext';
+import { useToast } from '../context/ToastContext';
+import WavyLoader from './WavyLoader';
+import ShimmerSkeleton from './ShimmerSkeleton';
+import { RakshakIcon, RakshakBadge } from './RakshakLogo';
 
 export default function FarmerDashboard({ onNavigate }) {
   const { t, currentLanguageObj, greeting } = useLanguage();
+  const { showToast } = useToast();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    loadDashboard();
+    loadDashboard(false);
   }, []);
 
-  const loadDashboard = async () => {
+  const loadDashboard = async (notify = false) => {
     setLoading(true);
     try {
       const res = await api.getDecisionSupport();
       setData(res);
+      if (notify) {
+        showToast({
+          title: 'Signals Refreshed',
+          message: 'Agronomic telemetry and Mandi prices synchronized.',
+          type: 'success'
+        });
+      }
     } catch (err) {
       console.error(err);
+      if (notify) {
+        showToast({
+          title: 'Refresh Issue',
+          message: 'Using cached telemetry.',
+          type: 'warning'
+        });
+      }
     } finally {
       setLoading(false);
     }
@@ -29,10 +48,10 @@ export default function FarmerDashboard({ onNavigate }) {
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-        <div style={{ textAlign: 'center' }}>
-          <RefreshCw className="animate-spin" size={32} color="#10b981" />
-          <p style={{ marginTop: '12px', color: 'var(--text-secondary)' }}>Synthesizing Agronomic & Market Intelligence...</p>
+      <div className="animate-fade-in" style={{ padding: '36px 0', maxWidth: '1000px', margin: '0 auto' }}>
+        <WavyLoader label="Synthesizing localized agronomic telemetry, weather, and Mandi price corridors..." color="#163326" />
+        <div style={{ marginTop: '30px' }}>
+          <ShimmerSkeleton rows={4} height={52} borderRadius={12} />
         </div>
       </div>
     );
@@ -85,11 +104,11 @@ export default function FarmerDashboard({ onNavigate }) {
             className="btn-primary"
             onClick={() => onNavigate('crops-recommend')}
           >
-            <Zap size={16} /> Run Crop Recommendation
+            <RakshakIcon size={16} color="#d8f3dc" /> Run Crop Recommendation
           </button>
           <button 
             className="btn-secondary"
-            onClick={loadDashboard}
+            onClick={() => loadDashboard(true)}
           >
             <RefreshCw size={16} /> Refresh Signals
           </button>
@@ -175,7 +194,7 @@ export default function FarmerDashboard({ onNavigate }) {
             return (
               <div 
                 key={idx}
-                className="glass-card"
+                className={`glass-card card-hover-lift ${isHigh ? 'card-critical' : ''}`}
                 style={{
                   padding: '20px 24px',
                   display: 'flex',
@@ -183,13 +202,13 @@ export default function FarmerDashboard({ onNavigate }) {
                   alignItems: 'center',
                   gap: '16px',
                   flexWrap: 'wrap',
-                  borderLeft: `4px solid ${isHigh ? 'var(--rose-600)' : isOpp ? 'var(--amber-500)' : '#163326'}`
+                  borderLeft: `4px solid ${isHigh ? 'var(--crimson-600)' : isOpp ? 'var(--amber-500)' : '#163326'}`
                 }}
               >
                 <div style={{ flex: 1, minWidth: '280px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
-                    <span className={`badge ${isHigh ? 'badge-rose' : isOpp ? 'badge-amber' : 'badge-emerald'}`}>
-                      {sig.category}
+                    <span className={`badge ${isHigh ? 'badge-critical pulse-critical' : isOpp ? 'badge-amber' : 'badge-emerald'}`}>
+                      {isHigh ? 'CRITICAL ALERT: ' : ''}{sig.category}
                     </span>
                     
                     {/* Data Provenance Tag */}

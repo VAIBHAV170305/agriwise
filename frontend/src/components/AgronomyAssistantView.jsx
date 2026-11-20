@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
-  Bot, User, Send, BookOpen, ShieldCheck, Sparkles, 
-  HelpCircle, RefreshCw, MessageSquare, Languages
+  Bot, User, Send, BookOpen, ShieldCheck, 
+  HelpCircle, RefreshCw, MessageSquare, Languages, Copy, Check
 } from 'lucide-react';
 import { api } from '../api';
 import { useLanguage } from '../i18n/LanguageContext';
+import { useToast } from '../context/ToastContext';
 import LanguageSelector from './LanguageSelector';
+import RakshakLogo, { RakshakIcon, RakshakBadge } from './RakshakLogo';
+import WhatsAppLoader from './WhatsAppLoader';
 
 const QUICK_PROMPTS = [
   "What are the critical irrigation stages for wheat?",
@@ -17,6 +20,7 @@ const QUICK_PROMPTS = [
 
 export default function AgronomyAssistantView() {
   const { t, currentLanguageObj, greeting } = useLanguage();
+  const { showToast } = useToast();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -78,11 +82,20 @@ export default function AgronomyAssistantView() {
 
   return (
     <div className="animate-fade-in" style={{ padding: '24px 0' }}>
-      {/* Title & Language Preference Bar */}
+      {/* Title & Language Preference Bar with Custom Rakshak Logo */}
       <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '14px' }}>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span className="badge badge-emerald">Rakshak AI</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <RakshakLogo size={28} showText={false} />
+            <span style={{ 
+              fontSize: '1.45rem', 
+              fontFamily: "'Fraunces', serif", 
+              fontWeight: 800, 
+              color: 'var(--text-primary)' 
+            }}>
+              Rakshak AI
+            </span>
+            <RakshakBadge text="Agronomy Shield Active" />
             <span style={{
               background: '#edf5f0',
               color: '#2d6a4f',
@@ -94,10 +107,7 @@ export default function AgronomyAssistantView() {
               {currentLanguageObj?.nativeName || 'Regional'} Mode Active
             </span>
           </div>
-          <h2 style={{ fontSize: '1.75rem', color: 'var(--text-primary)', marginTop: '6px', fontFamily: "'Fraunces', serif" }}>
-            {t('assistant.title', 'Rakshak — AI Agronomy Assistant')}
-          </h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', marginTop: '6px' }}>
             {t('assistant.subtitle', 'Trained on ICAR, TNAU, PAU, and state agricultural university research')}
           </p>
         </div>
@@ -160,13 +170,14 @@ export default function AgronomyAssistantView() {
                   width: '36px',
                   height: '36px',
                   borderRadius: '50%',
-                  background: isUser ? 'var(--emerald-600)' : 'linear-gradient(135deg, #059669 0%, #047857 100%)',
+                  background: isUser ? 'var(--emerald-600)' : 'linear-gradient(135deg, #163326 0%, #204b39 100%)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  flexShrink: 0
+                  flexShrink: 0,
+                  boxShadow: '0 2px 8px rgba(22, 51, 38, 0.2)'
                 }}>
-                  {isUser ? <User size={18} color="#fff" /> : <Bot size={18} color="#fff" />}
+                  {isUser ? <User size={18} color="#fff" /> : <RakshakIcon size={18} color="#d8f3dc" />}
                 </div>
 
                 <div style={{
@@ -177,11 +188,42 @@ export default function AgronomyAssistantView() {
                   color: isUser ? '#ffffff' : 'var(--text-primary)',
                   fontSize: '0.9rem',
                   lineHeight: 1.6,
-                  boxShadow: 'var(--shadow-sm)'
+                  boxShadow: 'var(--shadow-sm)',
+                  position: 'relative'
                 }}>
                   <div style={{ whiteSpace: 'pre-wrap' }}>
                     {m.content}
                   </div>
+
+                  {/* Copy button for assistant responses */}
+                  {!isUser && (
+                    <button
+                      onClick={() => {
+                        navigator.clipboard?.writeText(m.content);
+                        showToast({
+                          title: 'Guidance Copied',
+                          message: 'Rakshak AI advice copied to clipboard.',
+                          type: 'success'
+                        });
+                      }}
+                      style={{
+                        position: 'absolute',
+                        top: '12px',
+                        right: '12px',
+                        background: 'transparent',
+                        border: 'none',
+                        color: 'var(--text-muted)',
+                        cursor: 'pointer',
+                        padding: '4px',
+                        borderRadius: '4px',
+                        display: 'flex',
+                        alignItems: 'center'
+                      }}
+                      title="Copy advice"
+                    >
+                      <Copy size={13} />
+                    </button>
+                  )}
 
                   {/* Sources / Citations Box */}
                   {m.sources && m.sources.length > 0 && (
@@ -227,14 +269,26 @@ export default function AgronomyAssistantView() {
           {loading && (
             <div style={{ display: 'flex', gap: '12px', alignSelf: 'flex-start' }}>
               <div style={{
-                width: '36px', height: '36px', borderRadius: '50%', background: 'var(--forest-800)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center'
+                width: '36px', height: '36px', borderRadius: '50%', 
+                background: 'linear-gradient(135deg, #163326 0%, #204b39 100%)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0 2px 8px rgba(22, 51, 38, 0.2)'
               }}>
-                <Bot size={18} color="#fff" />
+                <RakshakIcon size={18} color="#d8f3dc" />
               </div>
-              <div style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: '16px', padding: '14px 20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <RefreshCw className="animate-spin" size={16} color="var(--forest-800)" />
-                <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>Searching agronomy documents & synthesizing grounded response...</span>
+              <div style={{ 
+                background: 'var(--bg-secondary)', 
+                border: '1px solid var(--border-color)', 
+                borderRadius: '16px', 
+                padding: '14px 20px', 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '12px' 
+              }}>
+                <WhatsAppLoader size={7} color="#2dc653" centered={false} />
+                <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
+                  Rakshak AI cross-referencing ICAR & University agronomy research...
+                </span>
               </div>
             </div>
           )}

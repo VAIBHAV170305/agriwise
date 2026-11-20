@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Sparkles, CheckCircle2, AlertCircle, Info, RefreshCw, 
+  CheckCircle2, AlertCircle, Info, RefreshCw, 
   HelpCircle, ChevronRight, BarChart2, ShieldAlert
 } from 'lucide-react';
 import { api } from '../api';
+import { RakshakIcon, RakshakBadge } from './RakshakLogo';
+import { useToast } from '../context/ToastContext';
+import WavyLoader from './WavyLoader';
 
 const PRESETS = [
   { label: 'Alluvial Plains (Paddy/Wheat)', n: 90, p: 45, k: 40, temp: 24, hum: 82, ph: 6.5, rain: 200 },
@@ -13,6 +16,7 @@ const PRESETS = [
 ];
 
 export default function CropRecommendationView() {
+  const { showToast } = useToast();
   const [form, setForm] = useState({
     nitrogen: 90,
     phosphorus: 45,
@@ -61,8 +65,18 @@ export default function CropRecommendationView() {
       const res = await api.getCropRecommendation(form);
       setResult(res);
       loadHistory();
+      showToast({
+        title: `Optimal Crop: ${res.recommended_crop}`,
+        message: `Recommendation calculated with ${Math.round(res.confidence * 100)}% confidence score.`,
+        type: 'success'
+      });
     } catch (err) {
       setError(err.message || 'Failed to fetch crop recommendation');
+      showToast({
+        title: 'Recommendation Error',
+        message: err.message || 'Could not process soil parameters.',
+        type: 'critical'
+      });
     } finally {
       setLoading(false);
     }
@@ -218,9 +232,15 @@ export default function CropRecommendationView() {
               </div>
             </div>
 
-            <button type="submit" className="btn-primary" style={{ marginTop: '8px', justifyContent: 'center' }} disabled={loading}>
-              {loading ? <RefreshCw className="animate-spin" size={18} /> : <Sparkles size={18} />}
-              Compute Agronomic Recommendation
+            {loading && (
+              <div style={{ marginTop: '12px' }}>
+                <WavyLoader label="Classifying soil nutrients across 22 crop models..." color="#163326" />
+              </div>
+            )}
+
+            <button type="submit" className="btn-primary" style={{ marginTop: '12px', justifyContent: 'center' }} disabled={loading}>
+              <RakshakIcon size={18} color="#d8f3dc" />
+              {loading ? 'Synthesizing Soil Matrix...' : 'Compute Agronomic Recommendation'}
             </button>
           </form>
         </div>
@@ -230,7 +250,7 @@ export default function CropRecommendationView() {
           {result ? (
             <div className="glass-card animate-fade-in" style={{ padding: '28px', border: '1px solid var(--emerald-500)', background: 'rgba(16, 185, 129, 0.08)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span className="badge badge-emerald">Optimal Match</span>
+                <RakshakBadge text="Optimal Agronomic Match" />
               </div>
 
               {/* Main Crop Prediction */}
@@ -298,8 +318,18 @@ export default function CropRecommendationView() {
             </div>
           ) : (
             <div className="glass-card" style={{ padding: '36px', textAlign: 'center' }}>
-              <Sparkles size={36} color="var(--forest-800)" style={{ margin: '0 auto 12px' }} />
-              <h3 style={{ fontSize: '1.1rem', color: 'var(--text-primary)', fontFamily: "'Fraunces', serif" }}>Awaiting Soil Parameters</h3>
+              <div style={{
+                width: '54px', height: '54px', borderRadius: '14px',
+                background: 'linear-gradient(135deg, #163326 0%, #204b39 100%)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                margin: '0 auto 16px',
+                boxShadow: '0 4px 14px rgba(22, 51, 38, 0.2)'
+              }}>
+                <RakshakIcon size={28} color="#d8f3dc" />
+              </div>
+              <h3 style={{ fontSize: '1.15rem', color: 'var(--text-primary)', fontFamily: "'Fraunces', serif" }}>
+                Awaiting Soil Parameters
+              </h3>
               <p style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', marginTop: '6px' }}>
                 Adjust the NPK, pH, and environmental sliders on the left or select a quick preset, then click "Compute Agronomic Recommendation".
               </p>

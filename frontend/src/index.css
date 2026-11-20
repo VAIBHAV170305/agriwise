@@ -42,6 +42,14 @@
   --rose-600: #a83838;
   --rose-100: #fdf0f0;
 
+  /* Contrasting Crimson Accent Palette: Dedicated for Critical Alerts & Urgent Attention */
+  --crimson-600: #d90429;
+  --crimson-500: #ef233c;
+  --crimson-100: #ffe5e7;
+  --crimson-50: #fff5f5;
+  --crimson-border: #fca5a5;
+  --crimson-glow: 0 0 16px rgba(217, 4, 41, 0.28);
+
   --text-primary: #1b382b;   /* Deep rich forest green text */
   --text-secondary: #4a5c52; /* Calm earthy moss / charcoal */
   --text-muted: #75867d;     /* Muted sage */
@@ -328,3 +336,112 @@ button, input, select, textarea {
   from { opacity: 0; transform: scale(0.96); }
   to { opacity: 1; transform: scale(1); }
 }
+
+/* =========================================================
+   Contrasting Crimson Accent Utilities & Critical Badges
+   ========================================================= */
+.badge-critical {
+  background: var(--crimson-50);
+  color: var(--crimson-600);
+  border: 1px solid var(--crimson-border);
+  font-weight: 700;
+  box-shadow: 0 1px 4px rgba(217, 4, 41, 0.08);
+}
+
+.text-critical {
+  color: var(--crimson-600) !important;
+}
+
+.border-critical {
+  border-color: var(--crimson-border) !important;
+}
+
+.card-critical {
+  background: var(--crimson-50);
+  border: 1px solid var(--crimson-border);
+  border-left: 4px solid var(--crimson-600);
+}
+
+.pulse-critical {
+  animation: criticalPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes criticalPulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(217, 4, 41, 0.4); }
+  50% { opacity: 0.88; box-shadow: 0 0 0 8px rgba(217, 4, 41, 0); }
+}
+
+/* =========================================================
+   Smooth CSS Transitions & Interactive Hovers
+   ========================================================= */
+.ease-smooth {
+  transition: all 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-hover-lift {
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.24s ease, border-color 0.2s ease;
+}
+
+.card-hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* =========================================================
+   Modern Loaders: Google Play Store Wavy Bar & WhatsApp Dots
+   ========================================================= */
+@keyframes wavySlide {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes wavySine {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes whatsappDot {
+  0%, 80%, 100% {
+    transform: scale(0.65);
+    opacity: 0.4;
+  }
+  40% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+}
+
+/* Shimmer Skeleton */
+.skeleton-shimmer {
+  background: linear-gradient(90deg, rgba(27, 56, 43, 0.06) 25%, rgba(27, 56, 43, 0.12) 50%, rgba(27, 56, 43, 0.06) 75%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes skeletonShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Toast Animations */
+@keyframes toastSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes toastProgress {
+  0% { width: 100%; }
+  100% { width: 0%; }
+}
+
+@keyframes storyProgress {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+

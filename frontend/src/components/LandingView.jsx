@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { 
   Sprout, ShieldCheck, Zap, Activity, CloudSun, Leaf, 
   ShoppingBag, ArrowRight, Check, Lock, Mail, User, Phone,
-  TrendingUp, Award, Layers
+  TrendingUp, Award, Layers, AlertTriangle
 } from 'lucide-react';
 import { api, DEMO_ACCOUNTS } from '../api';
 import { useLanguage } from '../i18n/LanguageContext';
 import LanguageSelector from './LanguageSelector';
+import AsciiStoryGraphic from './AsciiStoryGraphic';
+import { RakshakIcon, RakshakBadge } from './RakshakLogo';
 
 export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin }) {
   const { t, currentLanguageObj, greeting } = useLanguage();
@@ -143,134 +145,10 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
           </div>
         </div>
 
-        {/* Right Hero Graphic: Organic circular field illustration with floating cards */}
-        <div style={{ display: 'flex', justifyContent: 'center', position: 'relative' }}>
-          <div style={{
-            width: '440px',
-            height: '440px',
-            borderRadius: '50%',
-            position: 'relative',
-            background: 'linear-gradient(180deg, #d8e5db 0%, #c1d6c7 40%, #769982 70%, #52755e 100%)',
-            boxShadow: '0 20px 50px rgba(27, 56, 43, 0.12)',
-            overflow: 'visible'
-          }}>
-            {/* Sun Disc */}
-            <div style={{
-              position: 'absolute',
-              top: '55px',
-              right: '90px',
-              width: '90px',
-              height: '90px',
-              borderRadius: '50%',
-              background: 'rgba(250, 232, 178, 0.65)',
-              filter: 'blur(2px)'
-            }} />
-            <div style={{
-              position: 'absolute',
-              top: '75px',
-              right: '135px',
-              width: '55px',
-              height: '55px',
-              borderRadius: '50%',
-              background: 'rgba(250, 232, 178, 0.85)'
-            }} />
-
-            {/* Rolling field layers SVG inside circle */}
-            <svg viewBox="0 0 440 440" style={{ width: '100%', height: '100%', borderRadius: '50%', position: 'absolute', inset: 0 }}>
-              {/* Hill 1 */}
-              <path d="M 0 240 Q 220 180 440 230 L 440 440 L 0 440 Z" fill="#91af9a" />
-              {/* Hill 2 */}
-              <path d="M 0 280 Q 200 240 440 300 L 440 440 L 0 440 Z" fill="#6c9077" />
-              {/* Hill 3 (Deep foreground) */}
-              <path d="M 0 340 Q 240 300 440 370 L 440 440 L 0 440 Z" fill="#4d7159" />
-              
-              {/* Minimal sprout in center */}
-              <g transform="translate(210, 215)">
-                <path d="M 10 30 C 10 20 15 15 20 8" fill="none" stroke="#2a4535" strokeWidth="2.5" strokeLinecap="round" />
-                <path d="M 19 8 C 15 2 7 6 7 14 C 14 14 17 11 19 8 Z" fill="#3d5c48" />
-                <path d="M 21 11 C 25 5 33 8 32 16 C 25 16 23 13 21 11 Z" fill="#4c6e58" />
-              </g>
-            </svg>
-
-            {/* Floating Card 1: Top Left - Farm Intelligence */}
-            <div style={{
-              position: 'absolute',
-              top: '40px',
-              left: '-40px',
-              background: '#ffffff',
-              borderRadius: '16px',
-              padding: '12px 18px',
-              boxShadow: '0 8px 30px rgba(22, 51, 38, 0.12)',
-              border: '1px solid rgba(22, 51, 38, 0.08)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              zIndex: 10
-            }}>
-              <div style={{
-                width: '32px',
-                height: '32px',
-                borderRadius: '8px',
-                background: '#e8efe9',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                <Leaf size={18} color="#2d5740" />
-              </div>
-              <div>
-                <div style={{ fontSize: '0.84rem', fontWeight: 700, color: '#163326', lineHeight: 1.2 }}>Farm intelligence</div>
-                <div style={{ fontSize: '0.7rem', color: '#687e72', marginTop: '2px' }}>Grounded in your records</div>
-              </div>
-            </div>
-
-            {/* Floating Card 2: Bottom Right - Market Access */}
-            <div style={{
-              position: 'absolute',
-              bottom: '50px',
-              right: '-40px',
-              background: '#ffffff',
-              borderRadius: '16px',
-              padding: '12px 18px',
-              boxShadow: '0 8px 30px rgba(22, 51, 38, 0.12)',
-              border: '1px solid rgba(22, 51, 38, 0.08)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              zIndex: 10
-            }}>
-              <div style={{
-                width: '32px',
-                height: '32px',
-                borderRadius: '8px',
-                background: '#fbf5e2',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                <TrendingUp size={18} color="#946d14" />
-              </div>
-              <div>
-                <div style={{ fontSize: '0.84rem', fontWeight: 700, color: '#163326', lineHeight: 1.2 }}>Market access</div>
-                <div style={{ fontSize: '0.7rem', color: '#687e72', marginTop: '2px' }}>From offering to delivery</div>
-              </div>
-            </div>
-
-            {/* Subtle curved text label below */}
-            <div style={{
-              position: 'absolute',
-              bottom: '-24px',
-              left: 0,
-              right: 0,
-              textAlign: 'center',
-              fontSize: '0.68rem',
-              fontWeight: 700,
-              letterSpacing: '0.14em',
-              color: '#6e8577',
-              textTransform: 'uppercase'
-            }}>
-              GROW WITH A LITTLE MORE CLARITY
-            </div>
+        {/* Right Hero: Interactive ASCII Agritech Storytelling Console (Farmer, Weather, Crop Defense, Mandi) */}
+        <div style={{ display: 'flex', justifyContent: 'center', width: '100%', maxWidth: '540px', margin: '0 auto' }}>
+          <div style={{ width: '100%' }}>
+            <AsciiStoryGraphic />
           </div>
         </div>
       </div>
@@ -356,6 +234,47 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
         </div>
       </div>
 
+      {/* Critical Alert Ribbon using Curated Crimson Accent */}
+      <div 
+        className="card-critical animate-fade-in"
+        style={{
+          maxWidth: '1240px',
+          margin: '0 auto 40px',
+          padding: '14px 20px',
+          borderRadius: '14px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '12px'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <span className="badge badge-critical pulse-critical">
+            CRITICAL SAFEGUARD
+          </span>
+          <span style={{ fontSize: '0.85rem', color: '#991b1b', fontWeight: 600 }}>
+            Unpredicted pest outbreaks & harvest gluts cause 20% to 40% crop losses annually. Rakshak AI provides pre-emptive diagnostics and guaranteed forward Mandi contracts.
+          </span>
+        </div>
+        <button
+          onClick={() => onRoleSwitch('Farmer')}
+          style={{
+            background: 'var(--crimson-600)',
+            color: '#ffffff',
+            border: 'none',
+            padding: '6px 14px',
+            borderRadius: '999px',
+            fontSize: '0.78rem',
+            fontWeight: 700,
+            cursor: 'pointer',
+            boxShadow: '0 2px 8px rgba(217, 4, 41, 0.25)'
+          }}
+        >
+          Protect My Crop →
+        </button>
+      </div>
+
       {/* 4 Feature Pillars Grid in warm clean cards */}
       <div style={{
         display: 'grid',
@@ -365,35 +284,41 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
         margin: '0 auto',
         padding: '0 10px'
       }}>
-        <div className="glass-card" style={{ padding: '28px' }}>
+        <div className="glass-card card-hover-lift" style={{ padding: '28px' }}>
           <div style={{
             width: '42px', height: '42px', borderRadius: '10px',
             background: '#e8efe9', display: 'flex', alignItems: 'center', justifyContent: 'center',
             marginBottom: '16px'
           }}>
-            <Leaf size={20} color="#1b382b" />
+            <RakshakIcon size={20} color="#1b382b" />
           </div>
-          <h3 style={{ fontSize: '1.18rem', color: '#163326', marginBottom: '8px' }}>AI Crop Recommender</h3>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+            <h3 style={{ fontSize: '1.18rem', color: '#163326', margin: 0 }}>AI Crop Recommender</h3>
+            <RakshakBadge text="AI Matcher" />
+          </div>
           <p style={{ fontSize: '0.86rem', color: '#576c60', lineHeight: 1.5 }}>
             Trained Random Forest classifier matching 22 agricultural crops to soil Nitrogen, Phosphorus, Potassium, pH, and precipitation profiles.
           </p>
         </div>
 
-        <div className="glass-card" style={{ padding: '28px' }}>
+        <div className="glass-card card-hover-lift" style={{ padding: '28px' }}>
           <div style={{
             width: '42px', height: '42px', borderRadius: '10px',
-            background: '#fdf0f0', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: '#ffe5e7', display: 'flex', alignItems: 'center', justifyContent: 'center',
             marginBottom: '16px'
           }}>
-            <ShieldCheck size={20} color="#a83838" />
+            <ShieldCheck size={20} color="var(--crimson-600)" />
           </div>
-          <h3 style={{ fontSize: '1.18rem', color: '#163326', marginBottom: '8px' }}>Vision Disease Scanner</h3>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+            <h3 style={{ fontSize: '1.18rem', color: '#163326', margin: 0 }}>Vision Disease Scanner</h3>
+            <span className="badge badge-critical">Early Warning</span>
+          </div>
           <p style={{ fontSize: '0.86rem', color: '#576c60', lineHeight: 1.5 }}>
-            Rapid leaf pathology identification with organic biocontrol remedies and chemical intervention schedules.
+            Rapid leaf pathology identification with organic biocontrol remedies, preventing <strong style={{ color: 'var(--crimson-600)' }}>20%-40%</strong> yield losses from foliar pathogens.
           </p>
         </div>
 
-        <div className="glass-card" style={{ padding: '28px' }}>
+        <div className="glass-card card-hover-lift" style={{ padding: '28px' }}>
           <div style={{
             width: '42px', height: '42px', borderRadius: '10px',
             background: '#edf5fa', display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -401,13 +326,16 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
           }}>
             <CloudSun size={20} color="#22678f" />
           </div>
-          <h3 style={{ fontSize: '1.18rem', color: '#163326', marginBottom: '8px' }}>Weather & Rakshak AI</h3>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+            <h3 style={{ fontSize: '1.18rem', color: '#163326', margin: 0 }}>Weather & Rakshak AI</h3>
+            <RakshakBadge text="RAG Verified" />
+          </div>
           <p style={{ fontSize: '0.86rem', color: '#576c60', lineHeight: 1.5 }}>
-            Micro-climate agricultural advisories plus Rakshak, our intelligent AI assistant citing verified agronomy manuals.
+            Micro-climate agricultural advisories plus Rakshak, our intelligent AI assistant citing ICAR and SAU verified agronomy manuals.
           </p>
         </div>
 
-        <div className="glass-card" style={{ padding: '28px' }}>
+        <div className="glass-card card-hover-lift" style={{ padding: '28px' }}>
           <div style={{
             width: '42px', height: '42px', borderRadius: '10px',
             background: '#fbf5e2', display: 'flex', alignItems: 'center', justifyContent: 'center',

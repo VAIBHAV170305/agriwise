@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Camera, UploadCloud, ShieldAlert, CheckCircle, AlertTriangle, 
-  Leaf, RefreshCw, Sparkles, BookOpen, Clock
+  Leaf, RefreshCw, BookOpen, Clock
 } from 'lucide-react';
 import { api } from '../api';
+import { RakshakIcon, RakshakBadge } from './RakshakLogo';
+import { useToast } from '../context/ToastContext';
+import WavyLoader from './WavyLoader';
 
 export default function DiseaseScannerView() {
+  const { showToast } = useToast();
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [cropHint, setCropHint] = useState('Tomato');
@@ -49,8 +53,18 @@ export default function DiseaseScannerView() {
       const res = await api.analyzeDisease(formData);
       setResult(res);
       loadHistory();
+      const isSevere = res.severity === 'Severe' || res.severity === 'High';
+      showToast({
+        title: `Diagnosis: ${res.predicted_disease}`,
+        message: `${res.severity} severity detected with ${Math.round(res.confidence * 100)}% model confidence. Remediation guidelines displayed.`,
+        type: isSevere ? 'critical' : 'success'
+      });
     } catch (err) {
-      alert(err.message);
+      showToast({
+        title: 'Diagnostic Scan Failed',
+        message: err.message || 'Error executing AI vision model.',
+        type: 'critical'
+      });
     } finally {
       setLoading(false);
     }
@@ -190,6 +204,12 @@ export default function DiseaseScannerView() {
               </button>
             </div>
 
+            {loading && (
+              <div style={{ marginBottom: '14px' }}>
+                <WavyLoader label="Analyzing foliar textures & cross-referencing ICAR pathology database..." color="#163326" />
+              </div>
+            )}
+
             <button 
               type="button"
               className="btn-primary" 
@@ -197,8 +217,8 @@ export default function DiseaseScannerView() {
               disabled={!selectedFile || loading}
               onClick={handleScan}
             >
-              {loading ? <RefreshCw className="animate-spin" size={18} /> : <Camera size={18} />}
-              Execute AI Computer Vision Scan
+              <RakshakIcon size={18} color="#d8f3dc" />
+              {loading ? 'Processing Leaf Pathology...' : 'Execute AI Computer Vision Scan'}
             </button>
           </div>
         </div>
@@ -206,10 +226,10 @@ export default function DiseaseScannerView() {
         {/* Right Column: Diagnostic & Advisory Result */}
         <div>
           {result ? (
-            <div className="glass-card animate-fade-in" style={{ padding: '28px', border: '1px solid var(--border-subtle)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span className="badge badge-emerald">{result.crop_name} Diagnostic</span>
-                <span className={`badge ${result.severity === 'Severe' || result.severity === 'High' ? 'badge-rose' : result.severity === 'Moderate' ? 'badge-amber' : 'badge-emerald'}`}>
+            <div className={`glass-card animate-fade-in ${result.severity === 'Severe' || result.severity === 'High' ? 'card-critical' : ''}`} style={{ padding: '28px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
+                <RakshakBadge text={`${result.crop_name} Diagnostic`} variant={result.severity === 'Severe' || result.severity === 'High' ? 'critical' : 'default'} />
+                <span className={`badge ${result.severity === 'Severe' || result.severity === 'High' ? 'badge-critical' : result.severity === 'Moderate' ? 'badge-amber' : 'badge-emerald'}`}>
                   Severity: {result.severity}
                 </span>
               </div>

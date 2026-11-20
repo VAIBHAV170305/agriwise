@@ -18,15 +18,18 @@ import AdminDashboard from './components/AdminDashboard';
 import DeliveryDashboard from './components/DeliveryDashboard';
 import AuthModal from './components/AuthModal';
 import ErrorBoundary from './components/ErrorBoundary';
+import { RakshakIcon } from './components/RakshakLogo';
+import { useToast } from './context/ToastContext';
 import { api, DEMO_ACCOUNTS } from './api';
 import { useLanguage } from './i18n/LanguageContext';
 import { 
-  Home, Activity, Layers, Sparkles, Camera, CloudSun, 
+  Home, Activity, Layers, Camera, CloudSun, 
   MessageSquare, TrendingUp, ShoppingBag, Package, Users, ShieldAlert,
   Truck, Navigation, CheckCircle2
 } from 'lucide-react';
 
 export default function App() {
+  const { showToast } = useToast();
   const [currentUser, setCurrentUser] = useState(null);
   const [currentRole, setCurrentRole] = useState('Farmer');
   const [activeTab, setActiveTab] = useState('overview');
@@ -43,7 +46,7 @@ export default function App() {
       setCurrentRole(storedUser.role);
     } else {
       // Default auto-login as Farmer for immediate rich dashboard experience
-      handleRoleSwitch('Farmer');
+      handleRoleSwitch('Farmer', false);
     }
   }, [theme]);
 
@@ -55,7 +58,7 @@ export default function App() {
     }
   }, [activeTab, currentUser]);
 
-  const handleRoleSwitch = async (roleKey) => {
+  const handleRoleSwitch = async (roleKey, notify = true) => {
     const acc = DEMO_ACCOUNTS[roleKey];
     if (!acc) return;
     try {
@@ -69,8 +72,21 @@ export default function App() {
       else if (roleKey === 'Delivery') setActiveTab('delivery-ops');
       else if (roleKey === 'FPO') setActiveTab('fpo');
       else if (roleKey === 'Admin') setActiveTab('admin');
+
+      if (notify) {
+        showToast({
+          title: `Switched to ${data.user.role} Persona`,
+          message: `Active profile: ${data.user.name}. Dashboard synchronized.`,
+          type: 'success'
+        });
+      }
     } catch (err) {
       console.error(err);
+      showToast({
+        title: 'Persona Switch Error',
+        message: err.message || 'Could not switch persona.',
+        type: 'critical'
+      });
     }
   };
 
@@ -78,6 +94,11 @@ export default function App() {
     await api.logout();
     setCurrentUser(null);
     setActiveTab('landing');
+    showToast({
+      title: 'Signed Out',
+      message: 'You have been safely signed out of Agri-Wise.',
+      type: 'info'
+    });
   };
 
   const { t } = useLanguage();
@@ -89,10 +110,10 @@ export default function App() {
       return [
         { id: 'overview', label: t('nav.overview', 'Decision Intelligence'), icon: <Activity size={16} /> },
         { id: 'farms', label: t('nav.farms', 'Farms & Crops'), icon: <Layers size={16} /> },
-        { id: 'crops-recommend', label: t('nav.cropsRecommend', 'AI Crop Recommendation'), icon: <Sparkles size={16} /> },
+        { id: 'crops-recommend', label: t('nav.cropsRecommend', 'AI Crop Recommendation'), icon: <RakshakIcon size={16} /> },
         { id: 'disease', label: t('nav.disease', 'Disease Scanner'), icon: <Camera size={16} /> },
         { id: 'weather', label: t('nav.weather', 'Weather Center'), icon: <CloudSun size={16} /> },
-        { id: 'assistant', label: t('nav.assistant', 'Rakshak AI'), icon: <MessageSquare size={16} /> },
+        { id: 'assistant', label: t('nav.assistant', 'Rakshak AI'), icon: <RakshakIcon size={16} /> },
         { id: 'market', label: t('nav.market', 'Demand Forecasting'), icon: <TrendingUp size={16} /> },
         { id: 'listings', label: t('nav.listings', 'My Produce Listings'), icon: <ShoppingBag size={16} /> },
         { id: 'orders', label: t('nav.orders', 'Orders Received'), icon: <Package size={16} /> },

@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { 
   Sprout, X, User, Lock, Mail, Phone, ShieldCheck, 
-  ArrowRight, CheckCircle2, AlertTriangle, Users, ShoppingBag, Sparkles
+  ArrowRight, CheckCircle2, AlertTriangle, Users, ShoppingBag
 } from 'lucide-react';
 import { api, DEMO_ACCOUNTS } from '../api';
 import { useLanguage } from '../i18n/LanguageContext';
+import { useToast } from '../context/ToastContext';
 import LanguageSelector from './LanguageSelector';
+import WavyLoader from './WavyLoader';
+import { RakshakIcon } from './RakshakLogo';
 
 export default function AuthModal({ isOpen, onClose, onLoginSuccess, onRoleSwitch }) {
   const { t, currentLang, languages } = useLanguage();
+  const { showToast } = useToast();
   const [isRegister, setIsRegister] = useState(false);
   const [authError, setAuthError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -35,9 +39,19 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, onRoleSwitc
       } else if (onRoleSwitch) {
         await onRoleSwitch(roleKey);
       }
+      showToast({
+        title: `Welcome, ${res.user.name}`,
+        message: `Signed in as ${res.user.role}. Your personalized agronomy records are ready.`,
+        type: 'success'
+      });
       onClose();
     } catch (err) {
       setAuthError(err.message || 'Quick login failed');
+      showToast({
+        title: 'Sign In Failed',
+        message: err.message || 'Could not verify persona credentials.',
+        type: 'critical'
+      });
     } finally {
       setLoading(false);
     }
@@ -51,13 +65,28 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, onRoleSwitc
       if (isRegister) {
         const res = await api.register(form);
         if (onLoginSuccess) onLoginSuccess(res.user);
+        showToast({
+          title: 'Account Created',
+          message: `Welcome to Agri-Wise, ${res.user.name}! Registered as ${res.user.role}.`,
+          type: 'success'
+        });
       } else {
         const res = await api.login(form.email, form.password);
         if (onLoginSuccess) onLoginSuccess(res.user);
+        showToast({
+          title: `Welcome, ${res.user.name}`,
+          message: `Signed in as ${res.user.role}.`,
+          type: 'success'
+        });
       }
       onClose();
     } catch (err) {
       setAuthError(err.message || 'Authentication error');
+      showToast({
+        title: 'Authentication Error',
+        message: err.message || 'Check your credentials.',
+        type: 'critical'
+      });
     } finally {
       setLoading(false);
     }
@@ -429,6 +458,12 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, onRoleSwitc
             </>
           )}
 
+          {loading && (
+            <div style={{ margin: '8px 0' }}>
+              <WavyLoader label="Authenticating session & loading workspace..." color="#163326" />
+            </div>
+          )}
+
           <button 
             type="submit" 
             className="btn-primary" 
@@ -442,7 +477,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, onRoleSwitc
             }} 
             disabled={loading}
           >
-            {loading ? 'Authenticating...' : (isRegister ? 'Register & Enter Workspace' : 'Sign In')}
+            {loading ? 'Entering Workspace...' : (isRegister ? 'Register & Enter Workspace' : 'Sign In')}
             <ArrowRight size={16} />
           </button>
 

@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Sprout, Bell, LogOut, CheckCircle2, ChevronRight, ChevronDown,
-  User, ShieldCheck, MapPin, Layers, Phone, Mail, Sparkles,
+  User, ShieldCheck, MapPin, Layers, Phone, Mail,
   Building2, ExternalLink, ArrowRight, Award, Landmark, Eye
 } from 'lucide-react';
+import { RakshakIcon } from './RakshakLogo';
 import { api, DEMO_ACCOUNTS } from '../api';
 import FarmerProfileModal from './FarmerProfileModal';
 import { useLanguage } from '../i18n/LanguageContext';
@@ -408,22 +409,26 @@ export default function Navbar({
             >
               <Bell size={17} />
               {unreadCount > 0 && (
-                <span style={{
-                  position: 'absolute',
-                  top: '-2px',
-                  right: '-2px',
-                  background: '#a83838',
-                  color: '#fff',
-                  borderRadius: '50%',
-                  fontSize: '0.65rem',
-                  fontWeight: 800,
-                  width: '18px',
-                  height: '18px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  border: '2px solid #fbfaf6'
-                }}>
+                <span 
+                  className="pulse-critical"
+                  style={{
+                    position: 'absolute',
+                    top: '-2px',
+                    right: '-2px',
+                    background: 'var(--crimson-600)',
+                    color: '#fff',
+                    borderRadius: '50%',
+                    fontSize: '0.65rem',
+                    fontWeight: 800,
+                    width: '18px',
+                    height: '18px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    border: '2px solid #fbfaf6',
+                    boxShadow: '0 0 8px rgba(217, 4, 41, 0.4)'
+                  }}
+                >
                   {unreadCount}
                 </span>
               )}
@@ -838,7 +843,7 @@ export default function Navbar({
                       onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                     >
                       <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <Sparkles size={14} color="#2d6a4f" />
+                        <RakshakIcon size={14} color="#2d6a4f" />
                         My Mandi Produce Listings
                       </span>
                       <ChevronRight size={14} color="#82968a" />
