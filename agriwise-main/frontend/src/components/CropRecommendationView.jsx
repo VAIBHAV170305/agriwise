@@ -11,6 +11,8 @@ import { useToast } from '../context/ToastContext';
 import { RakshakIcon, RakshakBadge } from './RakshakLogo';
 import WavyLoader from './WavyLoader';
 import IndiaAgriHeatMap, { AGRO_CLIMATIC_ZONES } from './IndiaAgriHeatMap';
+import RapidoLocationSelector from './RapidoLocationSelector';
+import LocationBanner from './LocationBanner';
 
 export default function CropRecommendationView() {
   const { location, detectLocation, detecting } = useLocation();
@@ -18,6 +20,7 @@ export default function CropRecommendationView() {
 
   // Active Selected Agro-Climatic Zone from Map / Location
   const [selectedZone, setSelectedZone] = useState(AGRO_CLIMATIC_ZONES[0]);
+  const [mapMode, setMapMode] = useState('rapido'); // 'rapido' | 'heat'
   const [liveWeather, setLiveWeather] = useState(null);
   const [weatherLoading, setWeatherLoading] = useState(false);
 
@@ -249,33 +252,70 @@ export default function CropRecommendationView() {
             padding: '20px',
             boxShadow: '0 4px 16px rgba(22, 51, 38, 0.04)'
           }}>
-            <div style={{ marginBottom: '14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ marginBottom: '14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
               <div>
                 <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#2d6a4f', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                  Click Region on Heat Map
+                  Interactive Location & Soil Atlas
                 </span>
                 <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#163326', margin: '2px 0 0' }}>
-                  India Soil & Terrain Map
+                  Pan-India Map & Pinpoint Selector
                 </h3>
               </div>
-              <span style={{
-                background: '#edf5f0',
-                color: '#2d6a4f',
-                fontSize: '0.72rem',
-                fontWeight: 700,
-                padding: '3px 8px',
-                borderRadius: '6px'
-              }}>
-                {selectedZone.shortName}
-              </span>
+
+              {/* Mode Toggle: Rapido Pinpoint vs Soil Belts */}
+              <div style={{ display: 'flex', background: '#eef4f0', padding: '3px', borderRadius: '10px' }}>
+                <button
+                  type="button"
+                  onClick={() => setMapMode('rapido')}
+                  style={{
+                    border: 'none',
+                    padding: '5px 10px',
+                    borderRadius: '7px',
+                    fontSize: '0.74rem',
+                    fontWeight: 700,
+                    background: mapMode === 'rapido' ? '#163326' : 'transparent',
+                    color: mapMode === 'rapido' ? '#ffffff' : '#4a5e52',
+                    cursor: 'pointer',
+                    transition: 'all 0.15s ease'
+                  }}
+                >
+                  📍 Rapido Pinpoint
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMapMode('heat')}
+                  style={{
+                    border: 'none',
+                    padding: '5px 10px',
+                    borderRadius: '7px',
+                    fontSize: '0.74rem',
+                    fontWeight: 700,
+                    background: mapMode === 'heat' ? '#163326' : 'transparent',
+                    color: mapMode === 'heat' ? '#ffffff' : '#4a5e52',
+                    cursor: 'pointer',
+                    transition: 'all 0.15s ease'
+                  }}
+                >
+                  🌾 Soil Belts
+                </button>
+              </div>
             </div>
 
-            {/* Embedded Interactive SVG Heat Map */}
-            <IndiaAgriHeatMap 
-              selectedZoneId={selectedZone.id} 
-              onSelectZone={handleZoneSelect}
-              compactView={true}
-            />
+            {/* View Switching: Rapido Pinpoint vs Heat Map */}
+            {mapMode === 'rapido' ? (
+              <RapidoLocationSelector 
+                onLocationSelected={(loc) => {
+                  matchUserLocationToZone();
+                }}
+                showConfirmButton={false}
+              />
+            ) : (
+              <IndiaAgriHeatMap 
+                selectedZoneId={selectedZone.id} 
+                onSelectZone={handleZoneSelect}
+                compactView={true}
+              />
+            )}
 
             {/* Auto-Inferred Soil Parameters Card (No sliders!) */}
             <div style={{

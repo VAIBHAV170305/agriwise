@@ -22,6 +22,7 @@ import { RakshakIcon } from './components/RakshakLogo';
 import RakshakFabWidget from './components/RakshakFabWidget';
 import LogoutConfirmModal from './components/LogoutConfirmModal';
 import AuthView from './components/AuthView';
+import LocationModal from './components/LocationModal';
 import { useToast } from './context/ToastContext';
 import { api, DEMO_ACCOUNTS } from './api';
 import { useLanguage } from './i18n/LanguageContext';
@@ -356,6 +357,9 @@ export default function App() {
 
       {/* Persistent Rakshak AI Floating Copilot (Available across every page) */}
       <RakshakFabWidget onNavigateFull={setActiveTab} />
+
+      {/* Location Modal */}
+      <LocationModal />
 
       {/* Logout Confirmation Modal */}
       <LogoutConfirmModal 

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   MapPin, Info, CheckCircle2, ChevronRight, Layers, Sparkles, 
   Navigation, Compass, Search, ChevronDown 
 } from 'lucide-react';
-import { useLocation, latLonToMapCoords, INDIAN_CITIES_DATABASE } from '../context/LocationContext';
+import { useLocation, latLonToMapCoords, mapCoordsToLatLon, findClosestIndianCity, INDIAN_CITIES_DATABASE } from '../context/LocationContext';
 
 /**
  * Interactive Agro-Climatic Heat Map of India
@@ -258,8 +258,23 @@ export default function IndiaAgriHeatMap({
     }
   };
 
-  const searchResults = searchQuery.trim() ? searchIndianLocations(searchQuery).slice(0, 6) : [];
+  const searchResults = searchQuery.trim() ? searchIndianLocations(searchQuery).slice(0, 8) : [];
   const currentPin = latLonToMapCoords ? latLonToMapCoords(location.latitude, location.longitude) : { x: 155, y: 126 };
+  const svgRef = useRef(null);
+
+  const handleSvgClick = (e) => {
+    if (!svgRef.current) return;
+    const rect = svgRef.current.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const clickY = e.clientY - rect.top;
+
+    const svgX = (clickX / rect.width) * 420;
+    const svgY = (clickY / rect.height) * 440;
+
+    const { lat, lon } = mapCoordsToLatLon(svgX, svgY);
+    const closest = findClosestIndianCity(lat, lon);
+    handleCityPick(closest);
+  };
 
   return (
     <div className="india-heatmap-wrapper" style={{
@@ -528,8 +543,10 @@ export default function IndiaAgriHeatMap({
           minHeight: '380px'
         }}>
           <svg
+            ref={svgRef}
+            onClick={handleSvgClick}
             viewBox="0 0 420 440"
-            style={{ width: '100%', maxHeight: '370px', overflow: 'visible' }}
+            style={{ width: '100%', maxHeight: '370px', overflow: 'visible', cursor: 'crosshair' }}
           >
             {/* Ambient Background Grid */}
             <defs>

@@ -9,6 +9,7 @@ import { api, DEMO_ACCOUNTS } from '../api';
 import FarmerProfileModal from './FarmerProfileModal';
 import { useLanguage } from '../i18n/LanguageContext';
 import LanguageSelector from './LanguageSelector';
+import LocationBanner from './LocationBanner';
 
 export default function Navbar({ 
   isLanding = false,
@@ -336,8 +337,9 @@ export default function Navbar({
           </span>
         </div>
 
-        {/* Right Controls: Language Selector + Role Switcher + Notifications + Profile Dropdown */}
+        {/* Right Controls: Location Pill + Language Selector + Role Switcher + Notifications + Profile Dropdown */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <LocationBanner variant="compact" />
           <LanguageSelector variant="dropdown" />
           {/* Role Switcher in Organic Pill Shape */}
           <div style={{
