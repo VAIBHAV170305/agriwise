@@ -120,6 +120,33 @@ export const api = {
     return data;
   },
 
+  async sendEmailOtp(email) {
+    return this.request('/auth/send-otp', {
+      method: 'POST',
+      body: JSON.stringify({ email })
+    });
+  },
+
+  async verifyEmailOtp(email, otp) {
+    const data = await this.request('/auth/verify-otp', {
+      method: 'POST',
+      body: JSON.stringify({ email, otp })
+    });
+    this.setToken(data.access_token);
+    this.setUser(data.user);
+    return data;
+  },
+
+  async registerMultiStep(payload) {
+    const data = await this.request('/auth/register-multistep', {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+    this.setToken(data.access_token);
+    this.setUser(data.user);
+    return data;
+  },
+
   async getMe() {
     return this.request('/auth/me');
   },

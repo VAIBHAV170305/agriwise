@@ -21,6 +21,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import { RakshakIcon } from './components/RakshakLogo';
 import RakshakFabWidget from './components/RakshakFabWidget';
 import LogoutConfirmModal from './components/LogoutConfirmModal';
+import AuthView from './components/AuthView';
 import { useToast } from './context/ToastContext';
 import { api, DEMO_ACCOUNTS } from './api';
 import { useLanguage } from './i18n/LanguageContext';
@@ -53,13 +54,7 @@ export default function App() {
     }
   }, [theme]);
 
-  // Open auth modal if activeTab is 'login'
-  useEffect(() => {
-    if (activeTab === 'login') {
-      setShowAuthModal(true);
-      setActiveTab(currentUser ? 'overview' : 'landing');
-    }
-  }, [activeTab, currentUser]);
+  // Handle role switching for demo accounts
 
   const handleRoleSwitch = async (roleKey, notify = true) => {
     const acc = DEMO_ACCOUNTS[roleKey];
@@ -201,8 +196,28 @@ export default function App() {
     setActiveTab(tabId);
   };
 
-  const isLanding = !currentUser || activeTab === 'landing';
+  const isAuthPage = activeTab === 'login' || activeTab === 'register' || activeTab === 'auth';
+  const isLanding = (!currentUser && !isAuthPage) || activeTab === 'landing';
   const activeTabObj = tabs.find(t => t.id === activeTab);
+
+  // Decoupled Standalone Authentication & Multi-Step Onboarding Page
+  if (isAuthPage) {
+    return (
+      <AuthView 
+        initialMode={activeTab === 'register' ? 'register' : 'signin'}
+        onLoginSuccess={(user) => {
+          setCurrentUser(user);
+          setCurrentRole(user.role);
+          if (user.role === 'Farmer') setActiveTab('overview');
+          else if (user.role === 'Buyer') setActiveTab('marketplace');
+          else if (user.role === 'Delivery') setActiveTab('delivery-ops');
+          else if (user.role === 'FPO') setActiveTab('fpo');
+          else if (user.role === 'Admin') setActiveTab('admin');
+        }}
+        onBackToLanding={() => setActiveTab('landing')}
+      />
+    );
+  }
 
   if (isLanding) {
     return (
@@ -216,7 +231,7 @@ export default function App() {
           setActiveTab={setActiveTab}
           onRoleSwitch={handleRoleSwitch}
           onLogout={handleLogout}
-          onOpenLogin={() => setShowAuthModal(true)}
+          onOpenLogin={() => setActiveTab('login')}
         />
 
         {/* Public Landing View */}
@@ -224,7 +239,7 @@ export default function App() {
           <LandingView 
             onRoleSwitch={handleRoleSwitch} 
             onLoginSuccess={() => setActiveTab('overview')} 
-            onOpenLogin={() => setShowAuthModal(true)}
+            onOpenLogin={() => setActiveTab('login')}
           />
         </main>
 

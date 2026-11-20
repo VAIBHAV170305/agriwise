@@ -3,6 +3,31 @@ from typing import Optional, List, Dict, Any
 from datetime import datetime
 
 # Auth Schemas
+class EmailOtpRequest(BaseModel):
+    email: EmailStr
+
+class VerifyOtpRequest(BaseModel):
+    email: EmailStr
+    otp: str = Field(..., min_length=4, max_length=10)
+
+class MultiStepRegister(BaseModel):
+    name: str = Field(..., min_length=2, max_length=100)
+    email: EmailStr
+    password: str = Field(..., min_length=6)
+    phone: Optional[str] = None
+    role: str = Field("Farmer", pattern="^(Farmer|Buyer|FPO|Admin|Delivery)$")
+    preferred_language: Optional[str] = "en"
+    # Step 2 Agronomic / Commercial Profile
+    state: Optional[str] = None
+    district: Optional[str] = None
+    farm_name: Optional[str] = None
+    area: Optional[float] = None
+    soil_type: Optional[str] = "Loamy"
+    primary_crop: Optional[str] = None
+    business_name: Optional[str] = None
+    gstin: Optional[str] = None
+    otp: Optional[str] = None
+
 class UserRegister(BaseModel):
     name: str = Field(..., min_length=2, max_length=100)
     email: EmailStr

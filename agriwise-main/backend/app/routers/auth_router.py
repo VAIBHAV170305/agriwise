@@ -1,12 +1,165 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from ..database import get_db
-from ..models import User
-from ..schemas import UserRegister, UserLogin, UserResponse, TokenResponse, UserPreferenceUpdate, EmailOtpRequest, VerifyOtpRequest
+from ..models import User, Farm, CropRecord
+from ..schemas import (
+    UserRegister, UserLogin, UserResponse, TokenResponse, UserPreferenceUpdate,
+    EmailOtpRequest, VerifyOtpRequest, MultiStepRegister
+)
 from ..auth import hash_password, verify_password, create_access_token, get_current_user, log_audit
 from ..services.email_service import email_otp_service
 
 router = APIRouter(prefix="/auth", tags=["Authentication & RBAC"])
+
+@router.post("/send-otp")
+def send_email_otp(req: EmailOtpRequest):
+    """
+    Sends a 6-digit OTP code to the requested email address via
+    external email service (SendGrid / Brevo / Resend) with dev sandbox fallback.
+    """
+    return email_otp_service.send_otp(req.email)
+
+@router.post("/verify-otp", response_model=TokenResponse)
+def verify_email_otp(req: VerifyOtpRequest, db: Session = Depends(get_db)):
+    """
+    Verifies the email OTP. If valid, signs in the user.
+    If the email is not registered yet, auto-provisions a Farmer user.
+    """
+    is_valid, msg = email_otp_service.verify_otp(req.email, req.otp)
+    if not is_valid:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=msg)
+
+    normalized_email = req.email.strip().lower()
+    user = db.query(User).filter(User.email == normalized_email).first()
+
+    # Auto-provision farmer account if new user
+    if not user:
+        name_hint = normalized_email.split('@')[0].replace('.', ' ').title()
+        user = User(
+            name=f"{name_hint} (Farmer)",
+            email=normalized_email,
+            phone="+91-9876500000",
+            password_hash=hash_password("Farmer@123"),
+            role="Farmer",
+            preferred_language="en",
+            account_status="ACTIVE"
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+
+        # Create initial farm holding
+        farm = Farm(
+            owner_id=user.id,
+            farm_name=f"{name_hint}'s Krishi Farm",
+            location="Anand, Gujarat",
+            area=5.0,
+            area_unit="Acres",
+            soil_type="Loamy Alluvial",
+            irrigation_type="Drip & Tube-well"
+        )
+        db.add(farm)
+        db.commit()
+        db.refresh(farm)
+
+        # Seed initial crop
+        crop = CropRecord(
+            farm_id=farm.id,
+            crop_name="Wheat",
+            crop_variety="HD-3226 (Pusa Yashasvi)",
+            season="Rabi",
+            growth_stage="Vegetative",
+            cultivated_area=3.5,
+            status="Healthy"
+        )
+        db.add(crop)
+        db.commit()
+
+        log_audit(db, user, "USER_OTP_AUTOPROVISION", "USER", str(user.id), "New account provisioned via Email OTP")
+
+    log_audit(db, user, "USER_OTP_LOGIN", "USER", str(user.id), "Successful OTP login via External Email Service")
+
+    token = create_access_token({"sub": str(user.id), "role": user.role})
+    return {
+        "access_token": token,
+        "token_type": "bearer",
+        "user": user
+    }
+
+@router.post("/register-multistep", response_model=TokenResponse)
+def register_multistep(data: MultiStepRegister, db: Session = Depends(get_db)):
+    """
+    Handles Multi-Step Onboarding:
+    Step 1: Credentials & Identity
+    Step 2: Role & Agronomic Parameters (State, District, Farm Size, Soil, Crops)
+    Step 3: Verification (OTP check if provided)
+    """
+    normalized_email = data.email.strip().lower()
+    existing = db.query(User).filter(User.email == normalized_email).first()
+    if existing:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="An account with this email address already exists. Please sign in."
+        )
+
+    # If OTP code was provided, verify it
+    if data.otp:
+        is_valid, msg = email_otp_service.verify_otp(normalized_email, data.otp)
+        if not is_valid:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=msg)
+
+    # Securely hash password
+    hashed = hash_password(data.password)
+    new_user = User(
+        name=data.name,
+        email=normalized_email,
+        phone=data.phone or "+91-9876543210",
+        password_hash=hashed,
+        role=data.role,
+        preferred_language=data.preferred_language or "en",
+        account_status="ACTIVE"
+    )
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    # If user is a Farmer or FPO, provision their initial farm holding & crops
+    if data.role in ("Farmer", "FPO"):
+        location_str = f"{data.district or 'Anand'}, {data.state or 'Gujarat'}"
+        farm = Farm(
+            owner_id=new_user.id,
+            farm_name=data.farm_name or f"{data.name.split()[0]}'s Farm",
+            location=location_str,
+            area=data.area or 5.0,
+            area_unit="Acres",
+            soil_type=data.soil_type or "Loamy",
+            irrigation_type="Drip Irrigation"
+        )
+        db.add(farm)
+        db.commit()
+        db.refresh(farm)
+
+        if data.primary_crop:
+            crop = CropRecord(
+                farm_id=farm.id,
+                crop_name=data.primary_crop,
+                crop_variety="High Yield Hybrid",
+                season="Rabi",
+                growth_stage="Vegetative",
+                cultivated_area=data.area or 3.0,
+                status="Healthy"
+            )
+            db.add(crop)
+            db.commit()
+
+    log_audit(db, new_user, "USER_MULTISTEP_REGISTER", "USER", str(new_user.id), f"Completed onboarding as {new_user.role}")
+
+    token = create_access_token({"sub": str(new_user.id), "role": new_user.role})
+    return {
+        "access_token": token,
+        "token_type": "bearer",
+        "user": new_user
+    }
 
 @router.post("/register", response_model=TokenResponse)
 def register(user_in: UserRegister, db: Session = Depends(get_db)):
@@ -57,54 +210,6 @@ def login(user_in: UserLogin, db: Session = Depends(get_db)):
         )
 
     log_audit(db, user, "USER_LOGIN", "USER", str(user.id), "Successful login")
-
-    token = create_access_token({"sub": str(user.id), "role": user.role})
-    return {
-        "access_token": token,
-        "token_type": "bearer",
-        "user": user
-    }
-
-@router.post("/send-otp")
-def send_email_otp(req: EmailOtpRequest):
-    """
-    Sends a 6-digit OTP code to the requested email address via
-    reliable HTTP REST email service (Brevo/Resend) or fallback cloud dispatch.
-    """
-    res = email_otp_service.send_otp(req.email)
-    return res
-
-@router.post("/verify-otp", response_model=TokenResponse)
-def verify_email_otp(req: VerifyOtpRequest, db: Session = Depends(get_db)):
-    """
-    Verifies the email OTP. If valid, signs in the user.
-    If the email is not registered yet, auto-provisions a Farmer user.
-    """
-    is_valid, msg = email_otp_service.verify_otp(req.email, req.otp)
-    if not is_valid:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=msg)
-
-    normalized_email = req.email.strip().lower()
-    user = db.query(User).filter(User.email == normalized_email).first()
-
-    # Auto-provision farmer account if new user
-    if not user:
-        name_hint = normalized_email.split('@')[0].replace('.', ' ').title()
-        user = User(
-            name=f"{name_hint} (Farmer)",
-            email=normalized_email,
-            phone="+91-9876500000",
-            password_hash=hash_password("Farmer@123"),
-            role="Farmer",
-            preferred_language="en",
-            account_status="ACTIVE"
-        )
-        db.add(user)
-        db.commit()
-        db.refresh(user)
-        log_audit(db, user, "OTP_REGISTER", "USER", str(user.id), "Registered via Email OTP")
-    else:
-        log_audit(db, user, "OTP_LOGIN", "USER", str(user.id), "Successful login via Email OTP")
 
     token = create_access_token({"sub": str(user.id), "role": user.role})
     return {

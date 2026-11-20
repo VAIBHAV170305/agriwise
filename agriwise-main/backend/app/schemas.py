@@ -3,6 +3,31 @@ from typing import Optional, List, Dict, Any
 from datetime import datetime
 
 # Auth Schemas
+class EmailOtpRequest(BaseModel):
+    email: EmailStr
+
+class VerifyOtpRequest(BaseModel):
+    email: EmailStr
+    otp: str = Field(..., min_length=4, max_length=10)
+
+class MultiStepRegister(BaseModel):
+    name: str = Field(..., min_length=2, max_length=100)
+    email: EmailStr
+    password: str = Field(..., min_length=6)
+    phone: Optional[str] = None
+    role: str = Field("Farmer", pattern="^(Farmer|Buyer|FPO|Admin|Delivery)$")
+    preferred_language: Optional[str] = "en"
+    # Step 2 Agronomic / Commercial Profile
+    state: Optional[str] = None
+    district: Optional[str] = None
+    farm_name: Optional[str] = None
+    area: Optional[float] = None
+    soil_type: Optional[str] = "Loamy"
+    primary_crop: Optional[str] = None
+    business_name: Optional[str] = None
+    gstin: Optional[str] = None
+    otp: Optional[str] = None
+
 class UserRegister(BaseModel):
     name: str = Field(..., min_length=2, max_length=100)
     email: EmailStr
@@ -14,13 +39,6 @@ class UserRegister(BaseModel):
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
-
-class EmailOtpRequest(BaseModel):
-    email: EmailStr
-
-class VerifyOtpRequest(BaseModel):
-    email: EmailStr
-    otp: str
 
 class UserResponse(BaseModel):
     id: int
@@ -69,7 +87,6 @@ class FarmResponse(FarmCreate):
 class CropRecordCreate(BaseModel):
     farm_id: int
     crop_name: str
-    region: Optional[str] = "Western Plain Zone (Gujarat)"
     crop_variety: Optional[str] = None
     sowing_date: Optional[str] = None
     expected_harvest_date: Optional[str] = None
@@ -147,8 +164,6 @@ class DiseaseAnalysisResponse(BaseModel):
     confidence: float
     severity: str
     symptoms: str
-    infection_coverage_pct: Optional[float] = None
-    detected_lesions: Optional[List[Dict[str, Any]]] = None
     management_guide: Dict[str, Any]
     is_uncertain: bool
     disclaimer: str
@@ -214,8 +229,6 @@ class ProductListingCreate(BaseModel):
     unit: str = "kg"
     asking_price: float
     location: str
-    region: Optional[str] = "Western Plain Zone (Gujarat)"
-    harvest_date: Optional[str] = None
     image_url: Optional[str] = None
     is_organic: Optional[bool] = False
 
