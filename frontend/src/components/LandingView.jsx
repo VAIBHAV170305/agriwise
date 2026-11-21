@@ -166,8 +166,8 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
           </div>
         </div>
 
-        {/* Right Hero: Interactive ASCII Agritech Storytelling Console (Farmer, Weather, Crop Defense, Mandi) */}
-        <div style={{ display: 'flex', justifyContent: 'center', width: '100%', maxWidth: '540px', margin: '0 auto' }}>
+        {/* Right Hero: Interactive Bharat Agri-Stack Storytelling & Telemetry Console */}
+        <div style={{ display: 'flex', justifyContent: 'center', width: '100%', maxWidth: '580px', margin: '0 auto' }}>
           <div style={{ width: '100%' }}>
             <AsciiStoryGraphic />
           </div>
