@@ -179,7 +179,13 @@ class WeatherResponse(BaseModel):
     wind_speed: float
     condition: str
     forecast: List[Dict[str, Any]]
-    agricultural_advisories: List[Dict[str, str]]
+    agricultural_advisories: List[Dict[str, Any]]
+    active_crops: Optional[List[str]] = None
+    crop_advisories: Optional[List[Dict[str, Any]]] = None
+    rain_alert: Optional[Dict[str, Any]] = None
+    spray_window: Optional[Dict[str, Any]] = None
+    irrigation_window: Optional[Dict[str, Any]] = None
+    harvest_window: Optional[Dict[str, Any]] = None
 
 # AI Assistant & RAG Schemas
 class ChatQueryRequest(BaseModel):

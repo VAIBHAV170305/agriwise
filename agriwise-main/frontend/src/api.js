@@ -191,8 +191,15 @@ export const api = {
   getCropRecommendation: (req) => api.request('/recommendations/crop', { method: 'POST', body: JSON.stringify(req) }),
   getRecommendationHistory: () => api.request('/recommendations/history'),
 
-  // Weather
-  getWeather: (lat, lon, location) => api.request(`/weather?lat=${lat || 22.5645}&lon=${lon || 72.9289}&location=${encodeURIComponent(location || 'Anand, Gujarat')}`),
+  // Weather Intelligence
+  getWeather: (lat, lon, location, crops) => {
+    let url = `/weather?lat=${lat || 28.9845}&lon=${lon || 77.7064}&location=${encodeURIComponent(location || 'Meerut, Uttar Pradesh')}`;
+    if (crops && crops.length) {
+      const cropStr = Array.isArray(crops) ? crops.join(',') : crops;
+      url += `&crops=${encodeURIComponent(cropStr)}`;
+    }
+    return api.request(url);
+  },
 
   // Disease
   analyzeDisease: (formData) => api.request('/disease/analyze', { method: 'POST', body: formData }),
