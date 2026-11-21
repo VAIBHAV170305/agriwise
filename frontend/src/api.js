@@ -1,4 +1,5 @@
-const API_BASE = '/api/v1';
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || '/api/v1').replace(/\/+$/, '');
+const BACKEND_DIRECT_FALLBACK = (import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api/v1').replace(/\/+$/, '');
 
 export const DEMO_ACCOUNTS = {
   Farmer: { email: 'farmer@agriwise.com', password: 'Farmer@123', label: 'Ramesh Patel (Farmer)', role: 'Farmer' },
@@ -51,14 +52,14 @@ export const api = {
         headers
       });
     } catch {
-      // If relative API_BASE failed (e.g. dev server proxy issue), try direct backend fallback
+      // If relative API_BASE failed (e.g. dev server proxy issue or cross-domain fallback), try direct fallback
       try {
-        res = await fetch(`http://127.0.0.1:8000/api/v1${endpoint}`, {
+        res = await fetch(`${BACKEND_DIRECT_FALLBACK}${endpoint}`, {
           ...options,
           headers
         });
       } catch {
-        throw new Error('Backend server is unreachable (port 8000). Please start the backend server with `npm run backend` or `npm run dev`.');
+        throw new Error('Backend API server is unreachable. Please verify your backend service on Render is running and VITE_API_BASE_URL is configured.');
       }
     }
 
