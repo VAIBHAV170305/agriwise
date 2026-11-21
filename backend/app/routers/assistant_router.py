@@ -6,9 +6,32 @@ from ..database import get_db
 from ..models import ChatConversation, ChatMessage, User
 from ..schemas import ChatQueryRequest, ChatQueryResponse
 from ..services.rag_assistant import rag_service
+from ..services.gemini_service import gemini_service
 from ..auth import get_current_user, get_optional_current_user
 
 router = APIRouter(prefix="/assistant", tags=["AI Farmer Assistant (RAG)"])
+
+@router.get("/status")
+def get_ai_status():
+    """Returns AI subsystem health, configured Gemini key status, and active engine."""
+    health = gemini_service.check_health()
+    return {
+        "status": "operational",
+        "gemini": health,
+        "knowledge_base_documents": len(rag_service.documents),
+        "primary_engine": "Google Gemini (Generative)" if health.get("live") else "Rakshak ICAR Agronomic Engine (Autonomous)",
+        "fallback_ready": True
+    }
+
+@router.post("/refresh-key")
+def refresh_gemini_key(api_key: Optional[str] = None, current_user: Optional[User] = Depends(get_optional_current_user)):
+    """Refreshes Gemini API key at runtime."""
+    gemini_service.refresh_key(api_key)
+    health = gemini_service.check_health()
+    return {
+        "message": "Gemini key refreshed successfully",
+        "health": health
+    }
 
 @router.post("/chat", response_model=ChatQueryResponse)
 def chat_with_assistant(

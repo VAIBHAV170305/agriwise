@@ -6,9 +6,32 @@ from ..database import get_db
 from ..models import ChatConversation, ChatMessage, User
 from ..schemas import ChatQueryRequest, ChatQueryResponse
 from ..services.rag_assistant import rag_service
+from ..services.gemini_service import gemini_service
 from ..auth import get_current_user, get_optional_current_user
 
 router = APIRouter(prefix="/assistant", tags=["AI Farmer Assistant (RAG)"])
+
+@router.get("/status")
+def get_ai_status():
+    """Returns AI subsystem health, configured Gemini key status, and active engine."""
+    health = gemini_service.check_health()
+    return {
+        "status": "operational",
+        "gemini": health,
+        "knowledge_base_documents": len(rag_service.documents),
+        "primary_engine": "Google Gemini (Generative)" if health.get("live") else "Rakshak ICAR Agronomic Engine (Autonomous)",
+        "fallback_ready": True
+    }
+
+@router.post("/refresh-key")
+def refresh_gemini_key(api_key: Optional[str] = None, current_user: Optional[User] = Depends(get_optional_current_user)):
+    """Refreshes Gemini API key at runtime."""
+    gemini_service.refresh_key(api_key)
+    health = gemini_service.check_health()
+    return {
+        "message": "Gemini key refreshed successfully",
+        "health": health
+    }
 
 @router.post("/chat", response_model=ChatQueryResponse)
 def chat_with_assistant(
@@ -42,19 +65,8 @@ def chat_with_assistant(
         )
         db.add(user_msg)
 
-    # Extract user, farm, and crop context to personalize RAG response
-    farmer_context = None
-    if current_user:
-        from ..models import Farm, CropRecord
-        farms = db.query(Farm).filter(Farm.owner_id == current_user.id).all()
-        farm_names = [f"{f.farm_name} ({f.area} {f.area_unit}, Soil: {f.soil_type}, Loc: {f.location})" for f in farms]
-        farm_ids = [f.id for f in farms]
-        crops = db.query(CropRecord).filter(CropRecord.farm_id.in_(farm_ids)).all() if farm_ids else []
-        crop_names = [f"{c.crop_name} (Variety: {c.crop_variety or 'Standard'}, Stage: {c.growth_stage}, Season: {c.season})" for c in crops]
-        farmer_context = f"Farmer: {current_user.name}. Farms: {'; '.join(farm_names)}. Active Crops: {'; '.join(crop_names)}."
-
-    # RAG Search and generate with farmer context
-    rag_result = rag_service.search_and_generate(req.message, farmer_context=farmer_context)
+    # RAG Search and generate
+    rag_result = rag_service.search_and_generate(req.message)
 
     # Save assistant message with sources if conversation exists
     if conv:

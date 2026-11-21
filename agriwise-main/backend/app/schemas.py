@@ -199,7 +199,7 @@ class ChatSource(BaseModel):
     snippet: str
 
 class ChatQueryResponse(BaseModel):
-    conversation_id: int
+    conversation_id: Optional[int] = None
     response: str
     sources: List[ChatSource]
     disclaimer: str

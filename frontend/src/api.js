@@ -207,6 +207,7 @@ export const api = {
 
   // RAG Assistant
   chatAssistant: (message, conversation_id) => api.request('/assistant/chat', { method: 'POST', body: JSON.stringify({ message, conversation_id }) }),
+  getAssistantStatus: () => api.request('/assistant/status'),
   getConversations: () => api.request('/assistant/conversations'),
   getConversationMessages: (id) => api.request(`/assistant/conversations/${id}`),
 

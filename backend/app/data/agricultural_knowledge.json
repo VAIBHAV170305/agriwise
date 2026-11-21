@@ -3,27 +3,31 @@
     "id": 1,
     "title": "Irrigation and Water Management for Wheat and Cereals",
     "category": "Irrigation",
+    "crop": "Wheat",
     "source": "ICAR Handbook of Agronomy & Water Management Guidelines",
-    "content": "Wheat requires 4 to 6 critical irrigations depending on soil moisture. The Crown Root Initiation (CRI) stage, approximately 20-25 days after sowing, is the most crucial irrigation window; skipping this can reduce grain yield by up to 35%. Subsequent irrigations should align with Tillering (40-45 DAS), Late Jointing (65-70 DAS), Flowering (85-90 DAS), and Milking/Dough stage (105-115 DAS). Avoid water stagnation to protect against root rot."
+    "content": "Wheat requires 4 to 6 critical irrigations depending on soil moisture. The Crown Root Initiation (CRI) stage, approximately 20-25 days after sowing, is the single most crucial irrigation window; skipping CRI can reduce grain yield by up to 35%. Subsequent irrigations should align with Tillering (40-45 DAS), Late Jointing (65-70 DAS), Flowering (85-90 DAS), and Milking/Dough stage (105-115 DAS). Avoid water stagnation during grain filling to protect against root rot and lodging."
   },
   {
     "id": 2,
     "title": "Soil Nutrient Management (N-P-K & Micronutrients)",
     "category": "Soil Management",
+    "crop": "General Cereals",
     "source": "National Agricultural Soil Testing and Fertigation Protocol",
-    "content": "Balanced fertilizer application follows the 4R principle: Right source, Right rate, Right time, and Right place. General cereal NPK recommendation is 120:60:40 kg/ha. Nitrogen should be split into 3 doses: 50% basal at sowing, 25% at first vegetative irrigation, and 25% at pre-flowering stage. Phosphorus and Potassium should be applied 100% basal at sowing. For alkaline soils (pH > 7.8), supplement Zinc Sulphate @ 25 kg/ha to eliminate chlorosis and stunting."
+    "content": "Balanced fertilizer application follows the 4R principle: Right source, Right rate, Right time, and Right place. General cereal NPK recommendation is 120:60:40 kg/ha. Nitrogen should be split into 3 doses: 50% basal at sowing, 25% at first vegetative irrigation, and 25% at pre-flowering stage. Phosphorus and Potassium should be applied 100% basal at sowing. For alkaline soils (pH > 7.8), supplement Zinc Sulphate heptahydrate @ 25 kg/ha or foliar chelated Zn-EDTA @ 1 g/L to eliminate khaira disease, interveinal chlorosis, and stunting."
   },
   {
     "id": 3,
     "title": "Integrated Pest Management (IPM) in Tomato and Solanaceous Crops",
     "category": "Pest & Disease",
+    "crop": "Tomato",
     "source": "Horticultural Extension Service IPM Manual",
-    "content": "Integrated Pest Management combines biological, cultural, and targeted chemical approaches. Install yellow sticky traps (15 per acre) for whiteflies and aphids, and blue traps for thrips. For Tomato Fruit Borer (Helicoverpa armigera), install pheromone traps @ 5 per acre and spray Bacillus thuringiensis (Bt) @ 2g/L or Spinosad 45% SC @ 0.3ml/L during early larval instar stages. Maintain marigold as a border trap crop to attract borers away from tomato fruit."
+    "content": "Integrated Pest Management combines biological, cultural, and targeted chemical approaches. Install yellow sticky traps (15 per acre) for whiteflies and aphids, and blue traps for thrips. For Tomato Fruit Borer (Helicoverpa armigera), install pheromone traps @ 5 per acre and spray Bacillus thuringiensis (Bt) @ 2g/L or Spinosad 45% SC @ 0.3ml/L during early larval instar stages. Maintain marigold as a border trap crop (1:16 row ratio) to attract borers away from tomato fruit."
   },
   {
     "id": 4,
     "title": "Organic Farming and Vermicomposting Protocols",
     "category": "Organic Practices",
+    "crop": "All Crops",
     "source": "Organic Farming Council Advisory",
     "content": "Vermicompost provides slow-release micronutrients, enhances beneficial soil mycorrhizae, and improves moisture retention by 20-30%. Recommended application is 2 to 3 tons per acre incorporated during secondary land preparation. Supplement with Jeevamrutha or Panchagavya (3% spray) every 15 days to stimulate rhizosphere microbial activity and systemic acquired resistance against foliar pathogens."
   },
@@ -31,21 +35,144 @@
     "id": 5,
     "title": "Post-Harvest Storage and Moisture Standards for Grains and Pulses",
     "category": "Post-Harvest & Storage",
+    "crop": "Grains & Pulses",
     "source": "Food Corporation & Central Warehousing Standards",
-    "content": "Grain moisture must be dried down to 10-12% before bagging to prevent fungal mycotoxins (Aspergillus flavus / aflatoxins) and grain borer infestations. Use hermetic storage bags (Purdue Improved Crop Storage bags) for pulses to prevent bruchid beetles without chemical fumigation. Store bags on wooden pallets at least 50 cm away from warehouse walls to prevent moisture seepage."
+    "content": "Grain moisture must be dried down to 10-12% before bagging to prevent fungal mycotoxins (Aspergillus flavus / aflatoxins) and grain borer infestations. Use hermetic storage bags (PICS bags) for pulses to prevent bruchid beetles without chemical fumigation. Store bags on wooden dunnage crates at least 50 cm away from warehouse walls to prevent moisture seepage."
   },
   {
     "id": 6,
     "title": "Weather Adaptation and Frost/Heat Shock Management",
     "category": "Weather Advisory",
-    "source": "Agro-Meteorological Advisory Bulletin",
-    "content": "When sudden ground frost is forecast (temperatures falling below 4°C with clear skies), conduct light evening irrigation across farm blocks. The higher specific heat capacity of water buffers soil temperature, reducing frost freeze damage to tender buds. During extreme summer heatwaves (>40°C), apply light foliar sprays of 1% Potassium Nitrate (KNO3) to preserve cell turgidity and delay leaf scorch."
+    "crop": "Winter & Summer Crops",
+    "source": "Agro-Meteorological Advisory Bulletin (IMD & ICAR)",
+    "content": "When sudden ground frost is forecast (temperatures falling below 4°C with clear skies), conduct light evening irrigation across farm blocks. The higher specific heat capacity of water buffers soil temperature, reducing frost freeze damage to tender buds. During extreme summer heatwaves (>40°C), apply light foliar sprays of 1% Potassium Nitrate (KNO3) or 0.2% Boron to preserve cell turgidity, reduce transpiration shock, and delay leaf scorch."
   },
   {
     "id": 7,
     "title": "Crop Rotation Strategies for Legumes and Soil Health",
     "category": "Agronomy",
+    "crop": "Legumes & Cereals",
     "source": "Sustainable Cropping Systems Research",
     "content": "Rotating cereal crops (Wheat, Paddy, Maize) with leguminous pulses (Chickpea, Moong, Pigeonpea) fixes between 40 to 80 kg of atmospheric Nitrogen per hectare through Rhizobium symbiosis. It also breaks weed and pathogen cycles specific to monocultures. Deep-rooted legumes break compact hardpans and improve soil organic carbon."
+  },
+  {
+    "id": 8,
+    "title": "Paddy / Rice Water Management and Stem Borer Control",
+    "category": "Pest & Disease",
+    "crop": "Rice / Paddy",
+    "source": "National Rice Research Institute (NRRI) Handbook",
+    "content": "For transplanted rice, maintain 2-3 cm shallow water depth during early tillering and 5 cm during panicle initiation. Practice Alternate Wetting and Drying (AWD) to conserve up to 30% irrigation water and reduce methane emissions. For Yellow Stem Borer (Scirpophaga incertulas) causing dead hearts and white ears, release Trichogramma japonicum egg parasitoids @ 100,000/ha or apply Cartap Hydrochloride 4G @ 10 kg/acre or Chlorantraniliprole 18.5% SC @ 60 ml/acre at economic threshold levels (5% dead hearts)."
+  },
+  {
+    "id": 9,
+    "title": "Cotton Pink Bollworm and Whitefly Management Protocol",
+    "category": "Pest & Disease",
+    "crop": "Cotton",
+    "source": "Central Institute for Cotton Research (CICR)",
+    "content": "Pink Bollworm (Pectinophora gossypiella) damages lint and bolls. Install 8 delta sticky pheromone traps per acre from 45 DAS. Release Trichogramma bactrae @ 60,000/acre. At peak moth catch (8 moths/trap/day), spray Emamectin Benzoate 5% SG @ 100 g/acre or Profenofos 50% EC @ 400 ml/acre. For Whiteflies transmitting Cotton Leaf Curl Virus (CLCuV), erect yellow sticky cards and spray Neem formulation (Azadirachtin 10000 ppm) @ 2 ml/L or Diafenthiuron 50% WP @ 250 g/acre. Never spray synthetic pyrethroids early in the season as they trigger whitefly flare-ups."
+  },
+  {
+    "id": 10,
+    "title": "Mustard / Rapeseed Aphid Control and Sowing Guidelines",
+    "category": "Pest & Disease",
+    "crop": "Mustard",
+    "source": "Directorate of Rapeseed-Mustard Research (DRMR)",
+    "content": "Mustard aphid (Lipaphis erysimi) causes severe sap sucking during cold cloudy weather in January-February. Sow mustard timely between October 10 and October 25 to escape aphid build-up. At early infestation (1.5-2.0 cm aphid colony per 10 cm terminal shoot), spray Dimethoate 30% EC @ 1 ml/L or Thiamethoxam 25% WG @ 80 g/acre. Apply elemental Sulfur @ 20 kg/acre at sowing to enhance mustard oil content by 2-3%."
+  },
+  {
+    "id": 11,
+    "title": "Sugarcane Red Rot and Earthing Up Management",
+    "category": "Agronomy",
+    "crop": "Sugarcane",
+    "source": "Indian Institute of Sugarcane Research (IISR)",
+    "content": "Red Rot (Colletotrichum falcatum) causes third and fourth leaf yellowing followed by drying of the entire crown with sour alcoholic smell upon splitting the stalk. Prevent by hot water treatment of two-bud setts at 52°C for 30 minutes, or sett dipping in Carbendazim 50% WP (1 g/L) for 15 minutes. Conduct earthing up 90-120 days after planting to prevent crop lodging during monsoon winds and facilitate furrow irrigation."
+  },
+  {
+    "id": 12,
+    "title": "Potato Late Blight and De-haulming Protocol",
+    "category": "Pest & Disease",
+    "crop": "Potato",
+    "source": "Central Potato Research Institute (CPRI)",
+    "content": "Late blight (Phytophthora infestans) strikes rapidly when temperatures remain 10-20°C with relative humidity > 90% for 48 hours. Preventive spray of Mancozeb 75% WP @ 2.5 g/L is mandatory before canopy closure. Upon seeing water-soaked necrotic lesions with white fungal margin on leaf undersides, immediately apply systemic curative Cymoxanil 8% + Mancozeb 64% WP @ 3 g/L or Dimethomorph 50% WP @ 1 g/L. Cut haulms (de-haulming) 10-12 days prior to harvest to harden tuber skin and prevent tuber blight infection."
+  },
+  {
+    "id": 13,
+    "title": "Onion Purple Blotch, Thrips and Storage Curing",
+    "category": "Pest & Disease",
+    "crop": "Onion",
+    "source": "Directorate of Onion and Garlic Research (DOGR)",
+    "content": "Purple blotch (Alternaria porri) causes sunken purple-centered lesions on onion foliage. Spray Tebuconazole 25.9% EC @ 1 ml/L or Mancozeb @ 2.5 g/L mixed with Sandovit sticker (0.5 ml/L). For Onion Thrips, spray Fipronil 5% SC @ 1.5 ml/L. Prior to storage, cure onion bulbs in shade for 10-15 days until neck tissues shrink completely, discarding thick-necked or mechanically damaged bulbs to prevent soft rot."
+  },
+  {
+    "id": 14,
+    "title": "Chilli Leaf Curl Virus and Anthracnose Fruit Rot",
+    "category": "Pest & Disease",
+    "crop": "Chilli",
+    "source": "Indian Institute of Horticultural Research (IIHR)",
+    "content": "Chilli Leaf Curl Virus causes severe upward leaf cupping, puckering, and stunting transmitted by whiteflies and mites. Manage vectors by spraying Diafenthiuron 50% WP @ 1.25 g/L or Spiromesifen 22.9% SC @ 1 ml/L. For Anthracnose (Die-back/Fruit rot caused by Colletotrichum capsici), spray Azoxystrobin 23% SC @ 1 ml/L or Copper Oxychloride 50% WP @ 3 g/L at early flowering and fruit development."
+  },
+  {
+    "id": 15,
+    "title": "Maize Fall Armyworm (FAW) Integrated Management",
+    "category": "Pest & Disease",
+    "crop": "Maize / Corn",
+    "source": "ICAR-Indian Institute of Maize Research (IIMR)",
+    "content": "Fall Armyworm (Spodoptera frugiperda) feeds voraciously inside the leaf whorl producing windowing and copious sawdust-like frass. Apply dry sand or wood ash mixed with lime (9:1 ratio) directly into leaf whorls. Spray bio-agent Metarhizium rileyi @ 3g/L or Spinetoram 11.7% SC @ 0.5 ml/L or Chlorantraniliprole 18.5% SC @ 0.4 ml/L targeted directly into the whorl using a single nozzle sprayer."
+  },
+  {
+    "id": 16,
+    "title": "Soil pH Amendment: Lime for Acid Soils & Gypsum for Sodic Soils",
+    "category": "Soil Management",
+    "crop": "All Crops",
+    "source": "Central Soil Salinity Research Institute (CSSRI)",
+    "content": "Acid soils (pH < 5.5) lock up Phosphorus and cause Aluminum/Manganese toxicity; apply agricultural limestone (CaCO3) or dolomite @ 2-4 tons/ha based on buffer pH test. Sodic/Alkali soils (pH > 8.5 with high ESP) cause poor infiltration and crusting; broadcast agricultural gypsum (CaSO4.2H2O) @ 50% of Gypsum Requirement (GR), mix into upper 10 cm soil, and pond water for 10 days to leach displaced Sodium into drainage channels."
+  },
+  {
+    "id": 17,
+    "title": "Drip Irrigation Scheduling and Fertigation Principles",
+    "category": "Irrigation",
+    "crop": "Vegetables & Cash Crops",
+    "source": "Precision Farming Development Centre (PFDC)",
+    "content": "Drip irrigation delivers water and water-soluble fertilizers directly to the active root zone, saving 40-60% water while increasing yields by 25-40%. Calculate daily crop water requirement (ETc = ETo x Kc). Use completely water-soluble fertilizers (19-19-19, 12-61-0 MAP, 0-0-50 Potassium Sulphate, Calcium Nitrate). Always flush drip laterals with plain water for 15 minutes before and after every fertigation cycle to prevent venturi precipitate clogging."
+  },
+  {
+    "id": 18,
+    "title": "Bio-fertilizers: Rhizobium, Azotobacter, PSB and Trichoderma",
+    "category": "Organic Practices",
+    "crop": "All Crops",
+    "source": "National Centre of Organic Farming (NCOF)",
+    "content": "Inoculate legume seeds with Rhizobium @ 200g per 10 kg seed. Inoculate cereals with Azotobacter or Azospirillum to supply 20-25 kg N/ha naturally. Phosphate Solubilizing Bacteria (PSB) solubilizes unavailable tricalcium phosphate into orthophosphate forms. For soil-borne wilt and damping-off protection, mix Trichoderma viride or Trichoderma harzianum @ 2.5 kg into 100 kg well-rotted FYM, incubate under shade for 7 days, and broadcast into moist field before sowing."
+  },
+  {
+    "id": 19,
+    "title": "APMC Mandi Trading, MSP Calculation & Quality Grading",
+    "category": "Market & Economics",
+    "crop": "All Commodities",
+    "source": "Commission for Agricultural Costs and Prices (CACP) & e-NAM",
+    "content": "Minimum Support Price (MSP) in India is recommended by CACP based on A2+FL formula providing at least 50% profit over paid-out cultivation costs and imputed family labor. When selling at APMC Mandis or through AgriWise, clean produce to meet FAQ (Fair Average Quality) standards: moisture < 12%, foreign matter < 1%, and damaged grains < 2% to command maximum mandi price corridors above MSP benchmark."
+  },
+  {
+    "id": 20,
+    "title": "Government Agricultural Schemes: PM-KISAN, PMFBY & Soil Health Card",
+    "category": "Government Support",
+    "crop": "All Crops",
+    "source": "Ministry of Agriculture & Farmers Welfare, Government of India",
+    "content": "PM-KISAN provides income support of Rs 6,000 per year in three four-monthly installments of Rs 2,000 to eligible landholding farmer families. Pradhan Mantri Fasal Bima Yojana (PMFBY) offers crop insurance at uniform farmer premiums of 2.0% for Kharif, 1.5% for Rabi food and oilseed crops, and 5% for annual commercial/horticultural crops. Farmers can obtain a Soil Health Card (SHC) every 2 years from their district KVK to customize fertilizer use."
+  },
+  {
+    "id": 21,
+    "title": "AgriWise Platform: Creating Listings, Tracking Orders and FPO Pooling",
+    "category": "Platform Guide",
+    "crop": "Platform Operations",
+    "source": "AgriWise Documentation & User Manual",
+    "content": "To sell produce on AgriWise: 1) Click '+ Add a Product' from the top bar or dedicated /create page. 2) Specify crop variety, quantity in Quintals/Kg, base ask price, farm location, and cultivated area in acres. 3) For Organic or Certified crops, attach certification agency details (NPOP, PGS-India, SOCA) for premium buyer visibility. 4) Track buyer bids, dispatch through AgriWise verified delivery partners, and receive direct escrow settlement upon delivery confirmation."
+  },
+  {
+    "id": 22,
+    "title": "Untimely Rainfall and Monsoon Storm Crop Protection",
+    "category": "Weather Advisory",
+    "crop": "Standing Crops",
+    "source": "IMD Agromet Advisory Bulletin",
+    "content": "When heavy rain or unseasonal showers are forecast 3-5 days in advance: 1) Immediately clear farm drainage ditches and unblock field bund channels to prevent water stagnation. 2) Suspend all scheduled nitrogen fertilizer applications, herbicide sprays, and chemical pesticide applications, as rain will wash away inputs. 3) For harvested grains in threshing yards, cover securely with waterproof tarpaulins on raised dunnage. 4) Stake or trellis tall crops (tomato, chilli, banana) against wind lodging."
   }
 ]

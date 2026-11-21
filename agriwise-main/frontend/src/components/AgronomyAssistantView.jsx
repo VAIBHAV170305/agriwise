@@ -25,7 +25,16 @@ export default function AgronomyAssistantView() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [activeConversationId, setActiveConversationId] = useState(null);
+  const [aiEngineStatus, setAiEngineStatus] = useState(null);
   const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    if (api.getAssistantStatus) {
+      api.getAssistantStatus()
+        .then(res => setAiEngineStatus(res))
+        .catch(() => {});
+    }
+  }, []);
 
   // Set localized greeting when language changes or initially
   useEffect(() => {
@@ -95,10 +104,25 @@ export default function AgronomyAssistantView() {
             }}>
               Rakshak AI
             </span>
-            <RakshakBadge text="Agronomy Shield Active" />
+            <RakshakBadge text={aiEngineStatus?.gemini?.live ? "Gemini 1.5 Live" : "Rakshak ICAR Shield"} />
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '3px 10px',
+              borderRadius: '999px',
+              background: 'rgba(34, 197, 94, 0.1)',
+              border: '1px solid rgba(34, 197, 94, 0.25)',
+              fontSize: '0.72rem',
+              color: '#15803d',
+              fontWeight: 600
+            }}>
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22c55e' }}></span>
+              {aiEngineStatus?.primary_engine || "AI Operational"}
+            </span>
           </div>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.82rem', marginTop: '4px' }}>
-            Trained on ICAR and state agricultural university research.
+            Trained on ICAR, State Agricultural Universities (PAU/TNAU), and Google Gemini Intelligence.
           </p>
         </div>
       </div>
