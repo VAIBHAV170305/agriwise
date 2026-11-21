@@ -7,7 +7,7 @@ import {
 import { api, DEMO_ACCOUNTS } from '../api';
 import { useLanguage } from '../i18n/LanguageContext';
 import LanguageSelector from './LanguageSelector';
-import AsciiStoryGraphic from './AsciiStoryGraphic';
+import LandingHeroVisual from './LandingHeroVisual';
 import { RakshakIcon, RakshakBadge } from './RakshakLogo';
 
 export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin }) {
@@ -166,10 +166,10 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
           </div>
         </div>
 
-        {/* Right Hero: Interactive Bharat Agri-Stack Storytelling & Telemetry Console */}
+        {/* Right Hero: High-Resolution Smart Agriculture Imagery Showcase */}
         <div style={{ display: 'flex', justifyContent: 'center', width: '100%', maxWidth: '580px', margin: '0 auto' }}>
           <div style={{ width: '100%' }}>
-            <AsciiStoryGraphic />
+            <LandingHeroVisual />
           </div>
         </div>
       </div>
