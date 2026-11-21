@@ -114,21 +114,41 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
             </div>
           </div>
 
-          {/* Primary Button */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+          {/* Primary Action Buttons */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
             <button 
+              type="button"
               className="btn-primary"
-              onClick={() => onOpenLogin ? onOpenLogin() : onRoleSwitch('Farmer')}
+              onClick={() => onRoleSwitch('Farmer')}
               style={{
                 background: '#163326',
+                color: '#ffffff',
                 padding: '14px 28px',
                 fontSize: '0.96rem',
                 borderRadius: '999px',
-                boxShadow: '0 4px 16px rgba(22, 51, 38, 0.18)'
+                boxShadow: '0 4px 16px rgba(22, 51, 38, 0.2)',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
               }}
             >
-              <span>{t('landing.ctaFarmer', 'Launch Farmer Dashboard')}</span>
+              <span>🚀 Launch Farmer Dashboard</span>
               <ArrowRight size={18} />
+            </button>
+
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={() => onOpenLogin ? onOpenLogin() : onRoleSwitch('Farmer')}
+              style={{
+                padding: '14px 22px',
+                fontSize: '0.92rem',
+                borderRadius: '999px',
+                cursor: 'pointer'
+              }}
+            >
+              <span>Sign In with Password</span>
             </button>
           </div>
 

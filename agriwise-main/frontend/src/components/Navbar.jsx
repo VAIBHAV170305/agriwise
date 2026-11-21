@@ -327,23 +327,44 @@ export default function Navbar({
                 </button>
               </div>
             ) : (
-              <button 
-                className="btn-primary"
-                onClick={onOpenLogin || (() => setActiveTab('login'))}
-                style={{
-                  background: '#163326',
-                  color: '#ffffff',
-                  border: 'none',
-                  padding: '9px 20px',
-                  borderRadius: '8px',
-                  fontSize: '0.88rem',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  boxShadow: '0 2px 8px rgba(22, 51, 38, 0.2)'
-                }}
-              >
-                Sign In
-              </button>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <button 
+                  type="button"
+                  className="btn-primary"
+                  onClick={() => onRoleSwitch('Farmer')}
+                  style={{
+                    background: '#163326',
+                    color: '#ffffff',
+                    border: 'none',
+                    padding: '8px 18px',
+                    borderRadius: '8px',
+                    fontSize: '0.84rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    boxShadow: '0 2px 8px rgba(22, 51, 38, 0.2)'
+                  }}
+                >
+                  <span>🚀 Launch Dashboard</span>
+                  <ArrowRight size={15} />
+                </button>
+                <button 
+                  type="button"
+                  className="btn-secondary"
+                  onClick={onOpenLogin || (() => setActiveTab('login'))}
+                  style={{
+                    padding: '8px 14px',
+                    borderRadius: '8px',
+                    fontSize: '0.84rem',
+                    fontWeight: 700,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Sign In
+                </button>
+              </div>
             )}
           </div>
         </div>
