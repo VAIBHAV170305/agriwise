@@ -237,6 +237,11 @@ class ProductListingCreate(BaseModel):
     location: str
     image_url: Optional[str] = None
     is_organic: Optional[bool] = False
+    cultivated_area: Optional[float] = None
+    harvest_date: Optional[str] = None
+    certification_type: Optional[str] = None
+    certification_number: Optional[str] = None
+    certificate_doc_url: Optional[str] = None
 
 class ProductListingResponse(ProductListingCreate):
     id: int

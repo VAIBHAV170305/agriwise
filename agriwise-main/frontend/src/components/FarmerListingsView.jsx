@@ -1,28 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Plus, Tag, ShoppingBag, Edit, Trash2, CheckCircle2, 
-  MapPin, X, Leaf, DollarSign
+  MapPin, Leaf, DollarSign, Layers, ArrowRight, ShieldCheck
 } from 'lucide-react';
 import { api } from '../api';
+import { useToast } from '../context/ToastContext';
+import WavyLoader from './WavyLoader';
 
-export default function FarmerListingsView() {
+export default function FarmerListingsView({ onNavigate }) {
   const [listings, setListings] = useState([]);
   const [farms, setFarms] = useState([]);
-  const [showAddModal, setShowAddModal] = useState(false);
   const [loading, setLoading] = useState(true);
-
-  const [form, setForm] = useState({
-    farm_id: '',
-    product_name: '',
-    category: 'Cereals',
-    available_quantity: '',
-    unit: 'kg',
-    asking_price: '',
-    location: '',
-    description: '',
-    is_organic: false,
-    image_url: ''
-  });
+  const [deletingId, setDeletingId] = useState(null);
+  const { showToast } = useToast();
 
   useEffect(() => {
     loadData();
@@ -38,9 +28,6 @@ export default function FarmerListingsView() {
       ]);
       setListings(prods || []);
       setFarms(farmList || []);
-      if (farmList && farmList.length > 0) {
-        setForm(f => ({ ...f, farm_id: farmList[0].id, location: farmList[0].location }));
-      }
     } catch (err) {
       console.error(err);
     } finally {
@@ -48,68 +35,134 @@ export default function FarmerListingsView() {
     }
   };
 
-  const handleCreateListing = async (e) => {
-    e.preventDefault();
+  const handleDeleteListing = async (productId, productName) => {
+    if (!window.confirm(`Are you sure you want to remove "${productName}" from the marketplace?`)) return;
+    setDeletingId(productId);
     try {
-      await api.createProduct({
-        ...form,
-        farm_id: form.farm_id ? parseInt(form.farm_id) : null,
-        available_quantity: parseFloat(form.available_quantity),
-        asking_price: parseFloat(form.asking_price),
-        image_url: form.image_url || 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=600&q=80'
+      await api.deleteProduct(productId);
+      setListings(prev => prev.filter(p => p.id !== productId));
+      showToast({
+        title: 'Product Removed',
+        message: `Listing "${productName}" has been taken down.`,
+        type: 'info'
       });
-      setShowAddModal(false);
-      setForm({
-        farm_id: farms[0]?.id || '',
-        product_name: '',
-        category: 'Cereals',
-        available_quantity: '',
-        unit: 'kg',
-        asking_price: '',
-        location: farms[0]?.location || '',
-        description: '',
-        is_organic: false,
-        image_url: ''
-      });
-      loadData();
     } catch (err) {
-      alert(err.message);
+      showToast({
+        title: 'Delete Failed',
+        message: err.message || 'Could not delete product.',
+        type: 'critical'
+      });
+    } finally {
+      setDeletingId(null);
     }
   };
 
   return (
-    <div className="animate-fade-in" style={{ padding: '24px 0' }}>
-      {/* Title */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
+    <div className="animate-fade-in" style={{ padding: '16px 0 60px' }}>
+      {/* Title & Action Banner */}
+      <div style={{
+        background: '#ffffff',
+        border: '1px solid rgba(22, 51, 38, 0.1)',
+        borderRadius: '20px',
+        padding: '24px 28px',
+        marginBottom: '24px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '16px',
+        boxShadow: '0 2px 10px rgba(0,0,0,0.03)'
+      }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span className="badge badge-emerald">Produce Marketplace</span>
+            <span className="badge badge-emerald">Wholesale Produce Exchange</span>
+            <span style={{ fontSize: '0.78rem', color: '#6e8577', fontWeight: 600 }}>
+              Direct Mandi Commerce
+            </span>
           </div>
-          <h2 style={{ fontSize: '1.75rem', color: 'var(--text-primary)', marginTop: '6px', fontFamily: "'Fraunces', serif" }}>Produce Listings</h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '2px' }}>
-            List harvest batches directly for verified wholesale buyers.
+          <h2 style={{ fontSize: '1.75rem', color: '#163326', fontWeight: 800, marginTop: '4px' }}>
+            Produce Listings
+          </h2>
+          <p style={{ color: '#4b6354', fontSize: '0.85rem', maxWidth: '820px', marginTop: '2px' }}>
+            List your harvest batches directly for verified wholesale buyers, FPOs, and institutional aggregators.
           </p>
         </div>
 
-        <button className="btn-primary" onClick={() => setShowAddModal(true)}>
-          <Plus size={16} /> Create New Listing
+        {/* Updated Button Copy: "Add a Product" */}
+        <button 
+          className="btn-primary" 
+          onClick={() => onNavigate ? onNavigate('create-product') : null}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '10px 20px',
+            fontSize: '0.86rem',
+            boxShadow: '0 4px 14px rgba(22, 51, 38, 0.16)'
+          }}
+        >
+          <Plus size={17} />
+          <span>Add a Product</span>
         </button>
       </div>
 
       {/* Grid of Listings */}
-      {listings.length === 0 ? (
-        <div className="glass-card" style={{ padding: '40px', textAlign: 'center' }}>
-          <ShoppingBag size={40} color="var(--forest-800)" style={{ margin: '0 auto 12px' }} />
-          <h3 style={{ fontSize: '1.15rem', color: 'var(--text-primary)', fontFamily: "'Fraunces', serif" }}>No Active Listings Posted</h3>
-          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
-            List your wheat, pulses, vegetables, or fruits to receive direct purchase orders.
+      {loading ? (
+        <div style={{ padding: '60px', textAlign: 'center' }}>
+          <WavyLoader label="Loading your active marketplace listings..." />
+        </div>
+      ) : listings.length === 0 ? (
+        <div style={{
+          background: '#ffffff',
+          borderRadius: '20px',
+          border: '1.5px dashed rgba(22, 51, 38, 0.2)',
+          padding: '50px 30px',
+          textAlign: 'center'
+        }}>
+          <div style={{
+            width: '54px',
+            height: '54px',
+            borderRadius: '16px',
+            background: '#edf6f0',
+            color: '#2d6a4f',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 16px'
+          }}>
+            <ShoppingBag size={28} />
+          </div>
+          <h3 style={{ fontSize: '1.25rem', color: '#163326', fontWeight: 800 }}>
+            No Active Products Listed
+          </h3>
+          <p style={{ fontSize: '0.85rem', color: '#657d70', maxWidth: '480px', margin: '6px auto 18px', lineHeight: 1.5 }}>
+            You haven't added any products to the marketplace yet. List your wheat, pulses, vegetables, or cotton to receive verified purchase bids.
           </p>
+          <button 
+            className="btn-primary" 
+            onClick={() => onNavigate ? onNavigate('create-product') : null}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '10px 22px', fontSize: '0.86rem' }}
+          >
+            <Plus size={16} /> Add a Product
+          </button>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '22px' }}>
           {listings.map(item => (
-            <div key={item.id} className="glass-card" style={{ overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-              <div style={{ height: '170px', position: 'relative', overflow: 'hidden' }}>
+            <div
+              key={item.id}
+              style={{
+                background: '#ffffff',
+                borderRadius: '18px',
+                border: '1px solid rgba(22, 51, 38, 0.1)',
+                overflow: 'hidden',
+                display: 'flex',
+                flexDirection: 'column',
+                boxShadow: '0 4px 16px rgba(0,0,0,0.04)',
+                transition: 'all 0.18s ease'
+              }}
+            >
+              <div style={{ height: '180px', position: 'relative', overflow: 'hidden' }}>
                 <img 
                   src={item.image_url || 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=600&q=80'} 
                   alt={item.product_name}
@@ -117,132 +170,83 @@ export default function FarmerListingsView() {
                 />
                 <div style={{ position: 'absolute', top: '10px', left: '10px', display: 'flex', gap: '6px' }}>
                   <span className="badge badge-emerald">{item.category}</span>
-                  {item.is_organic && <span className="badge badge-sky">Certified Organic</span>}
+                  {item.is_organic && (
+                    <span className="badge" style={{ background: '#2d6a4f', color: '#ffffff', fontWeight: 800 }}>
+                      ✓ Certified
+                    </span>
+                  )}
                 </div>
                 <div style={{ position: 'absolute', bottom: '10px', right: '10px' }}>
                   <span style={{ 
                     background: '#163326', color: '#fff', padding: '4px 10px', 
-                    borderRadius: '6px', fontSize: '0.82rem', fontWeight: 700 
+                    borderRadius: '6px', fontSize: '0.74rem', fontWeight: 800 
                   }}>
-                    {item.status}
+                    {item.status || 'ACTIVE'}
                   </span>
                 </div>
               </div>
 
               <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <div>
-                  <h3 style={{ fontSize: '1.15rem', color: 'var(--text-primary)', fontFamily: "'Fraunces', serif" }}>{item.product_name}</h3>
-                  <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <MapPin size={12} /> {item.location}
+                  <h3 style={{ fontSize: '1.2rem', color: '#163326', fontWeight: 800, margin: 0 }}>
+                    {item.product_name}
+                  </h3>
+                  <p style={{ fontSize: '0.78rem', color: '#688273', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <MapPin size={13} /> {item.location}
                   </p>
-                  <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '8px', lineHeight: 1.4 }}>
-                    {item.description}
-                  </p>
+                  {item.description && (
+                    <p style={{ fontSize: '0.8rem', color: '#4b6354', marginTop: '8px', lineHeight: 1.45 }}>
+                      {item.description}
+                    </p>
+                  )}
                 </div>
 
-                <div style={{ marginTop: '16px', paddingTop: '14px', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ marginTop: '18px', paddingTop: '14px', borderTop: '1px solid rgba(22, 51, 38, 0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                   <div>
-                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>PRICE PER {item.unit.toUpperCase()}</span>
-                    <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--forest-800)' }}>
+                    <span style={{ fontSize: '0.68rem', color: '#6e8577', fontWeight: 700, textTransform: 'uppercase' }}>
+                      PRICE PER {item.unit?.toUpperCase() || 'UNIT'}
+                    </span>
+                    <div style={{ fontSize: '1.45rem', fontWeight: 800, color: '#2d6a4f', lineHeight: 1.05 }}>
                       ₹{item.asking_price}
                     </div>
                   </div>
+
                   <div style={{ textAlign: 'right' }}>
-                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>AVAILABLE</span>
-                    <div style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+                    <span style={{ fontSize: '0.68rem', color: '#6e8577', fontWeight: 700, textTransform: 'uppercase' }}>
+                      AVAILABLE
+                    </span>
+                    <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#163326' }}>
                       {item.available_quantity} {item.unit}
                     </div>
                   </div>
                 </div>
+
+                <div style={{ marginTop: '12px', display: 'flex', justifyContent: 'flex-end' }}>
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteListing(item.id, item.product_name)}
+                    disabled={deletingId === item.id}
+                    style={{
+                      background: 'transparent',
+                      border: 'none',
+                      color: '#dc2626',
+                      fontSize: '0.74rem',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '4px 8px',
+                      borderRadius: '6px'
+                    }}
+                  >
+                    <Trash2 size={13} />
+                    <span>{deletingId === item.id ? 'Removing...' : 'Take Down'}</span>
+                  </button>
+                </div>
               </div>
             </div>
           ))}
-        </div>
-      )}
-
-      {/* Modal: Create Listing */}
-      {showAddModal && (
-        <div style={{
-          position: 'fixed', inset: 0, background: 'rgba(22, 51, 38, 0.45)', backdropFilter: 'blur(8px)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1100, padding: '20px'
-        }}>
-          <div className="glass-card" style={{ maxWidth: '520px', width: '100%', padding: '28px', background: '#ffffff', border: '1px solid var(--border-color)', borderRadius: '24px', boxShadow: 'var(--shadow-xl)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h3 style={{ fontSize: '1.25rem', color: 'var(--text-primary)', fontFamily: "'Fraunces', serif" }}>Create Marketplace Listing</h3>
-              <X size={20} style={{ cursor: 'pointer', color: 'var(--text-muted)' }} onClick={() => setShowAddModal(false)} />
-            </div>
-
-            <form onSubmit={handleCreateListing} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <div>
-                <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Product Title</label>
-                <input required className="form-input" value={form.product_name} onChange={e => setForm({...form, product_name: e.target.value})} placeholder="e.g. Sharbati Wheat, Fresh Hybrid Tomato" />
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                <div>
-                  <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Category</label>
-                  <select className="form-select" value={form.category} onChange={e => setForm({...form, category: e.target.value})}>
-                    <option value="Cereals">Cereals</option>
-                    <option value="Vegetables">Vegetables</option>
-                    <option value="Pulses">Pulses</option>
-                    <option value="Fruits">Fruits</option>
-                    <option value="Cash Crops">Cash Crops</option>
-                    <option value="Oilseeds">Oilseeds</option>
-                  </select>
-                </div>
-                <div>
-                  <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Source Farm Plot</label>
-                  <select className="form-select" value={form.farm_id} onChange={e => setForm({...form, farm_id: e.target.value})}>
-                    {farms.map(f => (
-                      <option key={f.id} value={f.id}>{f.farm_name}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '12px' }}>
-                <div>
-                  <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Available Quantity</label>
-                  <input required type="number" step="0.5" className="form-input" value={form.available_quantity} onChange={e => setForm({...form, available_quantity: e.target.value})} placeholder="e.g. 1000" />
-                </div>
-                <div>
-                  <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Unit</label>
-                  <select className="form-select" value={form.unit} onChange={e => setForm({...form, unit: e.target.value})}>
-                    <option value="kg">kg</option>
-                    <option value="Quintals">Quintals</option>
-                    <option value="Tonnes">Tonnes</option>
-                    <option value="Boxes">Boxes (25kg)</option>
-                  </select>
-                </div>
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                <div>
-                  <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Asking Price (₹ per unit)</label>
-                  <input required type="number" step="0.5" className="form-input" value={form.asking_price} onChange={e => setForm({...form, asking_price: e.target.value})} placeholder="e.g. 32.0" />
-                </div>
-                <div>
-                  <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Mandi / Location</label>
-                  <input required className="form-input" value={form.location} onChange={e => setForm({...form, location: e.target.value})} placeholder="e.g. Anand, Gujarat" />
-                </div>
-              </div>
-
-              <div>
-                <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Description & Quality Notes</label>
-                <textarea rows="2" className="form-textarea" value={form.description} onChange={e => setForm({...form, description: e.target.value})} placeholder="Moisture percentage, harvest date, grading..." />
-              </div>
-
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <input type="checkbox" id="organic" checked={form.is_organic} onChange={e => setForm({...form, is_organic: e.target.checked})} style={{ width: '18px', height: '18px' }} />
-                <label htmlFor="organic" style={{ fontSize: '0.85rem', color: 'var(--text-primary)', cursor: 'pointer', fontWeight: 600 }}>Certified Chemical-Free / Organic Produce</label>
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '12px' }}>
-                <button type="button" className="btn-secondary" onClick={() => setShowAddModal(false)}>Cancel</button>
-                <button type="submit" className="btn-primary">Publish Listing</button>
-              </div>
-            </form>
-          </div>
         </div>
       )}
     </div>

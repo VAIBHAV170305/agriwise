@@ -53,12 +53,26 @@ def create_product_listing(
             detail="Only Farmers or FPOs can list products for sale."
         )
 
+    # Format comprehensive description with verification and cultivated area
+    desc_items = []
+    if prod_in.description:
+        desc_items.append(prod_in.description.strip())
+    if prod_in.cultivated_area:
+        desc_items.append(f"Cultivated Area: {prod_in.cultivated_area} Acres")
+    if prod_in.harvest_date:
+        desc_items.append(f"Harvest Date: {prod_in.harvest_date}")
+    if prod_in.is_organic and prod_in.certification_number:
+        cert_auth = prod_in.certification_type or "Certified Organic"
+        desc_items.append(f"Certification: {cert_auth} (License: {prod_in.certification_number})")
+    
+    full_description = " • ".join(desc_items) if desc_items else prod_in.description
+
     listing = ProductListing(
         seller_id=current_user.id,
         farm_id=prod_in.farm_id,
         product_name=prod_in.product_name,
         category=prod_in.category,
-        description=prod_in.description,
+        description=full_description,
         available_quantity=prod_in.available_quantity,
         unit=prod_in.unit,
         asking_price=prod_in.asking_price,

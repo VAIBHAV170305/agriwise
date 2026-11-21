@@ -92,11 +92,11 @@ export default function FarmerDashboard({ onNavigate }) {
       // ignore
     }
     showToast({
-      title: 'Opening Marketplace Listing',
+      title: 'Opening Product Creator',
       message: 'Prefilled advance harvest details for Sharbati Wheat.',
       type: 'info'
     });
-    onNavigate('listings');
+    onNavigate('create-product');
   };
 
   if (loading) {

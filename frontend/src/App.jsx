@@ -23,6 +23,7 @@ import RakshakFabWidget from './components/RakshakFabWidget';
 import LogoutConfirmModal from './components/LogoutConfirmModal';
 import AuthView from './components/AuthView';
 import LocationModal from './components/LocationModal';
+import CreateProductView from './components/CreateProductView';
 import { useToast } from './context/ToastContext';
 import { api, DEMO_ACCOUNTS } from './api';
 import { useLanguage } from './i18n/LanguageContext';
@@ -328,7 +329,8 @@ export default function App() {
             {activeTab === 'weather' && <WeatherCenterView />}
             {activeTab === 'assistant' && <AgronomyAssistantView />}
             {activeTab === 'market' && <MarketIntelligenceView />}
-            {activeTab === 'listings' && <FarmerListingsView />}
+            {activeTab === 'listings' && <FarmerListingsView onNavigate={setActiveTab} />}
+            {(activeTab === 'create' || activeTab === 'create-product') && <CreateProductView onNavigate={setActiveTab} />}
             {activeTab === 'orders' && <FarmerOrdersView />}
             {activeTab === 'marketplace' && <MarketplaceBuyer onNavigate={setActiveTab} />}
             {activeTab === 'buyer-orders' && <BuyerOrdersView onNavigate={setActiveTab} />}
