@@ -189,146 +189,33 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, onRoleSwitc
         {/* Quick 1-Click Demo Profiles (When in Sign In mode) */}
         {!isRegister && (
           <div style={{ marginBottom: '20px' }}>
-            <span style={{
-              display: 'block',
-              fontSize: '0.72rem',
-              fontWeight: 700,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: '#6e8577',
-              marginBottom: '10px',
-              textAlign: 'center'
-            }}>
-              1-Click Demo Access
-            </span>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '8px'
-            }}>
-              <button
-                type="button"
-                onClick={() => handleQuickDemoLogin('Farmer')}
+            <div style={{ marginTop: '16px' }}>
+              <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#6e8577', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '8px', textAlign: 'center' }}>
+                Quick Demo Role Access
+              </label>
+              <select
+                className="form-select"
+                defaultValue=""
+                onChange={(e) => {
+                  if (e.target.value) handleQuickDemoLogin(e.target.value);
+                }}
                 disabled={loading}
                 style={{
-                  padding: '10px 12px',
-                  borderRadius: '12px',
-                  background: '#f4f7f5',
-                  border: '1px solid rgba(22, 51, 38, 0.12)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  transition: 'all 0.2s ease'
+                  width: '100%',
+                  padding: '9px 12px',
+                  borderRadius: '10px',
+                  border: '1px solid rgba(22, 51, 38, 0.15)',
+                  background: '#f8faf7',
+                  color: '#163326',
+                  fontSize: '0.84rem',
+                  fontWeight: 700,
+                  cursor: 'pointer'
                 }}
               >
-                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#163326', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '0.75rem', fontWeight: 700 }}>🌾</div>
-                <div>
-                  <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#163326' }}>Farmer</div>
-                  <div style={{ fontSize: '0.68rem', color: '#6e8577' }}>Ramesh Patel</div>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleQuickDemoLogin('Buyer')}
-                disabled={loading}
-                style={{
-                  padding: '10px 12px',
-                  borderRadius: '12px',
-                  background: '#f4f7f5',
-                  border: '1px solid rgba(22, 51, 38, 0.12)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  transition: 'all 0.2s ease'
-                }}
-              >
-                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#163326', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '0.75rem', fontWeight: 700 }}>🛒</div>
-                <div>
-                  <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#163326' }}>Buyer</div>
-                  <div style={{ fontSize: '0.68rem', color: '#6e8577' }}>Ananya (Mandi)</div>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleQuickDemoLogin('FPO')}
-                disabled={loading}
-                style={{
-                  padding: '10px 12px',
-                  borderRadius: '12px',
-                  background: '#f4f7f5',
-                  border: '1px solid rgba(22, 51, 38, 0.12)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  transition: 'all 0.2s ease'
-                }}
-              >
-                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#163326', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '0.75rem', fontWeight: 700 }}>👥</div>
-                <div>
-                  <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#163326' }}>FPO Lead</div>
-                  <div style={{ fontSize: '0.68rem', color: '#6e8577' }}>Sanjay Verma</div>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleQuickDemoLogin('Admin')}
-                disabled={loading}
-                style={{
-                  padding: '10px 12px',
-                  borderRadius: '12px',
-                  background: '#f4f7f5',
-                  border: '1px solid rgba(22, 51, 38, 0.12)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  transition: 'all 0.2s ease'
-                }}
-              >
-                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#163326', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '0.75rem', fontWeight: 700 }}>🛡️</div>
-                <div>
-                  <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#163326' }}>Admin</div>
-                  <div style={{ fontSize: '0.68rem', color: '#6e8577' }}>System RBAC</div>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleQuickDemoLogin('Delivery')}
-                disabled={loading}
-                style={{
-                  padding: '10px 12px',
-                  borderRadius: '12px',
-                  background: '#f4f7f5',
-                  border: '1px solid rgba(22, 51, 38, 0.12)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  transition: 'all 0.2s ease',
-                  gridColumn: 'span 2'
-                }}
-              >
-                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#163326', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '0.75rem', fontWeight: 700 }}>🚚</div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
-                  <div>
-                    <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#163326' }}>Delivery Partner</div>
-                    <div style={{ fontSize: '0.68rem', color: '#6e8577' }}>Vikram Singh (Agri Fleet & Live GPS)</div>
-                  </div>
-                  <span style={{ fontSize: '0.7rem', background: '#dcfce7', color: '#15803d', padding: '2px 8px', borderRadius: '999px', fontWeight: 700 }}>Active Fleet</span>
-                </div>
-              </button>
+                <option value="" disabled>Choose a persona to sign in directly...</option>
+                <option value="Farmer">🌾 Farmer: Ramesh Patel (farmer@agriwise.com)</option>
+                <option value="Buyer">💼 Wholesale Buyer: Ananya Sharma (buyer@agriwise.com)</option>
+              </select>
             </div>
 
             <div style={{

@@ -736,45 +736,33 @@ export default function AuthView({ onLoginSuccess, onBackToLanding, initialMode 
                 </form>
               )}
 
-              {/* Quick Persona Demo Switcher */}
-              <div style={{ marginTop: '28px', borderTop: '1px solid rgba(22, 51, 38, 0.08)', paddingTop: '20px' }}>
-                <div style={{ fontSize: '0.72rem', fontWeight: 800, color: '#718779', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px' }}>
-                  Instant Persona Switcher (Click to Login)
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '8px' }}>
-                  {Object.entries(DEMO_ACCOUNTS).map(([roleKey, acc]) => (
-                    <button
-                      key={roleKey}
-                      type="button"
-                      onClick={() => handleQuickDemo(roleKey)}
-                      style={{
-                        padding: '8px 10px',
-                        borderRadius: '9px',
-                        border: '1px solid rgba(22, 51, 38, 0.12)',
-                        background: '#f8faf7',
-                        color: '#163326',
-                        fontSize: '0.76rem',
-                        fontWeight: 700,
-                        cursor: 'pointer',
-                        textAlign: 'left',
-                        transition: 'all 0.15s ease'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = '#edf5f0';
-                        e.currentTarget.style.borderColor = '#2d6a4f';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = '#f8faf7';
-                        e.currentTarget.style.borderColor = 'rgba(22, 51, 38, 0.12)';
-                      }}
-                    >
-                      <div style={{ fontWeight: 800, color: '#163326' }}>{roleKey}</div>
-                      <div style={{ fontSize: '0.66rem', color: '#657d70', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {acc.label.split(' (')[0]}
-                      </div>
-                    </button>
-                  ))}
-                </div>
+              {/* Quick Persona Demo Switcher Dropdown */}
+              <div style={{ marginTop: '24px', borderTop: '1px solid rgba(22, 51, 38, 0.08)', paddingTop: '16px' }}>
+                <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 800, color: '#718779', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '8px' }}>
+                  Quick Demo Access (Select Role)
+                </label>
+                <select
+                  className="form-select"
+                  defaultValue=""
+                  onChange={(e) => {
+                    if (e.target.value) handleQuickDemo(e.target.value);
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: '9px 12px',
+                    borderRadius: '10px',
+                    border: '1px solid rgba(22, 51, 38, 0.15)',
+                    background: '#f8faf7',
+                    color: '#163326',
+                    fontSize: '0.84rem',
+                    fontWeight: 700,
+                    cursor: 'pointer'
+                  }}
+                >
+                  <option value="" disabled>Choose a role to sign in directly...</option>
+                  <option value="Farmer">🌾 Farmer: Ramesh Patel (farmer@agriwise.com)</option>
+                  <option value="Buyer">💼 Wholesale Buyer: Ananya Sharma (buyer@agriwise.com)</option>
+                </select>
               </div>
             </div>
           )}
@@ -970,45 +958,30 @@ export default function AuthView({ onLoginSuccess, onBackToLanding, initialMode 
               {/* ---------------------------------------------------- */}
               {currentStep === 2 && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  {/* Role Selection Cards */}
+                  {/* Role Selection Dropdown Menu */}
                   <div>
                     <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 800, color: '#163326', marginBottom: '8px' }}>
                       Select Your Agri-Stack Role
                     </label>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '10px' }}>
-                      {[
-                        { id: 'Farmer', label: '🌾 Farmer / Producer (किसान)', desc: 'Cultivation, soil maps & produce sales', icon: <Sprout size={18} /> },
-                        { id: 'Buyer', label: '💼 Mandi Buyer / Trader (व्यापारी)', desc: 'Wholesale sourcing & forward contracts', icon: <ShoppingBag size={18} /> }
-                      ].map(r => (
-                        <div
-                          key={r.id}
-                          onClick={() => setFormData({ ...formData, role: r.id })}
-                          style={{
-                            padding: '10px',
-                            borderRadius: '10px',
-                            border: '1.5px solid',
-                            borderColor: formData.role === r.id ? '#2d6a4f' : 'rgba(22, 51, 38, 0.12)',
-                            background: formData.role === r.id ? '#edf5f0' : '#ffffff',
-                            color: formData.role === r.id ? '#163326' : '#587965',
-                            cursor: 'pointer',
-                            textAlign: 'center',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            gap: '4px',
-                            transition: 'all 0.15s ease'
-                          }}
-                        >
-                          <span style={{ color: formData.role === r.id ? '#2d6a4f' : '#6b8275' }}>{r.icon}</span>
-                          <span style={{ fontSize: '0.8rem', fontWeight: 800 }}>{r.label}</span>
-                          {r.desc && (
-                            <span style={{ fontSize: '0.68rem', color: formData.role === r.id ? '#2d6a4f' : '#687e72' }}>
-                              {r.desc}
-                            </span>
-                          )}
-                        </div>
-                      ))}
-                    </div>
+                    <select
+                      className="form-select"
+                      value={formData.role}
+                      onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '10px 14px',
+                        borderRadius: '10px',
+                        border: '1px solid rgba(22, 51, 38, 0.18)',
+                        background: '#ffffff',
+                        color: '#163326',
+                        fontSize: '0.88rem',
+                        fontWeight: 700,
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <option value="Farmer">🌾 Farmer / Primary Producer (किसान) — Cultivation, soil maps & produce sales</option>
+                      <option value="Buyer">💼 Mandi Buyer / Trader (व्यापारी) — Wholesale sourcing & forward contracts</option>
+                    </select>
                   </div>
 
                   {/* Agricultural Profile (for Farmer / FPO) */}

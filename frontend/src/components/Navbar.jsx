@@ -32,6 +32,7 @@ export default function Navbar({
 
   // Profile dropdown & modal state
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [showRoleDropdown, setShowRoleDropdown] = useState(false);
   const [internalShowProfileModal, setInternalShowProfileModal] = useState(false);
   const isProfileModalOpen = externalShowProfileModal !== undefined ? externalShowProfileModal : internalShowProfileModal;
   const setProfileModalOpen = externalSetShowProfileModal || setInternalShowProfileModal;
@@ -39,6 +40,7 @@ export default function Navbar({
 
   const profileRef = useRef(null);
   const notifRef = useRef(null);
+  const roleDropdownRef = useRef(null);
 
   useEffect(() => {
     if (currentUser) {
@@ -55,6 +57,9 @@ export default function Navbar({
       }
       if (notifRef.current && !notifRef.current.contains(e.target)) {
         setShowNotifs(false);
+      }
+      if (roleDropdownRef.current && !roleDropdownRef.current.contains(e.target)) {
+        setShowRoleDropdown(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -191,52 +196,96 @@ export default function Navbar({
             </div>
           </div>
 
-          {/* Right Controls: Language Selector + Role Switcher Demo Buttons + Sign In / Dashboard Shortcut */}
+          {/* Right Controls: Role Switcher Dropdown Menu + Sign In / Dashboard Shortcut */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-            <LanguageSelector variant="dropdown" />
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              background: '#eef3ef',
-              border: '1px solid rgba(27, 56, 43, 0.08)',
-              borderRadius: '999px',
-              padding: '4px 6px',
-              gap: '4px'
-            }}>
-              <span style={{ 
-                fontSize: '0.68rem', 
-                color: '#657a6f', 
-                paddingLeft: '10px', 
-                paddingRight: '6px', 
-                fontWeight: 700, 
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase'
-              }}>
-                ROLE:
-              </span>
-              {['Farmer', 'Buyer'].map(roleKey => {
-                const isActive = currentRole === roleKey;
-                return (
-                  <button
-                    key={roleKey}
-                    onClick={() => onRoleSwitch(roleKey)}
-                    style={{
-                      background: isActive ? '#1b382b' : 'transparent',
-                      color: isActive ? '#ffffff' : '#4a5c52',
-                      border: 'none',
-                      padding: '6px 14px',
-                      borderRadius: '999px',
-                      fontSize: '0.78rem',
-                      fontWeight: isActive ? 700 : 500,
-                      cursor: 'pointer',
-                      transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
-                      boxShadow: isActive ? '0 2px 8px rgba(27, 56, 43, 0.2)' : 'none'
-                    }}
-                  >
-                    {roleKey === 'Farmer' ? '🌾 Farmer' : '💼 Buyer'}
-                  </button>
-                );
-              })}
+            {/* Clean Role Switcher Dropdown Menu */}
+            <div ref={roleDropdownRef} style={{ position: 'relative' }}>
+              <button
+                type="button"
+                onClick={() => setShowRoleDropdown(!showRoleDropdown)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  background: '#f1f5f2',
+                  border: '1px solid rgba(27, 56, 43, 0.12)',
+                  borderRadius: '999px',
+                  padding: '7px 14px',
+                  fontSize: '0.8rem',
+                  fontWeight: 700,
+                  color: '#163326',
+                  cursor: 'pointer',
+                  transition: 'all 0.18s ease'
+                }}
+              >
+                <span>{currentRole === 'Buyer' ? '💼 Wholesale Buyer' : '🌾 Farmer'}</span>
+                <ChevronDown size={14} style={{ transform: showRoleDropdown ? 'rotate(180deg)' : 'none', transition: 'transform 0.18s ease' }} />
+              </button>
+
+              {showRoleDropdown && (
+                <div style={{
+                  position: 'absolute',
+                  right: 0,
+                  top: 'calc(100% + 8px)',
+                  background: '#ffffff',
+                  border: '1px solid rgba(27, 56, 43, 0.12)',
+                  borderRadius: '14px',
+                  boxShadow: '0 12px 32px rgba(22, 51, 38, 0.15)',
+                  width: '260px',
+                  zIndex: 1000,
+                  padding: '6px',
+                  animation: 'fadeIn 0.15s ease'
+                }}>
+                  <div style={{ padding: '6px 10px 4px', fontSize: '0.68rem', fontWeight: 800, color: '#718779', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                    Select Demo Role
+                  </div>
+                  {[
+                    { key: 'Farmer', label: 'Farmer / Producer', icon: '🌾', desc: 'Ramesh Patel • Cultivation & Mandi' },
+                    { key: 'Buyer', label: 'Wholesale Buyer', icon: '💼', desc: 'Ananya Sharma • Mandi Procurement' }
+                  ].map(r => (
+                    <button
+                      key={r.key}
+                      type="button"
+                      onClick={() => {
+                        onRoleSwitch(r.key);
+                        setShowRoleDropdown(false);
+                      }}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        width: '100%',
+                        padding: '8px 10px',
+                        border: 'none',
+                        borderRadius: '8px',
+                        background: currentRole === r.key ? '#edf5f0' : 'transparent',
+                        cursor: 'pointer',
+                        textAlign: 'left',
+                        transition: 'background 0.14s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        if (currentRole !== r.key) e.currentTarget.style.background = '#f6f9f7';
+                      }}
+                      onMouseLeave={(e) => {
+                        if (currentRole !== r.key) e.currentTarget.style.background = 'transparent';
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{ fontSize: '1.1rem' }}>{r.icon}</span>
+                        <div>
+                          <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#163326' }}>
+                            {r.label}
+                          </div>
+                          <div style={{ fontSize: '0.68rem', color: '#688273' }}>
+                            {r.desc}
+                          </div>
+                        </div>
+                      </div>
+                      {currentRole === r.key && <span style={{ color: '#2d6a4f', fontWeight: 800, fontSize: '0.8rem' }}>✓</span>}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {currentUser ? (
@@ -316,53 +365,103 @@ export default function Navbar({
           </h2>
         </div>
 
-        {/* Right Controls: Location Pill + Role Switcher + Notifications + Profile Dropdown */}
+        {/* Right Controls: Location Pill + Role Switcher Dropdown + Notifications + Profile Dropdown */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <LocationBanner variant="compact" />
-          {/* Role Switcher in Organic Pill Shape */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            background: '#eef3ef',
-            border: '1px solid rgba(27, 56, 43, 0.08)',
-            borderRadius: '999px',
-            padding: '3px 5px',
-            gap: '3px'
-          }}>
-            <span style={{ 
-              fontSize: '0.66rem', 
-              color: '#657a6f', 
-              paddingLeft: '8px', 
-              paddingRight: '4px', 
-              fontWeight: 700, 
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase'
-            }}>
-              ROLE:
-            </span>
-            {['Farmer', 'Buyer'].map(roleKey => {
-              const isActive = currentRole === roleKey;
-              return (
-                <button
-                  key={roleKey}
-                  onClick={() => onRoleSwitch(roleKey)}
-                  style={{
-                    background: isActive ? '#1b382b' : 'transparent',
-                    color: isActive ? '#ffffff' : '#4a5c52',
-                    border: 'none',
-                    padding: '5px 12px',
-                    borderRadius: '999px',
-                    fontSize: '0.76rem',
-                    fontWeight: isActive ? 700 : 500,
-                    cursor: 'pointer',
-                    transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
-                    boxShadow: isActive ? '0 2px 6px rgba(27, 56, 43, 0.2)' : 'none'
-                  }}
-                >
-                  {roleKey === 'Farmer' ? '🌾 Farmer' : '💼 Buyer'}
-                </button>
-              );
-            })}
+
+          {/* Clean Role Switcher Dropdown Menu */}
+          <div ref={roleDropdownRef} style={{ position: 'relative' }}>
+            <button
+              type="button"
+              onClick={() => {
+                setShowRoleDropdown(!showRoleDropdown);
+                setShowProfileDropdown(false);
+                setShowNotifs(false);
+              }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                background: '#ffffff',
+                border: '1px solid rgba(27, 56, 43, 0.12)',
+                borderRadius: '999px',
+                padding: '6px 14px',
+                fontSize: '0.78rem',
+                fontWeight: 700,
+                color: '#163326',
+                cursor: 'pointer',
+                boxShadow: '0 1px 4px rgba(22, 51, 38, 0.04)',
+                transition: 'all 0.18s ease'
+              }}
+            >
+              <span>{currentRole === 'Buyer' ? '💼 Wholesale Buyer' : '🌾 Farmer'}</span>
+              <ChevronDown size={13} style={{ transform: showRoleDropdown ? 'rotate(180deg)' : 'none', transition: 'transform 0.18s ease' }} />
+            </button>
+
+            {showRoleDropdown && (
+              <div style={{
+                position: 'absolute',
+                right: 0,
+                top: 'calc(100% + 8px)',
+                background: '#ffffff',
+                border: '1px solid rgba(27, 56, 43, 0.12)',
+                borderRadius: '14px',
+                boxShadow: '0 12px 32px rgba(22, 51, 38, 0.15)',
+                width: '260px',
+                zIndex: 1000,
+                padding: '6px',
+                animation: 'fadeIn 0.15s ease'
+              }}>
+                <div style={{ padding: '6px 10px 4px', fontSize: '0.68rem', fontWeight: 800, color: '#718779', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                  Switch Workspace Role
+                </div>
+                {[
+                  { key: 'Farmer', label: 'Farmer / Producer', icon: '🌾', desc: 'Ramesh Patel • Field Intelligence' },
+                  { key: 'Buyer', label: 'Wholesale Buyer', icon: '💼', desc: 'Ananya Sharma • Mandi Procurement' }
+                ].map(r => (
+                  <button
+                    key={r.key}
+                    type="button"
+                    onClick={() => {
+                      onRoleSwitch(r.key);
+                      setShowRoleDropdown(false);
+                    }}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      width: '100%',
+                      padding: '8px 10px',
+                      border: 'none',
+                      borderRadius: '8px',
+                      background: currentRole === r.key ? '#edf5f0' : 'transparent',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      transition: 'background 0.14s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (currentRole !== r.key) e.currentTarget.style.background = '#f6f9f7';
+                    }}
+                    onMouseLeave={(e) => {
+                      if (currentRole !== r.key) e.currentTarget.style.background = 'transparent';
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ fontSize: '1.1rem' }}>{r.icon}</span>
+                      <div>
+                        <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#163326' }}>
+                          {r.label}
+                        </div>
+                        <div style={{ fontSize: '0.68rem', color: '#688273' }}>
+                          {r.desc}
+                        </div>
+                      </div>
+                    </div>
+                    {currentRole === r.key && <span style={{ color: '#2d6a4f', fontWeight: 800, fontSize: '0.8rem' }}>✓</span>}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Notifications */}

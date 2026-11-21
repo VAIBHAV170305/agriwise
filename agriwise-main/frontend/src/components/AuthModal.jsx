@@ -1,29 +1,22 @@
 import React, { useState } from 'react';
 import { 
-  X, User, Lock, Mail, Phone, ShieldCheck, 
-  ArrowRight, CheckCircle2, AlertTriangle, Users, ShoppingBag, Sparkles,
-  KeyRound, Send, RefreshCw
+  Sprout, X, User, Lock, Mail, Phone, ShieldCheck, 
+  ArrowRight, CheckCircle2, AlertTriangle, Users, ShoppingBag
 } from 'lucide-react';
 import { api, DEMO_ACCOUNTS } from '../api';
 import { useLanguage } from '../i18n/LanguageContext';
+import { useToast } from '../context/ToastContext';
 import LanguageSelector from './LanguageSelector';
-import CustomAgriLogo from './CustomAgriLogo';
+import WavyLoader from './WavyLoader';
+import { RakshakIcon } from './RakshakLogo';
 
 export default function AuthModal({ isOpen, onClose, onLoginSuccess, onRoleSwitch }) {
-  const { t, currentLang } = useLanguage();
-  const [authMode, setAuthMode] = useState('otp'); // 'otp' | 'password' | 'register'
+  const { t, currentLang, languages } = useLanguage();
+  const { showToast } = useToast();
+  const [isRegister, setIsRegister] = useState(false);
   const [authError, setAuthError] = useState('');
-  const [authSuccess, setAuthSuccess] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Email OTP state
-  const [otpEmail, setOtpEmail] = useState('farmer@agriwise.com');
-  const [otpCode, setOtpCode] = useState('');
-  const [otpSent, setOtpSent] = useState(false);
-  const [otpDeliveryInfo, setOtpDeliveryInfo] = useState(null);
-  const [otpTimer, setOtpTimer] = useState(0);
-
-  // Standard Form state
   const [form, setForm] = useState({
     name: '',
     email: 'farmer@agriwise.com',
@@ -35,68 +28,6 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, onRoleSwitc
 
   if (!isOpen) return null;
 
-  // Handle Send OTP via Free External Email Service
-  const handleSendOtp = async (e) => {
-    if (e) e.preventDefault();
-    if (!otpEmail || !otpEmail.includes('@')) {
-      setAuthError('Please enter a valid email address');
-      return;
-    }
-
-    setAuthError('');
-    setAuthSuccess('');
-    setLoading(true);
-
-    try {
-      const res = await api.sendEmailOtp(otpEmail);
-      setOtpSent(true);
-      setOtpDeliveryInfo(res);
-      setAuthSuccess(`Security verification code dispatched to ${otpEmail}`);
-      
-      // Auto-populate for seamless demo/testing if demo_otp returned
-      if (res.demo_otp) {
-        setOtpCode(res.demo_otp);
-      }
-
-      setOtpTimer(60);
-      const timerInterval = setInterval(() => {
-        setOtpTimer((prev) => {
-          if (prev <= 1) {
-            clearInterval(timerInterval);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    } catch (err) {
-      setAuthError(err.message || 'Failed to dispatch email OTP. Please verify email address.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Handle Verify OTP
-  const handleVerifyOtp = async (e) => {
-    e.preventDefault();
-    if (!otpCode || otpCode.trim().length !== 6) {
-      setAuthError('Please enter the complete 6-digit verification code');
-      return;
-    }
-
-    setAuthError('');
-    setLoading(true);
-    try {
-      const res = await api.verifyEmailOtp(otpEmail, otpCode);
-      if (onLoginSuccess) onLoginSuccess(res.user);
-      onClose();
-    } catch (err) {
-      setAuthError(err.message || 'Invalid or expired OTP code');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Handle Quick Demo Login
   const handleQuickDemoLogin = async (roleKey) => {
     setAuthError('');
     setLoading(true);
@@ -108,30 +39,54 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, onRoleSwitc
       } else if (onRoleSwitch) {
         await onRoleSwitch(roleKey);
       }
+      showToast({
+        title: `Welcome, ${res.user.name}`,
+        message: `Signed in as ${res.user.role}. Your personalized agronomy records are ready.`,
+        type: 'success'
+      });
       onClose();
     } catch (err) {
       setAuthError(err.message || 'Quick login failed');
+      showToast({
+        title: 'Sign In Failed',
+        message: err.message || 'Could not verify persona credentials.',
+        type: 'critical'
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  // Handle Password Login & Register
   const handleAuthSubmit = async (e) => {
     e.preventDefault();
     setAuthError('');
     setLoading(true);
     try {
-      if (authMode === 'register') {
+      if (isRegister) {
         const res = await api.register(form);
         if (onLoginSuccess) onLoginSuccess(res.user);
+        showToast({
+          title: 'Account Created',
+          message: `Welcome to Agri-Wise, ${res.user.name}! Registered as ${res.user.role}.`,
+          type: 'success'
+        });
       } else {
         const res = await api.login(form.email, form.password);
         if (onLoginSuccess) onLoginSuccess(res.user);
+        showToast({
+          title: `Welcome, ${res.user.name}`,
+          message: `Signed in as ${res.user.role}.`,
+          type: 'success'
+        });
       }
       onClose();
     } catch (err) {
       setAuthError(err.message || 'Authentication error');
+      showToast({
+        title: 'Authentication Error',
+        message: err.message || 'Check your credentials.',
+        type: 'critical'
+      });
     } finally {
       setLoading(false);
     }
@@ -142,7 +97,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, onRoleSwitc
       style={{
         position: 'fixed',
         inset: 0,
-        background: 'rgba(18, 53, 36, 0.55)',
+        background: 'rgba(22, 51, 38, 0.48)',
         backdropFilter: 'blur(8px)',
         WebkitBackdropFilter: 'blur(8px)',
         display: 'flex',
@@ -156,15 +111,15 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, onRoleSwitc
       }}
     >
       <div 
-        className="glass-card animate-scale-in" 
+        className="glass-card animate-fade-in" 
         style={{
           maxWidth: '480px',
           width: '100%',
-          padding: '28px',
+          padding: '32px',
           background: '#ffffff',
           borderRadius: '24px',
-          border: '1px solid rgba(18, 53, 36, 0.12)',
-          boxShadow: '0 20px 48px rgba(18, 53, 36, 0.22)',
+          border: '1px solid var(--border-color)',
+          boxShadow: 'var(--shadow-xl)',
           position: 'relative'
         }}
       >
@@ -183,7 +138,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, onRoleSwitc
             style={{
               background: '#f4f7f5',
               border: 'none',
-              color: '#576c60',
+              color: 'var(--text-muted)',
               cursor: 'pointer',
               padding: '6px',
               borderRadius: '50%',
@@ -193,444 +148,264 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, onRoleSwitc
             }}
             title="Close"
           >
-            <X size={16} />
+            <X size={18} />
           </button>
         </div>
 
-        {/* Modal Brand Header with Custom Logo */}
-        <div style={{ marginBottom: '20px' }}>
-          <CustomAgriLogo size={36} variant="full" />
-          <h3 style={{ fontSize: '1.3rem', color: '#123524', fontWeight: 800, marginTop: '12px' }}>
-            {authMode === 'register' 
-              ? t('common.register', 'Register Farmer Account') 
-              : authMode === 'otp'
-              ? 'Farmer Email OTP Login'
-              : t('common.signIn', 'Sign In with Password')}
+        {/* Brand Header */}
+        <div style={{ textAlign: 'center', marginBottom: '22px' }}>
+          <div style={{
+            width: '46px',
+            height: '46px',
+            borderRadius: '12px',
+            background: '#163326',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 12px',
+            boxShadow: '0 4px 12px rgba(22, 51, 38, 0.2)'
+          }}>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#d5e6db" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M 6.5 18.5 H 17.5" />
+              <path d="M 12 18.5 V 13" />
+              <path d="M 12 13.8 C 9 14.8 6.5 12.8 7.2 10.2 C 7.8 7.8 11 8.8 12 11.8" />
+              <path d="M 12 11.8 C 13.2 8.8 15.5 6.2 17.8 7.2 C 19.2 8.5 17.5 12.5 12.5 11.8" />
+            </svg>
+          </div>
+          <h3 style={{
+            fontSize: '1.45rem',
+            color: '#163326',
+            fontFamily: "'Fraunces', serif",
+            fontWeight: 800,
+            marginBottom: '4px'
+          }}>
+            {isRegister ? 'Create Agri-Wise Account' : 'Sign in to Agri-Wise'}
           </h3>
-          <p style={{ color: '#576c60', fontSize: '0.82rem', marginTop: '2px' }}>
-            {authMode === 'otp'
-              ? 'Passwordless sign-in via reliable transactional email service'
-              : 'Access your digitized farm plots, crop health radar, and mandi orders'}
+          <p style={{ fontSize: '0.84rem', color: '#687e72' }}>
+            {isRegister ? 'Access AI agronomy & market intelligence' : 'Choose a demo persona or use your credentials'}
           </p>
         </div>
 
-        {/* Auth Mode Tabs */}
-        <div style={{
-          display: 'flex',
-          background: '#f0f5f2',
-          padding: '4px',
-          borderRadius: '12px',
-          marginBottom: '20px',
-          border: '1px solid rgba(18, 53, 36, 0.08)'
-        }}>
-          <button
-            type="button"
-            onClick={() => { setAuthMode('otp'); setAuthError(''); }}
-            style={{
-              flex: 1,
-              padding: '7px',
-              borderRadius: '8px',
-              border: 'none',
-              background: authMode === 'otp' ? '#ffffff' : 'transparent',
-              color: authMode === 'otp' ? '#123524' : '#576c60',
-              fontWeight: authMode === 'otp' ? 800 : 600,
-              fontSize: '0.78rem',
-              cursor: 'pointer',
-              boxShadow: authMode === 'otp' ? '0 1px 4px rgba(0,0,0,0.06)' : 'none',
+        {/* Quick 1-Click Demo Profiles (When in Sign In mode) */}
+        {!isRegister && (
+          <div style={{ marginBottom: '20px' }}>
+            <div style={{ marginTop: '16px' }}>
+              <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#6e8577', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '8px', textAlign: 'center' }}>
+                Quick Demo Role Access
+              </label>
+              <select
+                className="form-select"
+                defaultValue=""
+                onChange={(e) => {
+                  if (e.target.value) handleQuickDemoLogin(e.target.value);
+                }}
+                disabled={loading}
+                style={{
+                  width: '100%',
+                  padding: '9px 12px',
+                  borderRadius: '10px',
+                  border: '1px solid rgba(22, 51, 38, 0.15)',
+                  background: '#f8faf7',
+                  color: '#163326',
+                  fontSize: '0.84rem',
+                  fontWeight: 700,
+                  cursor: 'pointer'
+                }}
+              >
+                <option value="" disabled>Choose a persona to sign in directly...</option>
+                <option value="Farmer">🌾 Farmer: Ramesh Patel (farmer@agriwise.com)</option>
+                <option value="Buyer">💼 Wholesale Buyer: Ananya Sharma (buyer@agriwise.com)</option>
+              </select>
+            </div>
+
+            <div style={{
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
-              gap: '6px'
-            }}
-          >
-            <KeyRound size={13} color="#10b981" /> Email OTP
-          </button>
+              gap: '12px',
+              margin: '18px 0 10px'
+            }}>
+              <div style={{ flex: 1, height: '1px', background: 'rgba(22, 51, 38, 0.1)' }} />
+              <span style={{ fontSize: '0.74rem', color: '#829589', fontWeight: 600 }}>OR ENTER CREDENTIALS</span>
+              <div style={{ flex: 1, height: '1px', background: 'rgba(22, 51, 38, 0.1)' }} />
+            </div>
+          </div>
+        )}
 
-          <button
-            type="button"
-            onClick={() => { setAuthMode('password'); setAuthError(''); }}
-            style={{
-              flex: 1,
-              padding: '7px',
-              borderRadius: '8px',
-              border: 'none',
-              background: authMode === 'password' ? '#ffffff' : 'transparent',
-              color: authMode === 'password' ? '#123524' : '#576c60',
-              fontWeight: authMode === 'password' ? 800 : 600,
-              fontSize: '0.78rem',
-              cursor: 'pointer',
-              boxShadow: authMode === 'password' ? '0 1px 4px rgba(0,0,0,0.06)' : 'none',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '6px'
-            }}
-          >
-            <Lock size={13} /> Password
-          </button>
-
-          <button
-            type="button"
-            onClick={() => { setAuthMode('register'); setAuthError(''); }}
-            style={{
-              flex: 1,
-              padding: '7px',
-              borderRadius: '8px',
-              border: 'none',
-              background: authMode === 'register' ? '#ffffff' : 'transparent',
-              color: authMode === 'register' ? '#123524' : '#576c60',
-              fontWeight: authMode === 'register' ? 800 : 600,
-              fontSize: '0.78rem',
-              cursor: 'pointer',
-              boxShadow: authMode === 'register' ? '0 1px 4px rgba(0,0,0,0.06)' : 'none',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '6px'
-            }}
-          >
-            <User size={13} /> Register
-          </button>
-        </div>
-
-        {/* Alerts & Messages */}
+        {/* Error message */}
         {authError && (
           <div style={{
-            background: '#fee2e2',
-            border: '1px solid #fecaca',
-            color: '#991b1b',
             padding: '10px 14px',
+            background: '#fdf2f2',
+            border: '1px solid #f8c8c8',
             borderRadius: '10px',
-            fontSize: '0.8rem',
+            color: '#b91c1c',
+            fontSize: '0.82rem',
             marginBottom: '16px',
             display: 'flex',
             alignItems: 'center',
             gap: '8px'
           }}>
-            <AlertTriangle size={15} style={{ flexShrink: 0 }} />
+            <AlertTriangle size={16} />
             <span>{authError}</span>
           </div>
         )}
 
-        {authSuccess && (
-          <div style={{
-            background: '#ecfdf5',
-            border: '1px solid #a7f3d0',
-            color: '#065f46',
-            padding: '10px 14px',
-            borderRadius: '10px',
-            fontSize: '0.8rem',
-            marginBottom: '16px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px'
-          }}>
-            <CheckCircle2 size={15} style={{ flexShrink: 0 }} />
-            <span>{authSuccess}</span>
-          </div>
-        )}
+        {/* Form */}
+        <form onSubmit={handleAuthSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+          {isRegister && (
+            <div>
+              <label style={{ fontSize: '0.78rem', color: '#4a5e52', fontWeight: 600, display: 'block', marginBottom: '4px' }}>
+                Full Name
+              </label>
+              <input 
+                required 
+                className="form-input" 
+                value={form.name} 
+                onChange={e => setForm({...form, name: e.target.value})} 
+                placeholder="Ramesh Patel" 
+              />
+            </div>
+          )}
 
-        {/* 1. EMAIL OTP AUTHENTICATION FLOW */}
-        {authMode === 'otp' && (
           <div>
-            {!otpSent ? (
-              <form onSubmit={handleSendOtp} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                <div>
-                  <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#123524' }}>
-                    Registered Email Address *
-                  </label>
-                  <div style={{ position: 'relative', marginTop: '6px' }}>
-                    <input 
-                      type="email" 
-                      required 
-                      className="form-input" 
-                      placeholder="e.g. farmer@agriwise.com" 
-                      value={otpEmail} 
-                      onChange={e => setOtpEmail(e.target.value)} 
-                      style={{ paddingLeft: '36px' }}
-                    />
-                    <Mail size={16} color="#688273" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
-                  </div>
-                  <span style={{ fontSize: '0.72rem', color: '#688273', marginTop: '4px', display: 'block' }}>
-                    A 6-digit security code will be sent via external cloud email service.
-                  </span>
-                </div>
-
-                <button 
-                  type="submit" 
-                  className="btn-primary" 
-                  style={{ width: '100%', justifyContent: 'center', padding: '11px', marginTop: '4px' }}
-                  disabled={loading}
-                >
-                  <Send size={15} />
-                  {loading ? 'Dispatching OTP via Cloud Email...' : 'Send Verification OTP Code'}
-                </button>
-              </form>
-            ) : (
-              <form onSubmit={handleVerifyOtp} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                    <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#123524' }}>
-                      Enter 6-Digit Verification Code *
-                    </label>
-                    <span style={{ fontSize: '0.72rem', color: '#10b981', fontWeight: 700 }}>
-                      Sent to: {otpEmail}
-                    </span>
-                  </div>
-
-                  <div style={{ position: 'relative' }}>
-                    <input 
-                      type="text" 
-                      maxLength="6"
-                      required 
-                      className="form-input" 
-                      placeholder="e.g. 849201" 
-                      value={otpCode} 
-                      onChange={e => setOtpCode(e.target.value.replace(/\D/g, ''))} 
-                      style={{
-                        paddingLeft: '38px',
-                        fontSize: '1.25rem',
-                        letterSpacing: '6px',
-                        fontWeight: 800,
-                        textAlign: 'center',
-                        color: '#123524'
-                      }}
-                    />
-                    <KeyRound size={18} color="#10b981" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
-                  </div>
-
-                  {/* Dev / Test Auto-Fill Badge */}
-                  {otpDeliveryInfo?.demo_otp && (
-                    <div style={{
-                      marginTop: '8px',
-                      background: '#fef3c7',
-                      border: '1px solid #fde68a',
-                      padding: '8px 12px',
-                      borderRadius: '8px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      fontSize: '0.75rem'
-                    }}>
-                      <span style={{ color: '#92400e', fontWeight: 600 }}>
-                        🔑 Instant Test Code: <strong>{otpDeliveryInfo.demo_otp}</strong>
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => setOtpCode(otpDeliveryInfo.demo_otp)}
-                        style={{
-                          background: '#92400e',
-                          color: '#ffffff',
-                          border: 'none',
-                          padding: '2px 8px',
-                          borderRadius: '4px',
-                          fontSize: '0.7rem',
-                          cursor: 'pointer'
-                        }}
-                      >
-                        Auto-Fill
-                      </button>
-                    </div>
-                  )}
-                </div>
-
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <button 
-                    type="submit" 
-                    className="btn-primary" 
-                    style={{ flex: 1, justifyContent: 'center', padding: '11px' }}
-                    disabled={loading || otpCode.length !== 6}
-                  >
-                    <CheckCircle2 size={16} />
-                    {loading ? 'Verifying OTP...' : 'Verify OTP & Enter Field Desk'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleSendOtp}
-                    disabled={loading || otpTimer > 0}
-                    className="btn-secondary"
-                    style={{ padding: '11px 14px' }}
-                    title="Resend OTP code"
-                  >
-                    <RefreshCw size={15} className={loading ? 'animate-spin' : ''} />
-                    {otpTimer > 0 ? `${otpTimer}s` : 'Resend'}
-                  </button>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => { setOtpSent(false); setAuthSuccess(''); }}
-                  style={{
-                    background: 'transparent',
-                    border: 'none',
-                    color: '#576c60',
-                    fontSize: '0.76rem',
-                    cursor: 'pointer',
-                    textDecoration: 'underline',
-                    textAlign: 'center'
-                  }}
-                >
-                  Change Email Address
-                </button>
-              </form>
-            )}
+            <label style={{ fontSize: '0.78rem', color: '#4a5e52', fontWeight: 600, display: 'block', marginBottom: '4px' }}>
+              Email Address
+            </label>
+            <input 
+              required 
+              type="email" 
+              className="form-input" 
+              value={form.email} 
+              onChange={e => setForm({...form, email: e.target.value})} 
+              placeholder="farmer@agriwise.com" 
+            />
           </div>
-        )}
 
-        {/* 2. PASSWORD LOGIN / REGISTER FLOW */}
-        {(authMode === 'password' || authMode === 'register') && (
-          <form onSubmit={handleAuthSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            {authMode === 'register' && (
+          <div>
+            <label style={{ fontSize: '0.78rem', color: '#4a5e52', fontWeight: 600, display: 'block', marginBottom: '4px' }}>
+              Password
+            </label>
+            <input 
+              required 
+              type="password" 
+              className="form-input" 
+              value={form.password} 
+              onChange={e => setForm({...form, password: e.target.value})} 
+              placeholder="••••••••" 
+            />
+          </div>
+
+          {isRegister && (
+            <>
               <div>
-                <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#123524' }}>Full Legal Name *</label>
-                <div style={{ position: 'relative', marginTop: '4px' }}>
-                  <input 
-                    type="text" 
-                    required 
-                    className="form-input" 
-                    placeholder="e.g. Ramesh Patel" 
-                    value={form.name} 
-                    onChange={e => setForm({...form, name: e.target.value})} 
-                    style={{ paddingLeft: '36px' }}
-                  />
-                  <User size={16} color="#688273" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
-                </div>
-              </div>
-            )}
-
-            <div>
-              <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#123524' }}>Email Address *</label>
-              <div style={{ position: 'relative', marginTop: '4px' }}>
+                <label style={{ fontSize: '0.78rem', color: '#4a5e52', fontWeight: 600, display: 'block', marginBottom: '4px' }}>
+                  Mobile Phone
+                </label>
                 <input 
-                  type="email" 
-                  required 
                   className="form-input" 
-                  placeholder="e.g. farmer@agriwise.com" 
-                  value={form.email} 
-                  onChange={e => setForm({...form, email: e.target.value})} 
-                  style={{ paddingLeft: '36px' }}
+                  value={form.phone} 
+                  onChange={e => setForm({...form, phone: e.target.value})} 
+                  placeholder="+91-9876543210" 
                 />
-                <Mail size={16} color="#688273" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
               </div>
-            </div>
 
-            <div>
-              <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#123524' }}>Password *</label>
-              <div style={{ position: 'relative', marginTop: '4px' }}>
-                <input 
-                  type="password" 
-                  required 
-                  className="form-input" 
-                  placeholder="••••••••" 
-                  value={form.password} 
-                  onChange={e => setForm({...form, password: e.target.value})} 
-                  style={{ paddingLeft: '36px' }}
-                />
-                <Lock size={16} color="#688273" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
-              </div>
-            </div>
-
-            {authMode === 'register' && (
               <div>
-                <label style={{ fontSize: '0.78rem', fontWeight: 700, color: '#123524' }}>Platform Role *</label>
+                <label style={{ fontSize: '0.78rem', color: '#4a5e52', fontWeight: 600, display: 'block', marginBottom: '4px' }}>
+                  Account Role
+                </label>
                 <select 
                   className="form-select" 
                   value={form.role} 
                   onChange={e => setForm({...form, role: e.target.value})}
-                  style={{ marginTop: '4px' }}
                 >
-                  <option value="Farmer">👨‍🌾 Farmer (Cultivator)</option>
-                  <option value="Buyer">🛒 Wholesale Buyer / Trader</option>
-                  <option value="FPO">🏢 FPO Lead / Aggregator</option>
-                  <option value="Delivery">🚚 Delivery Logistics Partner</option>
+                  <option value="Farmer">Farmer (Agricultural Producer)</option>
+                  <option value="Buyer">Buyer (Wholesaler / Processor)</option>
+                  <option value="Delivery">Delivery Partner (Agri Logistics & Fleet)</option>
+                  <option value="FPO">Farmer Producer Organization (FPO)</option>
+                  <option value="Admin">Administrator</option>
                 </select>
               </div>
-            )}
 
-            <button 
-              type="submit" 
-              className="btn-primary" 
-              style={{ width: '100%', justifyContent: 'center', padding: '11px', marginTop: '4px' }}
-              disabled={loading}
-            >
-              {loading ? 'Authenticating...' : authMode === 'register' ? 'Create Account' : 'Sign In'}
-            </button>
-          </form>
-        )}
+              <div>
+                <label style={{ fontSize: '0.78rem', color: '#4a5e52', fontWeight: 600, display: 'block', marginBottom: '4px' }}>
+                  Preferred Language (मातृभाषा)
+                </label>
+                <select 
+                  className="form-select" 
+                  value={form.preferred_language || currentLang} 
+                  onChange={e => setForm({...form, preferred_language: e.target.value})}
+                >
+                  {languages.map(l => (
+                    <option key={l.code} value={l.code}>
+                      {l.nativeName} ({l.name}) — {l.region.split(' (')[0]}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </>
+          )}
 
-        {/* Quick Demo Switcher Section */}
-        <div style={{
-          marginTop: '22px',
-          paddingTop: '16px',
-          borderTop: '1px solid rgba(18, 53, 36, 0.08)'
-        }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: '8px'
+          {loading && (
+            <div style={{ margin: '8px 0' }}>
+              <WavyLoader label="Authenticating session & loading workspace..." color="#163326" />
+            </div>
+          )}
+
+          <button 
+            type="submit" 
+            className="btn-primary" 
+            style={{ 
+              width: '100%', 
+              justifyContent: 'center', 
+              marginTop: '8px',
+              padding: '12px',
+              borderRadius: '999px',
+              fontSize: '0.95rem'
+            }} 
+            disabled={loading}
+          >
+            {loading ? 'Entering Workspace...' : (isRegister ? 'Register & Enter Workspace' : 'Sign In')}
+            <ArrowRight size={16} />
+          </button>
+
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center', 
+            marginTop: '8px', 
+            fontSize: '0.8rem',
+            paddingTop: '6px'
           }}>
-            <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#688273', textTransform: 'uppercase' }}>
-              ⚡ Quick Demo One-Click Access:
-            </span>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px' }}>
-            <button
-              type="button"
-              onClick={() => handleQuickDemoLogin('Farmer')}
-              style={{
-                background: '#edf5f0',
-                border: '1px solid #bce1ce',
-                color: '#123524',
-                padding: '7px 8px',
-                borderRadius: '8px',
-                fontSize: '0.74rem',
-                fontWeight: 700,
-                cursor: 'pointer',
-                textAlign: 'center'
+            <button 
+              type="button" 
+              onClick={() => {
+                setIsRegister(!isRegister);
+                setAuthError('');
+              }} 
+              style={{ 
+                background: 'none', 
+                border: 'none', 
+                color: '#163326', 
+                fontWeight: 700, 
+                cursor: 'pointer' 
               }}
             >
-              👨‍🌾 Farmer
+              {isRegister ? 'Already have an account? Sign In' : "New user? Create an account"}
             </button>
-
-            <button
-              type="button"
-              onClick={() => handleQuickDemoLogin('Buyer')}
-              style={{
-                background: '#f4f8f5',
-                border: '1px solid rgba(18, 53, 36, 0.12)',
-                color: '#123524',
-                padding: '7px 8px',
-                borderRadius: '8px',
-                fontSize: '0.74rem',
-                fontWeight: 700,
-                cursor: 'pointer',
-                textAlign: 'center'
+            <button 
+              type="button" 
+              onClick={onClose} 
+              style={{ 
+                background: 'none', 
+                border: 'none', 
+                color: '#687e72', 
+                cursor: 'pointer' 
               }}
             >
-              🛒 Buyer
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleQuickDemoLogin('FPO')}
-              style={{
-                background: '#f4f8f5',
-                border: '1px solid rgba(18, 53, 36, 0.12)',
-                color: '#123524',
-                padding: '7px 8px',
-                borderRadius: '8px',
-                fontSize: '0.74rem',
-                fontWeight: 700,
-                cursor: 'pointer',
-                textAlign: 'center'
-              }}
-            >
-              🏢 FPO
+              Cancel
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

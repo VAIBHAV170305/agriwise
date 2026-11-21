@@ -42,7 +42,7 @@ export default function App() {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-  // Auto-login default demo farmer on first load
+  // Synchronize authenticated session on load
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     const storedUser = api.getUser();
@@ -50,8 +50,9 @@ export default function App() {
       setCurrentUser(storedUser);
       setCurrentRole(storedUser.role);
     } else {
-      // Default auto-login as Farmer for immediate rich dashboard experience
-      handleRoleSwitch('Farmer', false);
+      setCurrentUser(null);
+      setCurrentRole(null);
+      setActiveTab('landing');
     }
   }, [theme]);
 
@@ -92,10 +93,11 @@ export default function App() {
   const handleLogout = async () => {
     await api.logout();
     setCurrentUser(null);
+    setCurrentRole(null);
     setActiveTab('landing');
     showToast({
       title: 'Signed Out',
-      message: 'You have been safely signed out of Agri-Wise.',
+      message: 'You have been safely signed out of AgriWise.',
       type: 'info'
     });
   };
@@ -103,7 +105,8 @@ export default function App() {
   const { t } = useLanguage();
 
   const getRoleTabs = () => {
-    const role = currentRole || 'Farmer';
+    const role = currentUser?.role || currentRole;
+    if (!role) return [];
 
     if (role === 'Farmer') {
       return [
@@ -191,8 +194,8 @@ export default function App() {
 
   const handleSelectTab = (tabId) => {
     if (!currentUser) {
-      const demoUser = DEMO_ACCOUNTS[currentRole || 'Farmer'];
-      setCurrentUser(demoUser);
+      setActiveTab('login');
+      return;
     }
     setActiveTab(tabId);
   };
