@@ -140,7 +140,7 @@ export default function FarmerDashboard({ onNavigate }) {
               gap: '6px'
             }}>
               <ShieldCheck size={14} color="#52b788" />
-              BHARAT AGRI-STACK ID: KID-2026-GJ-0002
+              {t('farmer.agriStackId', 'BHARAT AGRI-STACK ID')}: KID-2026-GJ-0002
             </span>
             <span style={{
               background: '#edf6f0',
@@ -164,7 +164,7 @@ export default function FarmerDashboard({ onNavigate }) {
               alignItems: 'center',
               gap: '4px'
             }}>
-              <span>{location?.isLiveSynced ? (location?.source === 'GPS' ? '🟢 Live GPS Active' : '🌐 Live Network Synced') : '📍 Pinned Location'}</span>
+              <span>{location?.isLiveSynced ? (location?.source === 'GPS' ? t('farmer.liveGpsActive', '🟢 Live GPS Active') : t('farmer.liveNetworkSynced', '🌐 Live Network Synced')) : t('farmer.pinnedLocation', '📍 Pinned Location')}</span>
             </span>
           </div>
 
@@ -172,7 +172,7 @@ export default function FarmerDashboard({ onNavigate }) {
             {greeting}, Ramesh Patel
           </h1>
           <p style={{ color: '#4b6354', fontSize: '0.86rem', maxWidth: '750px', marginTop: '2px' }}>
-            Your centralized agricultural intelligence console: standing crop health, upcoming weather early warnings, and APMC market demand.
+            {t('farmer.consoleSub', 'Your centralized agricultural intelligence console: standing crop health, upcoming weather early warnings, and APMC market demand.')}
           </p>
         </div>
 
@@ -199,7 +199,7 @@ export default function FarmerDashboard({ onNavigate }) {
             title="Auto-detect and sync your live GPS / Network coordinates"
           >
             <Navigation size={14} className={detecting ? 'animate-spin' : ''} color="#2d6a4f" /> 
-            <span>{detecting ? 'Locating...' : 'Sync Live GPS'}</span>
+            <span>{detecting ? t('farmer.locating', 'Locating...') : t('farmer.syncGps', 'Sync Live GPS')}</span>
           </button>
 
           <button 
@@ -216,7 +216,7 @@ export default function FarmerDashboard({ onNavigate }) {
             }}
           >
             <Plus size={16} /> 
-            <span>Add a Product</span>
+            <span>{t('farmer.addProduct', 'Add a Product')}</span>
           </button>
 
           <button 
@@ -237,7 +237,7 @@ export default function FarmerDashboard({ onNavigate }) {
             }}
           >
             <Zap size={15} color="#2d6a4f" /> 
-            <span>Crop Advisory</span>
+            <span>{t('farmer.cropAdvisory', 'Crop Advisory')}</span>
           </button>
 
           <button 
@@ -259,7 +259,7 @@ export default function FarmerDashboard({ onNavigate }) {
             }}
           >
             <RefreshCw size={14} className={refreshing ? 'animate-spin' : ''} /> 
-            <span>{refreshing ? 'Updating...' : 'Sync Radar'}</span>
+            <span>{refreshing ? t('farmer.updating', 'Updating...') : t('farmer.syncRadar', 'Sync Radar')}</span>
           </button>
         </div>
       </div>
@@ -279,19 +279,19 @@ export default function FarmerDashboard({ onNavigate }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <RakshakIcon size={20} />
             <span style={{ fontSize: '0.78rem', fontWeight: 800, letterSpacing: '0.08em', color: '#b6d7c5', textTransform: 'uppercase' }}>
-              Rakshak AI • Executive Farm Briefing
+              {t('farmer.executiveBriefingTitle', 'Rakshak AI • Executive Farm Briefing')}
             </span>
           </div>
           <span style={{ background: '#52b788', color: '#163326', padding: '3px 10px', borderRadius: '6px', fontSize: '0.68rem', fontWeight: 800 }}>
-            LIVE SATELLITE SYNC
+            {t('farmer.liveSatelliteSync', 'LIVE SATELLITE SYNC')}
           </span>
         </div>
 
         <p style={{ fontSize: '0.94rem', color: '#f0f5f2', lineHeight: 1.6, margin: 0 }}>
-          🌾 <strong>Active Farm Status:</strong> You have 2 monitored holdings (<strong>8.0 Acres Sharbati Wheat</strong> & <strong>2.5 Acres Hybrid Tomato</strong>) in {location?.city || 'Meerut'}.
+          🌾 <strong>{t('farmer.activeFarmStatusTitle', 'Active Farm Status:')}</strong> You have 2 monitored holdings (<strong>8.0 Acres Sharbati Wheat</strong> & <strong>2.5 Acres Hybrid Tomato</strong>) in {location?.city || 'Meerut'}.
           1 proactive harvest window is active for Wheat in <strong>~12 days</strong> (advance listing recommended to lock in forward APMC contracts).
           Mandi rates for Wheat are trending <strong>+8.4% above government MSP</strong>.
-          🌧️ <strong>Upcoming Weather:</strong> Rain is predicted in 4 days (~19.4 mm) — postpone scheduled irrigation and complete foliar sprays before Sunday.
+          🌧️ <strong>{t('farmer.upcomingWeatherTitle', 'Upcoming Weather:')}</strong> Rain is predicted in 4 days (~19.4 mm) — postpone scheduled irrigation and complete foliar sprays before Sunday.
         </p>
       </div>
 
@@ -319,17 +319,17 @@ export default function FarmerDashboard({ onNavigate }) {
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span style={{ fontSize: '0.74rem', fontWeight: 800, color: '#657d70', textTransform: 'uppercase' }}>
-              Monitored Holdings
+              {t('farmer.cardHoldings', 'Monitored Holdings')}
             </span>
             <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: '#edf6f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Leaf size={16} color="#2d6a4f" />
             </div>
           </div>
           <div style={{ fontSize: '2rem', fontWeight: 800, color: '#163326', marginTop: '8px', lineHeight: 1.1 }}>
-            10.5 <span style={{ fontSize: '0.9rem', color: '#657d70', fontWeight: 600 }}>Acres</span>
+            10.5 <span style={{ fontSize: '0.9rem', color: '#657d70', fontWeight: 600 }}>{t('farmer.acres', 'Acres')}</span>
           </div>
           <p style={{ fontSize: '0.78rem', color: '#2d6a4f', marginTop: '6px', fontWeight: 700 }}>
-            2 Active Plots • Deep Alluvial Loam (pH 7.4)
+            {t('farmer.cardHoldingsDesc', '2 Active Plots • Deep Alluvial Loam (pH 7.4)')}
           </p>
         </div>
 
@@ -350,17 +350,17 @@ export default function FarmerDashboard({ onNavigate }) {
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span style={{ fontSize: '0.74rem', fontWeight: 800, color: '#657d70', textTransform: 'uppercase' }}>
-              Standing Crops
+              {t('farmer.cardStandingCrops', 'Standing Crops')}
             </span>
             <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: '#edf6f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Activity size={16} color="#2d6a4f" />
             </div>
           </div>
           <div style={{ fontSize: '2rem', fontWeight: 800, color: '#163326', marginTop: '8px', lineHeight: 1.1 }}>
-            3 <span style={{ fontSize: '0.9rem', color: '#657d70', fontWeight: 600 }}>Varieties</span>
+            3 <span style={{ fontSize: '0.9rem', color: '#657d70', fontWeight: 600 }}>{t('farmer.varieties', 'Varieties')}</span>
           </div>
           <p style={{ fontSize: '0.78rem', color: '#2d6a4f', marginTop: '6px', fontWeight: 700 }}>
-            Wheat, Tomato & Cotton • 98% Normal Canopy
+            {t('farmer.cardStandingCropsDesc', 'Wheat, Tomato & Cotton • 98% Normal Canopy')}
           </p>
         </div>
 
@@ -381,17 +381,17 @@ export default function FarmerDashboard({ onNavigate }) {
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span style={{ fontSize: '0.74rem', fontWeight: 800, color: '#0369a1', textTransform: 'uppercase' }}>
-              Weather Radar (4-Day Rain Alert)
+              {t('farmer.cardWeatherRadar', 'Weather Radar (4-Day Rain Alert)')}
             </span>
             <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: '#e0f2fe', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <CloudSun size={16} color="#0284c7" />
             </div>
           </div>
           <div style={{ fontSize: '2rem', fontWeight: 800, color: '#163326', marginTop: '8px', lineHeight: 1.1 }}>
-            {metrics.weather_temp != null ? `${metrics.weather_temp}°C` : '26.5°C'} <span style={{ fontSize: '0.85rem', color: '#dc2626', fontWeight: 800 }}>🌧️ Rain in 4 Days</span>
+            {metrics.weather_temp != null ? `${metrics.weather_temp}°C` : '26.5°C'} <span style={{ fontSize: '0.85rem', color: '#dc2626', fontWeight: 800 }}>🌧️ {t('farmer.rainInDays', 'Rain in 4 Days')}</span>
           </div>
           <p style={{ fontSize: '0.78rem', color: '#0369a1', marginTop: '6px', fontWeight: 700 }}>
-            {location?.city || 'Meerut'}: 19.4 mm on Tuesday • Spray Window Safe Today
+            {location?.city || 'Meerut'}: {t('farmer.cardWeatherDesc', '19.4 mm on Tuesday • Spray Window Safe Today')}
           </p>
         </div>
 
@@ -412,17 +412,17 @@ export default function FarmerDashboard({ onNavigate }) {
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span style={{ fontSize: '0.74rem', fontWeight: 800, color: '#657d70', textTransform: 'uppercase' }}>
-              Live Mandi Corridor
+              {t('farmer.cardMandiBenchmark', 'Live Mandi Corridor')}
             </span>
             <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: '#fef3c7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <TrendingUp size={16} color="#d97706" />
             </div>
           </div>
           <div style={{ fontSize: '2rem', fontWeight: 800, color: '#163326', marginTop: '8px', lineHeight: 1.1 }}>
-            ₹2,425 <span style={{ fontSize: '0.85rem', color: '#657d70', fontWeight: 600 }}>/ Qtl</span>
+            ₹2,425 <span style={{ fontSize: '0.85rem', color: '#657d70', fontWeight: 600 }}>{t('farmer.perQtl', '/ Qtl')}</span>
           </div>
           <p style={{ fontSize: '0.78rem', color: '#d97706', marginTop: '6px', fontWeight: 700 }}>
-            Wheat +8.4% above Govt MSP (₹2,275)
+            {t('farmer.cardMandiDesc', 'Wheat +8.4% above Govt MSP (₹2,275)')}
           </p>
         </div>
       </div>
@@ -462,7 +462,7 @@ export default function FarmerDashboard({ onNavigate }) {
                   padding: '2px 8px',
                   borderRadius: '6px'
                 }}>
-                  🌾 1.5 WEEKS TO HARVEST: PRE-LISTING OPPORTUNITY
+                  {t('farmer.preListingOpp', '🌾 1.5 WEEKS TO HARVEST: PRE-LISTING OPPORTUNITY')}
                 </span>
                 <span style={{ fontSize: '0.78rem', color: '#688273', fontWeight: 600 }}>
                   Plot: {harvestAlert.plot}
@@ -472,7 +472,7 @@ export default function FarmerDashboard({ onNavigate }) {
                 {harvestAlert.crop_name} Expected Harvest in ~12 Days
               </h3>
               <p style={{ fontSize: '0.82rem', color: '#45594e', margin: 0, maxWidth: '780px' }}>
-                {harvestAlert.action_prompt}
+                {t('farmer.preListingPrompt', harvestAlert.action_prompt)}
               </p>
             </div>
           </div>
@@ -497,11 +497,11 @@ export default function FarmerDashboard({ onNavigate }) {
                 transition: 'all 0.16s ease'
               }}
             >
-              <span>Prepare Advance Produce Listing Now</span>
+              <span>{t('farmer.prepareListingBtn', 'Prepare Advance Produce Listing Now')}</span>
               <ArrowRight size={15} />
             </button>
             <span style={{ fontSize: '0.7rem', color: '#688273', textAlign: 'center' }}>
-              Directly routes to dedicated Product Creator
+              {t('farmer.routeHelper', 'Directly routes to dedicated Product Creator')}
             </span>
           </div>
         </div>
@@ -512,10 +512,10 @@ export default function FarmerDashboard({ onNavigate }) {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
           <div>
             <h3 style={{ fontSize: '1.28rem', fontWeight: 800, color: '#163326', margin: 0 }}>
-              Monitored Farm Plots & Standing Crop Health
+              {t('farmer.farmPlotsTitle', 'Monitored Farm Plots & Standing Crop Health')}
             </h3>
             <p style={{ fontSize: '0.82rem', color: '#657d70', margin: '2px 0 0' }}>
-              Real-time physiological stage tracking, harvest timelines, and localized weather diagnostics:
+              {t('farmer.farmPlotsSub', 'Real-time physiological stage tracking, harvest timelines, and localized weather diagnostics:')}
             </p>
           </div>
           <button
@@ -535,7 +535,7 @@ export default function FarmerDashboard({ onNavigate }) {
               gap: '6px'
             }}
           >
-            <span>Manage All Plots</span>
+            <span>{t('farmer.manageAllPlots', 'Manage All Plots')}</span>
             <ChevronRight size={14} />
           </button>
         </div>
@@ -784,7 +784,7 @@ export default function FarmerDashboard({ onNavigate }) {
               </span>
             </div>
             <h3 style={{ fontSize: '1.22rem', fontWeight: 800, color: '#163326', marginTop: '4px', margin: 0 }}>
-              Regional Mandi Rates vs Government MSP (2025–26)
+              {t('farmer.mandiTableTitle', 'Regional Mandi Rates vs Government MSP (2025–26)')}
             </h3>
           </div>
           <button
@@ -804,7 +804,7 @@ export default function FarmerDashboard({ onNavigate }) {
               gap: '6px'
             }}
           >
-            <span>Open Full Mandi Hub</span>
+            <span>{t('farmer.openMandiHub', 'Open Full Mandi Hub')}</span>
             <ArrowRight size={14} />
           </button>
         </div>
@@ -813,13 +813,13 @@ export default function FarmerDashboard({ onNavigate }) {
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.84rem' }}>
             <thead>
               <tr style={{ borderBottom: '1.5px solid rgba(22, 51, 38, 0.12)', color: '#6e8577', fontSize: '0.72rem', textTransform: 'uppercase' }}>
-                <th style={{ padding: '10px 14px' }}>Crop Commodity</th>
-                <th style={{ padding: '10px 14px' }}>Active Mandi Hub</th>
-                <th style={{ padding: '10px 14px' }}>Current Modal Rate</th>
-                <th style={{ padding: '10px 14px' }}>Govt MSP</th>
-                <th style={{ padding: '10px 14px' }}>MSP Difference</th>
-                <th style={{ padding: '10px 14px' }}>Wholesale Demand</th>
-                <th style={{ padding: '10px 14px', textAlign: 'right' }}>Direct Action</th>
+                <th style={{ padding: '10px 14px' }}>{t('farmer.thCommodity', 'Crop Commodity')}</th>
+                <th style={{ padding: '10px 14px' }}>{t('farmer.thMandi', 'Active Mandi Hub')}</th>
+                <th style={{ padding: '10px 14px' }}>{t('farmer.thModalRate', 'Current Modal Rate')}</th>
+                <th style={{ padding: '10px 14px' }}>{t('farmer.thGovtMsp', 'Govt MSP')}</th>
+                <th style={{ padding: '10px 14px' }}>{t('farmer.thMspDiff', 'MSP Difference')}</th>
+                <th style={{ padding: '10px 14px' }}>{t('farmer.thDemand', 'Wholesale Demand')}</th>
+                <th style={{ padding: '10px 14px', textAlign: 'right' }}>{t('farmer.thAction', 'Direct Action')}</th>
               </tr>
             </thead>
             <tbody>
@@ -877,21 +877,21 @@ export default function FarmerDashboard({ onNavigate }) {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '8px' }}>
           <div>
             <h3 style={{ fontSize: '1.22rem', fontWeight: 800, color: '#163326', margin: 0 }}>
-              7-Day Farm Operations & Action Schedule
+              {t('farmer.sevenDayTitle', '7-Day Farm Operations & Action Schedule')}
             </h3>
             <span style={{ fontSize: '0.76rem', color: '#688273' }}>
-              Automated agronomic checklist synchronized with upcoming 4-day rainfall arrival:
+              {t('farmer.sevenDaySub', 'Automated agronomic checklist synchronized with upcoming 4-day rainfall arrival:')}
             </span>
           </div>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
           {[
-            { day: 'Today (Saturday)', badge: 'SAFE WINDOW', bg: '#edf6f0', color: '#2d6a4f', task: 'Morning bio-spray window is safe (calm wind 8.4 km/h). Inspect tomato vines.' },
-            { day: 'Tomorrow (Sunday)', badge: 'HARVEST TODAY', bg: '#fef3c7', color: '#b45309', task: 'Harvest mature breaker-stage tomatoes; clear furrow ends before downpour.' },
-            { day: 'Monday (Day 3)', badge: 'PRE-RAIN UREA', bg: '#e0f2fe', color: '#0369a1', task: 'Hold foliar spray; apply top-dressing Urea on wheat 24h before rainfall.' },
-            { day: 'Tuesday (Day 4)', badge: '🚨 RAIN ARRIVAL', bg: '#fee2e2', color: '#dc2626', task: 'Rainfall expected (~19.4 mm). Postpone tube-well pumping to save diesel.' },
-            { day: 'Thursday (Post-Rain)', badge: 'DIAGNOSTICS', bg: '#f3e8ff', color: '#7c3aed', task: 'Check cotton plots for boll rot spores; schedule Copper Oxychloride if required.' }
+            { day: 'Today (Saturday)', badge: t('farmer.safeWindow', 'SAFE WINDOW'), bg: '#edf6f0', color: '#2d6a4f', task: 'Morning bio-spray window is safe (calm wind 8.4 km/h). Inspect tomato vines.' },
+            { day: 'Tomorrow (Sunday)', badge: t('farmer.harvestToday', 'HARVEST TODAY'), bg: '#fef3c7', color: '#b45309', task: 'Harvest mature breaker-stage tomatoes; clear furrow ends before downpour.' },
+            { day: 'Monday (Day 3)', badge: t('farmer.preRainUrea', 'PRE-RAIN UREA'), bg: '#e0f2fe', color: '#0369a1', task: 'Hold foliar spray; apply top-dressing Urea on wheat 24h before rainfall.' },
+            { day: 'Tuesday (Day 4)', badge: t('farmer.rainArrival', '🚨 RAIN ARRIVAL'), bg: '#fee2e2', color: '#dc2626', task: 'Rainfall expected (~19.4 mm). Postpone tube-well pumping to save diesel.' },
+            { day: 'Thursday (Post-Rain)', badge: t('farmer.diagnostics', 'DIAGNOSTICS'), bg: '#f3e8ff', color: '#7c3aed', task: 'Check cotton plots for boll rot spores; schedule Copper Oxychloride if required.' }
           ].map((item, sIdx) => (
             <div
               key={sIdx}
@@ -933,34 +933,34 @@ export default function FarmerDashboard({ onNavigate }) {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 800, color: '#163326' }}>
           <Info size={14} color="#2d6a4f" />
-          <span>Status Legend:</span>
+          <span>{t('farmer.legendTitle', 'Status Legend:')}</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#2d6a4f', flexShrink: 0 }} />
-          <span><strong style={{ color: '#163326' }}>Green:</strong> Healthy / Safe Operations</span>
+          <span><strong style={{ color: '#163326' }}>{t('farmer.legendGreen', 'Green: Healthy / Safe Operations')}</strong></span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#7c3aed', flexShrink: 0 }} />
-          <span><strong style={{ color: '#163326' }}>Purple:</strong> AI Advisory Signals</span>
+          <span><strong style={{ color: '#163326' }}>{t('farmer.legendPurple', 'Purple: AI Advisory Signals')}</strong></span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#0284c7', flexShrink: 0 }} />
-          <span><strong style={{ color: '#163326' }}>Blue:</strong> Meteorology & Irrigation</span>
+          <span><strong style={{ color: '#163326' }}>{t('farmer.legendBlue', 'Blue: Meteorology & Irrigation')}</strong></span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#f59e0b', flexShrink: 0 }} />
-          <span><strong style={{ color: '#163326' }}>Amber:</strong> Harvest & Mandi Window</span>
+          <span><strong style={{ color: '#163326' }}>{t('farmer.legendAmber', 'Amber: Harvest & Mandi Window')}</strong></span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#dc2626', flexShrink: 0 }} />
-          <span><strong style={{ color: '#163326' }}>Crimson:</strong> Critical Risk Alert</span>
+          <span><strong style={{ color: '#163326' }}>{t('farmer.legendCrimson', 'Crimson: Critical Risk Alert')}</strong></span>
         </div>
       </div>
 
       {/* 9. QUICK ACTIONPAD TILES */}
       <div>
         <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#163326', marginBottom: '14px' }}>
-          Quick Actionpad & Farm Workspaces
+          {t('farmer.actionpadTitle', 'Quick Actionpad & Farm Workspaces')}
         </h3>
         <div style={{
           display: 'grid',
@@ -968,12 +968,12 @@ export default function FarmerDashboard({ onNavigate }) {
           gap: '14px'
         }}>
           {[
-            { id: 'create-product', label: 'Add a Product', icon: <Plus size={20} />, desc: 'Publish harvest batch to buyers', color: '#2d6a4f', bg: '#edf6f0' },
-            { id: 'crops-recommend', label: 'Crop Advisory', icon: <Zap size={20} />, desc: 'Soil map & climate recommendations', color: '#7c3aed', bg: '#f3e8ff' },
-            { id: 'weather', label: 'Weather Center', icon: <CloudSun size={20} />, desc: '7-day radar & crop protection', color: '#0284c7', bg: '#e0f2fe' },
-            { id: 'market', label: 'Mandi Bhav', icon: <TrendingUp size={20} />, desc: 'Live APMC market rates across India', color: '#d97706', bg: '#fef3c7' },
-            { id: 'orders', label: 'Orders Received', icon: <Package size={20} />, desc: 'Track buyer dispatch & payouts', color: '#059669', bg: '#d1fae5' },
-            { id: 'farms', label: 'Farm Management', icon: <Layers size={20} />, desc: 'Manage plots & soil records', color: '#4b5563', bg: '#f3f4f6' }
+            { id: 'create-product', label: t('farmer.addProduct', 'Add a Product'), icon: <Plus size={20} />, desc: 'Publish harvest batch to buyers', color: '#2d6a4f', bg: '#edf6f0' },
+            { id: 'crops-recommend', label: t('farmer.cropAdvisory', 'Crop Advisory'), icon: <Zap size={20} />, desc: 'Soil map & climate recommendations', color: '#7c3aed', bg: '#f3e8ff' },
+            { id: 'weather', label: t('nav.weather', 'Weather Center'), icon: <CloudSun size={20} />, desc: '7-day radar & crop protection', color: '#0284c7', bg: '#e0f2fe' },
+            { id: 'market', label: t('nav.market', 'Live Mandi Bhav & Prices'), icon: <TrendingUp size={20} />, desc: 'Live APMC market rates across India', color: '#d97706', bg: '#fef3c7' },
+            { id: 'orders', label: t('nav.orders', 'Orders Received'), icon: <Package size={20} />, desc: 'Track buyer dispatch & payouts', color: '#059669', bg: '#d1fae5' },
+            { id: 'farms', label: t('nav.farms', 'Farm Management'), icon: <Layers size={20} />, desc: 'Manage plots & soil records', color: '#4b5563', bg: '#f3f4f6' }
           ].map(tile => (
             <div
               key={tile.id}

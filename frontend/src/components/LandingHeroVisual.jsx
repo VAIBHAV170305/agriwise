@@ -3,10 +3,12 @@ import {
   ShieldCheck, Leaf, TrendingUp, Sparkles, MapPin, 
   CheckCircle2, CloudSun, Droplets, ArrowUpRight 
 } from 'lucide-react';
+import { useLanguage } from '../i18n/LanguageContext';
 import heroFarmerImg from '../assets/hero-farmer.jpg';
 import heroFieldImg from '../assets/hero-field.jpg';
 
 export default function LandingHeroVisual() {
+  const { t } = useLanguage();
   const [selectedPhoto, setSelectedPhoto] = useState('farmer'); // 'farmer' | 'field'
 
   const activeImage = selectedPhoto === 'farmer' ? heroFarmerImg : heroFieldImg;
@@ -90,7 +92,7 @@ export default function LandingHeroVisual() {
             boxShadow: '0 0 8px #16a34a'
           }} />
           <span style={{ fontSize: '0.74rem', fontWeight: 800, color: '#163326', letterSpacing: '0.02em' }}>
-            Bharat Agri-Stack Verified
+            {t('landing.verifiedAgriStack', 'Bharat Agri-Stack Verified')}
           </span>
         </div>
 
@@ -122,7 +124,7 @@ export default function LandingHeroVisual() {
               transition: 'all 0.15s ease'
             }}
           >
-            Farmer
+            {t('landing.photoFarmer', 'Farmer')}
           </button>
           <button
             type="button"
@@ -139,7 +141,7 @@ export default function LandingHeroVisual() {
               transition: 'all 0.15s ease'
             }}
           >
-            Crop Field
+            {t('landing.photoField', 'Crop Field')}
           </button>
         </div>
 
@@ -178,7 +180,7 @@ export default function LandingHeroVisual() {
               Rakshak AI Vision
             </div>
             <div style={{ fontSize: '0.86rem', fontWeight: 800, color: '#163326', lineHeight: 1.2 }}>
-              99.4% Healthy Canopy
+              {t('landing.healthyCanopy', '99.4% Healthy Canopy')}
             </div>
           </div>
         </div>
@@ -218,7 +220,7 @@ export default function LandingHeroVisual() {
               APMC Mandi Rate
             </div>
             <div style={{ fontSize: '0.86rem', fontWeight: 800, color: '#163326', lineHeight: 1.2 }}>
-              ₹2,480/Q <span style={{ fontSize: '0.72rem', color: '#16a34a', fontWeight: 800 }}>+8.4%</span>
+              ₹2,480/Q <span style={{ fontSize: '0.72rem', color: '#16a34a', fontWeight: 800 }}>{t('landing.aboveMsp', '+8.4%')}</span>
             </div>
           </div>
         </div>

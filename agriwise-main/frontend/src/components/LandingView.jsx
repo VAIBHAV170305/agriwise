@@ -102,15 +102,15 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '36px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.92rem', color: '#2a3d33', fontWeight: 500 }}>
               <span style={{ color: '#2b5741', fontWeight: 700 }}>✓</span>
-              <span>Keep farm and crop records together</span>
+              <span>{t('landing.checkRecords', 'Keep farm and crop records together')}</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.92rem', color: '#2a3d33', fontWeight: 500 }}>
               <span style={{ color: '#2b5741', fontWeight: 700 }}>✓</span>
-              <span>Turn questions into grounded next steps</span>
+              <span>{t('landing.checkSteps', 'Turn questions into grounded next steps')}</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.92rem', color: '#2a3d33', fontWeight: 500 }}>
               <span style={{ color: '#2b5741', fontWeight: 700 }}>✓</span>
-              <span>Connect offerings, orders and deliveries</span>
+              <span>{t('landing.checkCommerce', 'Connect offerings, orders and deliveries')}</span>
             </div>
           </div>
 
@@ -133,7 +133,7 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
                 gap: '8px'
               }}
             >
-              <span>🚀 Launch Farmer Dashboard</span>
+              <span>🚀 {t('landing.ctaFarmer', 'Launch Farmer Dashboard')}</span>
               <ArrowRight size={18} />
             </button>
 
@@ -148,7 +148,7 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
                 cursor: 'pointer'
               }}
             >
-              <span>Sign In with Password</span>
+              <span>{t('landing.signInPassword', 'Sign In with Password')}</span>
             </button>
           </div>
 
@@ -162,7 +162,7 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
             marginTop: '20px'
           }}>
             <ShieldCheck size={16} color="#4f735f" />
-            <span>Secure account sign-in • your data stays private to your role</span>
+            <span>{t('landing.secureFootnote', 'Secure account sign-in • your data stays private to your role')}</span>
           </div>
         </div>
 
@@ -192,10 +192,10 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '14px', marginBottom: '18px' }}>
           <div>
             <h3 style={{ fontSize: '1.22rem', color: '#163326', fontWeight: 800, margin: 0 }}>
-              Role-Based Workspace Access
+              {t('landing.roleAccessTitle', 'Role-Based Workspace Access')}
             </h3>
             <p style={{ fontSize: '0.84rem', color: '#576c60', marginTop: '3px', margin: 0 }}>
-              Telemetry, farm maps, and mandi trading dynamically adapt based on your authenticated persona.
+              {t('landing.roleAccessSub', 'Telemetry, farm maps, and mandi trading dynamically adapt based on your authenticated persona.')}
             </p>
           </div>
 
@@ -206,7 +206,7 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
               onClick={() => onOpenLogin ? onOpenLogin() : setShowAuthModal(true)}
               style={{ padding: '8px 16px', fontSize: '0.82rem', fontWeight: 700 }}
             >
-              Sign In with Credentials
+              {t('landing.signInCredentials', 'Sign In with Credentials')}
             </button>
           </div>
         </div>
@@ -225,10 +225,10 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
           <div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
               <span style={{ fontSize: '0.74rem', fontWeight: 800, color: '#163326', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                ⚡ 1-Click Quick Access:
+                {t('landing.quickAccess', '⚡ 1-Click Quick Access:')}
               </span>
               <span style={{ fontSize: '0.68rem', color: '#6e8577', fontWeight: 600 }}>
-                Directly launch any workspace
+                {t('landing.quickAccessSub', 'Directly launch any workspace')}
               </span>
             </div>
             <div style={{
@@ -237,11 +237,11 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
               gap: '8px'
             }}>
               {[
-                { key: 'Farmer', label: 'Farmer', icon: '🌾', user: 'Ramesh Patel', badge: 'Producer', color: '#2d6a4f', bg: '#edf6f0' },
-                { key: 'Buyer', label: 'Buyer', icon: '💼', user: 'Ananya Sharma', badge: 'Wholesale', color: '#b45309', bg: '#fef3c7' },
-                { key: 'Delivery', label: 'Delivery', icon: '🚚', user: 'Vikram Singh', badge: 'Logistics', color: '#0284c7', bg: '#e0f2fe' },
-                { key: 'FPO', label: 'FPO Lead', icon: '👥', user: 'Sanjay Verma', badge: 'Aggregator', color: '#7c3aed', bg: '#f3e8ff' },
-                { key: 'Admin', label: 'Admin', icon: '🛡️', user: 'Platform Admin', badge: 'Governance', color: '#dc2626', bg: '#fee2e2' }
+                { key: 'Farmer', label: t('common.roleFarmer', 'Farmer'), icon: '🌾', user: 'Ramesh Patel', badge: t('landing.roleProducer', 'Producer'), color: '#2d6a4f', bg: '#edf6f0' },
+                { key: 'Buyer', label: t('common.roleBuyer', 'Buyer'), icon: '💼', user: 'Ananya Sharma', badge: t('landing.roleWholesale', 'Wholesale'), color: '#b45309', bg: '#fef3c7' },
+                { key: 'Delivery', label: t('common.roleDelivery', 'Delivery'), icon: '🚚', user: 'Vikram Singh', badge: t('landing.roleLogistics', 'Logistics'), color: '#0284c7', bg: '#e0f2fe' },
+                { key: 'FPO', label: t('common.roleFpo', 'FPO Lead'), icon: '👥', user: 'Sanjay Verma', badge: t('landing.roleAggregator', 'Aggregator'), color: '#7c3aed', bg: '#f3e8ff' },
+                { key: 'Admin', label: t('common.roleAdmin', 'Admin'), icon: '🛡️', user: 'Platform Admin', badge: t('landing.roleGovernance', 'Governance'), color: '#dc2626', bg: '#fee2e2' }
               ].map(btn => (
                 <button
                   key={btn.key}
@@ -292,7 +292,7 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', borderTop: '1px solid rgba(27, 56, 43, 0.08)', paddingTop: '12px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1, minWidth: '280px' }}>
               <span style={{ fontSize: '0.74rem', fontWeight: 700, color: '#688273', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                Role Preview:
+                {t('landing.rolePreview', 'Role Preview:')}
               </span>
               <select
                 value={selectedRolePreview}
@@ -309,11 +309,11 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
                   cursor: 'pointer'
                 }}
               >
-                <option value="Farmer">🌾 Farmer / Agricultural Producer (Ramesh Patel)</option>
-                <option value="Buyer">💼 Wholesale Buyer & Aggregator (Ananya Sharma)</option>
-                <option value="Delivery">🚚 Delivery Partner & Fleet Logistics (Vikram Singh)</option>
-                <option value="FPO">👥 FPO Lead / Producer Organization (Sanjay Verma)</option>
-                <option value="Admin">🛡️ Platform Admin / Governance (Administrator)</option>
+                <option value="Farmer">🌾 {t('common.roleFarmer', 'Farmer')} / {t('landing.roleProducer', 'Producer')} (Ramesh Patel)</option>
+                <option value="Buyer">💼 {t('common.roleBuyer', 'Buyer')} / {t('landing.roleWholesale', 'Wholesale')} (Ananya Sharma)</option>
+                <option value="Delivery">🚚 {t('common.roleDelivery', 'Delivery')} / {t('landing.roleLogistics', 'Logistics')} (Vikram Singh)</option>
+                <option value="FPO">👥 {t('common.roleFpo', 'FPO Lead')} / {t('landing.roleAggregator', 'Aggregator')} (Sanjay Verma)</option>
+                <option value="Admin">🛡️ {t('common.roleAdmin', 'Admin')} / {t('landing.roleGovernance', 'Governance')}</option>
               </select>
             </div>
 
@@ -323,7 +323,7 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
               onClick={() => onRoleSwitch(selectedRolePreview)}
               style={{ padding: '8px 18px', fontSize: '0.84rem' }}
             >
-              <span>Launch {selectedRolePreview} Workspace</span>
+              <span>{t('landing.launchWorkspace', 'Launch Workspace')}</span>
               <ArrowRight size={15} />
             </button>
           </div>
@@ -420,10 +420,10 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <span className="badge badge-critical pulse-critical">
-            CRITICAL SAFEGUARD
+            {t('landing.safeguardTitle', 'CRITICAL SAFEGUARD')}
           </span>
           <span style={{ fontSize: '0.85rem', color: '#991b1b', fontWeight: 600 }}>
-            Unpredicted pest outbreaks & harvest gluts cause 20% to 40% crop losses annually. Rakshak AI provides pre-emptive diagnostics and guaranteed forward Mandi contracts.
+            {t('landing.safeguardDesc', 'Unpredicted pest outbreaks & harvest gluts cause 20% to 40% crop losses annually. Rakshak AI provides pre-emptive diagnostics and guaranteed forward Mandi contracts.')}
           </span>
         </div>
         <button
@@ -440,7 +440,7 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
             boxShadow: '0 2px 8px rgba(217, 4, 41, 0.25)'
           }}
         >
-          Protect My Crop →
+          {t('landing.protectCrop', 'Protect My Crop →')}
         </button>
       </div>
 
@@ -462,11 +462,11 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
             <RakshakIcon size={20} color="#1b382b" />
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-            <h3 style={{ fontSize: '1.18rem', color: '#163326', margin: 0 }}>Crop Recommender</h3>
+            <h3 style={{ fontSize: '1.18rem', color: '#163326', margin: 0 }}>{t('landing.feature1Title', 'Crop Recommender')}</h3>
             <RakshakBadge text="AI Matcher" />
           </div>
           <p style={{ fontSize: '0.86rem', color: '#576c60', lineHeight: 1.5 }}>
-            Trained Random Forest classifier matching 22 agricultural crops to soil Nitrogen, Phosphorus, Potassium, pH, and precipitation profiles.
+            {t('landing.feature1Desc', 'Trained Random Forest classifier matching 22 agricultural crops to soil Nitrogen, Phosphorus, Potassium, pH, and precipitation profiles.')}
           </p>
         </div>
 
@@ -479,11 +479,11 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
             <ShieldCheck size={20} color="var(--crimson-600)" />
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-            <h3 style={{ fontSize: '1.18rem', color: '#163326', margin: 0 }}>Vision Disease Scanner</h3>
+            <h3 style={{ fontSize: '1.18rem', color: '#163326', margin: 0 }}>{t('landing.feature2Title', 'Vision Disease Scanner')}</h3>
             <span className="badge badge-critical">Early Warning</span>
           </div>
           <p style={{ fontSize: '0.86rem', color: '#576c60', lineHeight: 1.5 }}>
-            Rapid leaf pathology identification with organic biocontrol remedies, preventing <strong style={{ color: 'var(--crimson-600)' }}>20%-40%</strong> yield losses from foliar pathogens.
+            {t('landing.feature2Desc', 'Rapid leaf pathology identification with organic biocontrol remedies, preventing 20%-40% yield losses from foliar pathogens.')}
           </p>
         </div>
 
@@ -496,11 +496,11 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
             <CloudSun size={20} color="#22678f" />
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-            <h3 style={{ fontSize: '1.18rem', color: '#163326', margin: 0 }}>Weather & Rakshak AI</h3>
+            <h3 style={{ fontSize: '1.18rem', color: '#163326', margin: 0 }}>{t('landing.feature3Title', 'Weather & Rakshak AI')}</h3>
             <RakshakBadge text="RAG Verified" />
           </div>
           <p style={{ fontSize: '0.86rem', color: '#576c60', lineHeight: 1.5 }}>
-            Micro-climate agricultural advisories plus Rakshak, our intelligent AI assistant citing ICAR and SAU verified agronomy manuals.
+            {t('landing.feature3Desc', 'Micro-climate agricultural advisories plus Rakshak, our intelligent AI assistant citing ICAR and SAU verified agronomy manuals.')}
           </p>
         </div>
 
@@ -512,9 +512,9 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
           }}>
             <ShoppingBag size={20} color="#b47818" />
           </div>
-          <h3 style={{ fontSize: '1.18rem', color: '#163326', marginBottom: '8px' }}>Direct Mandi Marketplace</h3>
+          <h3 style={{ fontSize: '1.18rem', color: '#163326', marginBottom: '8px' }}>{t('landing.feature4Title', 'Direct Mandi Marketplace')}</h3>
           <p style={{ fontSize: '0.86rem', color: '#576c60', lineHeight: 1.5 }}>
-            Disintermediate produce sales, track 90-day demand corridors, and fulfill purchase orders directly with institutional buyers.
+            {t('landing.feature4Desc', 'Disintermediate produce sales, track 90-day demand corridors, and fulfill purchase orders directly with institutional buyers.')}
           </p>
         </div>
       </div>
