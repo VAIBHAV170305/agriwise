@@ -4,7 +4,7 @@ import {
   MapPin, Leaf, DollarSign, Calendar, ArrowRight, Zap, RefreshCw,
   Clock, Package, ShoppingBag, CheckCircle2, ChevronRight, CloudRain,
   Info, Sparkles, Plus, Award, BarChart3, Droplets, Thermometer,
-  Compass, CheckSquare
+  Compass, CheckSquare, Layers
 } from 'lucide-react';
 import { api } from '../api';
 import { useLanguage } from '../i18n/LanguageContext';
