@@ -174,10 +174,10 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
         </div>
       </div>
 
-      {/* Multi-Lingual Regional Language Banner for Indian Farmers (Restricted while regional translations are in progress) */}
-      {/* <div style={{ maxWidth: '960px', margin: '0 auto' }}>
+      {/* Multi-Lingual Regional Language Banner for Indian Farmers */}
+      <div style={{ maxWidth: '1080px', margin: '0 auto 36px', padding: '0 16px' }}>
         <LanguageSelector variant="landing-banner" />
-      </div> */}
+      </div>
 
       {/* Role Selection & Authentication Access Card */}
       <div style={{

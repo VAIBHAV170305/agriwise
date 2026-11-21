@@ -215,8 +215,11 @@ export default function Navbar({
             </div>
           </div>
 
-          {/* Right Controls: Role Switcher Dropdown Menu + Sign In / Dashboard Shortcut */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          {/* Right Controls: Language Selector + Role Switcher Dropdown Menu + Sign In / Dashboard Shortcut */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            {/* Language Selector */}
+            <LanguageSelector variant="compact" />
+
             {/* Clean Role Switcher Dropdown Menu */}
             <div ref={roleDropdownRef} style={{ position: 'relative' }}>
               <button
@@ -402,9 +405,10 @@ export default function Navbar({
           </h2>
         </div>
 
-        {/* Right Controls: Location Pill + Role Switcher Dropdown + Notifications + Profile Dropdown */}
+        {/* Right Controls: Location Pill + Language Selector + Role Switcher Dropdown + Notifications + Profile Dropdown */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <LocationBanner variant="compact" />
+          <LanguageSelector variant="compact" />
 
           {/* Clean Role Switcher Dropdown Menu */}
           <div ref={roleDropdownRef} style={{ position: 'relative' }}>

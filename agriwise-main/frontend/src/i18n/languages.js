@@ -11,9 +11,7 @@ export const SUPPORTED_LANGUAGES = [
     region: 'Pan-India / Official',
     short: 'EN',
     greeting: 'Welcome Farmer Friend'
-  }
-  /*
-  // Regional languages temporarily paused while full multilingual dictionaries undergo localization
+  },
   {
     code: 'hi',
     name: 'Hindi',
@@ -94,7 +92,6 @@ export const SUPPORTED_LANGUAGES = [
     short: 'ଓ',
     greeting: 'ନମସ୍କାର ଚାଷୀ ଭାଇ ଓ ଭଉଣୀ'
   }
-  */
 ];
 
 export const DEFAULT_LANGUAGE = 'en';

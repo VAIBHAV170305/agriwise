@@ -244,16 +244,53 @@ export default function Sidebar({
         ))}
       </div>
 
-      {/* Pinned Bottom Footer: User Profile */}
+      {/* Pinned Bottom Footer: Language Preference & User Profile */}
       <div style={{
         flexShrink: 0,
         borderTop: '1px solid rgba(27, 56, 43, 0.08)',
-        background: '#fcfbf8'
+        background: '#fcfbf8',
+        padding: '10px 14px 14px'
       }}>
+        {/* Quick Language Preference Button */}
+        <button
+          type="button"
+          onClick={() => setShowLangModal(true)}
+          style={{
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            background: '#ffffff',
+            border: '1px solid rgba(27, 56, 43, 0.12)',
+            borderRadius: '10px',
+            padding: '7px 10px',
+            marginBottom: '10px',
+            cursor: 'pointer',
+            transition: 'all 0.15s ease',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#2d6a4f'; e.currentTarget.style.background = '#f2f7f4'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(27, 56, 43, 0.12)'; e.currentTarget.style.background = '#ffffff'; }}
+          title="Change Regional Language Preference"
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
+            <Languages size={15} color="#2d6a4f" style={{ flexShrink: 0 }} />
+            <div style={{ textAlign: 'left', minWidth: 0 }}>
+              <div style={{ fontSize: '0.78rem', fontWeight: 800, color: '#163326', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {currentLanguageObj.nativeName}
+              </div>
+              <div style={{ fontSize: '0.64rem', color: '#687d70' }}>
+                {currentLanguageObj.name} ({currentLanguageObj.short})
+              </div>
+            </div>
+          </div>
+          <span style={{ fontSize: '0.66rem', color: '#2d6a4f', fontWeight: 800, padding: '2px 6px', background: '#e0ece4', borderRadius: '4px', flexShrink: 0 }}>
+            Change
+          </span>
+        </button>
 
         {/* User Card & Logout */}
         <div style={{
-          padding: '10px 14px 14px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
