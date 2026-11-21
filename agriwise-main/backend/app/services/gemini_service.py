@@ -1,4 +1,5 @@
 import os
+import time
 import json
 import base64
 import logging
@@ -15,6 +16,7 @@ class GeminiService:
         self.fallback_models = ["gemini-2.0-flash", "gemini-1.5-flash-latest"]
         self.base_url = "https://generativelanguage.googleapis.com/v1beta/models"
         self._last_status = {"checked": False, "live": False, "message": "Initialized"}
+        self._backoff_until = 0
 
     def refresh_key(self, new_key: Optional[str] = None):
         """Update API key dynamically at runtime."""
@@ -23,6 +25,7 @@ class GeminiService:
         else:
             self.api_key = os.getenv("GEMINI_API_KEY", settings.GEMINI_API_KEY).strip()
         self._last_status["checked"] = False
+        self._backoff_until = 0
 
     def check_health(self) -> Dict[str, Any]:
         """Verify API key validity against Google Generative Language API."""
@@ -38,8 +41,9 @@ class GeminiService:
             "contents": [{"parts": [{"text": "Ping"}]}]
         }
         try:
-            resp = requests.post(url, json=payload, timeout=5)
+            resp = requests.post(url, json=payload, timeout=3)
             if resp.status_code == 200:
+                self._backoff_until = 0
                 self._last_status = {
                     "configured": True,
                     "live": True,
@@ -49,6 +53,7 @@ class GeminiService:
                 }
                 return self._last_status
             else:
+                self._backoff_until = time.time() + 120  # 2 minute circuit breaker on error
                 err_data = resp.json().get("error", {})
                 err_msg = err_data.get("message", resp.text)
                 self._last_status = {
@@ -61,6 +66,7 @@ class GeminiService:
                 }
                 return self._last_status
         except Exception as e:
+            self._backoff_until = time.time() + 120
             self._last_status = {
                 "configured": True,
                 "live": False,
@@ -80,7 +86,7 @@ class GeminiService:
         Generates an agronomic response using Gemini API.
         Returns the text response on success, or None if the API is suspended/unavailable.
         """
-        if not self.api_key:
+        if not self.api_key or time.time() < self._backoff_until:
             return None
 
         # Build comprehensive system agronomic instructions
