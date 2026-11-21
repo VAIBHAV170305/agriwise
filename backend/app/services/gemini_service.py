@@ -165,7 +165,7 @@ class GeminiService:
         Analyzes a crop leaf photo using Gemini multimodal vision.
         Returns structured diagnosis dict, or None if Gemini is unavailable.
         """
-        if not self.api_key:
+        if not self.api_key or time.time() < self._backoff_until:
             return None
 
         prompt = (

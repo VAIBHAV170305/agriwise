@@ -167,6 +167,10 @@ class DiseaseAnalysisResponse(BaseModel):
     management_guide: Dict[str, Any]
     is_uncertain: bool
     disclaimer: str
+    engine: Optional[str] = "ai-vision"
+
+    class Config:
+        extra = "allow"
 
 # Weather Schemas
 class WeatherResponse(BaseModel):
