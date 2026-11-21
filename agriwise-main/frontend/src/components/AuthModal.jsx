@@ -189,10 +189,65 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, onRoleSwitc
         {/* Quick 1-Click Demo Profiles (When in Sign In mode) */}
         {!isRegister && (
           <div style={{ marginBottom: '20px' }}>
-            <div style={{ marginTop: '16px' }}>
-              <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 700, color: '#6e8577', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '8px', textAlign: 'center' }}>
-                Quick Demo Role Access
-              </label>
+            <div style={{ marginTop: '14px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <label style={{ fontSize: '0.72rem', fontWeight: 800, color: '#163326', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                  ⚡ Quick Demo Access (1-Click)
+                </label>
+                <span style={{ fontSize: '0.68rem', color: '#6e8577', fontWeight: 600 }}>
+                  Select any role
+                </span>
+              </div>
+
+              {/* 5 Quick Access Persona Buttons */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(5, 1fr)',
+                gap: '6px',
+                marginBottom: '10px'
+              }}>
+                {[
+                  { key: 'Farmer', label: 'Farmer', icon: '🌾', user: 'Ramesh', color: '#2d6a4f', bg: '#edf6f0' },
+                  { key: 'Buyer', label: 'Buyer', icon: '💼', user: 'Ananya', color: '#b45309', bg: '#fef3c7' },
+                  { key: 'Delivery', label: 'Delivery', icon: '🚚', user: 'Vikram', color: '#0284c7', bg: '#e0f2fe' },
+                  { key: 'FPO', label: 'FPO', icon: '👥', user: 'Sanjay', color: '#7c3aed', bg: '#f3e8ff' },
+                  { key: 'Admin', label: 'Admin', icon: '🛡️', user: 'Admin', color: '#dc2626', bg: '#fee2e2' }
+                ].map(item => (
+                  <button
+                    key={item.key}
+                    type="button"
+                    disabled={loading}
+                    onClick={() => handleQuickDemoLogin(item.key)}
+                    title={`1-Click login as ${item.label} (${item.user})`}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      padding: '7px 4px',
+                      borderRadius: '10px',
+                      border: '1px solid rgba(22, 51, 38, 0.12)',
+                      background: '#fcfdfc',
+                      cursor: loading ? 'not-allowed' : 'pointer',
+                      transition: 'all 0.16s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = item.color;
+                      e.currentTarget.style.background = item.bg;
+                      e.currentTarget.style.transform = 'translateY(-1px)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = 'rgba(22, 51, 38, 0.12)';
+                      e.currentTarget.style.background = '#fcfdfc';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                    }}
+                  >
+                    <span style={{ fontSize: '1.15rem', lineHeight: 1 }}>{item.icon}</span>
+                    <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#163326', marginTop: '3px' }}>{item.label}</span>
+                    <span style={{ fontSize: '0.62rem', color: '#688273' }}>{item.user}</span>
+                  </button>
+                ))}
+              </div>
+
               <select
                 className="form-select"
                 defaultValue=""
@@ -202,19 +257,22 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess, onRoleSwitc
                 disabled={loading}
                 style={{
                   width: '100%',
-                  padding: '9px 12px',
-                  borderRadius: '10px',
-                  border: '1px solid rgba(22, 51, 38, 0.15)',
+                  padding: '7px 10px',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(22, 51, 38, 0.12)',
                   background: '#f8faf7',
-                  color: '#163326',
-                  fontSize: '0.84rem',
-                  fontWeight: 700,
+                  color: '#52665b',
+                  fontSize: '0.76rem',
+                  fontWeight: 600,
                   cursor: 'pointer'
                 }}
               >
-                <option value="" disabled>Choose a persona to sign in directly...</option>
+                <option value="" disabled>Or select persona from dropdown...</option>
                 <option value="Farmer">🌾 Farmer: Ramesh Patel (farmer@agriwise.com)</option>
                 <option value="Buyer">💼 Wholesale Buyer: Ananya Sharma (buyer@agriwise.com)</option>
+                <option value="Delivery">🚚 Delivery Partner: Vikram Singh (delivery@agriwise.com)</option>
+                <option value="FPO">👥 FPO Lead: Sanjay Verma (fpo@agriwise.com)</option>
+                <option value="Admin">🛡️ Platform Admin: Platform Administrator (admin@agriwise.com)</option>
               </select>
             </div>
 

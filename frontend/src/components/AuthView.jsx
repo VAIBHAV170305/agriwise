@@ -736,11 +736,83 @@ export default function AuthView({ onLoginSuccess, onBackToLanding, initialMode 
                 </form>
               )}
 
-              {/* Quick Persona Demo Switcher Dropdown */}
+              {/* Quick 1-Click Role Login Buttons */}
               <div style={{ marginTop: '24px', borderTop: '1px solid rgba(22, 51, 38, 0.08)', paddingTop: '16px' }}>
-                <label style={{ display: 'block', fontSize: '0.72rem', fontWeight: 800, color: '#718779', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '8px' }}>
-                  Quick Demo Access (Select Role)
-                </label>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+                  <label style={{ fontSize: '0.74rem', fontWeight: 800, color: '#163326', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                    ⚡ 1-Click Quick Access Logins
+                  </label>
+                  <span style={{ fontSize: '0.68rem', color: '#6e8577', fontWeight: 600 }}>
+                    Instant sign in
+                  </span>
+                </div>
+
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
+                  gap: '8px',
+                  marginBottom: '12px'
+                }}>
+                  {[
+                    { key: 'Farmer', label: 'Farmer', icon: '🌾', user: 'Ramesh Patel', badge: 'Producer', color: '#2d6a4f', bg: '#edf6f0' },
+                    { key: 'Buyer', label: 'Buyer', icon: '💼', user: 'Ananya Sharma', badge: 'Wholesale', color: '#b45309', bg: '#fef3c7' },
+                    { key: 'Delivery', label: 'Delivery', icon: '🚚', user: 'Vikram Singh', badge: 'Logistics', color: '#0284c7', bg: '#e0f2fe' },
+                    { key: 'FPO', label: 'FPO Lead', icon: '👥', user: 'Sanjay Verma', badge: 'Aggregator', color: '#7c3aed', bg: '#f3e8ff' },
+                    { key: 'Admin', label: 'Admin', icon: '🛡️', user: 'Platform Admin', badge: 'Governance', color: '#dc2626', bg: '#fee2e2' }
+                  ].map(btn => (
+                    <button
+                      key={btn.key}
+                      type="button"
+                      disabled={loading}
+                      onClick={() => handleQuickDemo(btn.key)}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'flex-start',
+                        gap: '2px',
+                        padding: '8px 10px',
+                        borderRadius: '10px',
+                        border: '1px solid rgba(22, 51, 38, 0.12)',
+                        background: '#ffffff',
+                        cursor: loading ? 'not-allowed' : 'pointer',
+                        textAlign: 'left',
+                        transition: 'all 0.18s ease',
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.borderColor = btn.color;
+                        e.currentTarget.style.background = btn.bg;
+                        e.currentTarget.style.transform = 'translateY(-1px)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.borderColor = 'rgba(22, 51, 38, 0.12)';
+                        e.currentTarget.style.background = '#ffffff';
+                        e.currentTarget.style.transform = 'translateY(0)';
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                        <span style={{ fontSize: '1.1rem' }}>{btn.icon}</span>
+                        <span style={{
+                          fontSize: '0.62rem',
+                          fontWeight: 700,
+                          color: btn.color,
+                          background: btn.bg,
+                          padding: '1px 5px',
+                          borderRadius: '4px'
+                        }}>
+                          {btn.badge}
+                        </span>
+                      </div>
+                      <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#163326', marginTop: '4px' }}>
+                        {btn.label}
+                      </div>
+                      <div style={{ fontSize: '0.68rem', color: '#688273', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: '100%' }}>
+                        {btn.user}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+
                 <select
                   className="form-select"
                   defaultValue=""
@@ -749,19 +821,22 @@ export default function AuthView({ onLoginSuccess, onBackToLanding, initialMode 
                   }}
                   style={{
                     width: '100%',
-                    padding: '9px 12px',
-                    borderRadius: '10px',
-                    border: '1px solid rgba(22, 51, 38, 0.15)',
+                    padding: '8px 12px',
+                    borderRadius: '8px',
+                    border: '1px solid rgba(22, 51, 38, 0.12)',
                     background: '#f8faf7',
-                    color: '#163326',
-                    fontSize: '0.84rem',
-                    fontWeight: 700,
+                    color: '#556b5e',
+                    fontSize: '0.78rem',
+                    fontWeight: 600,
                     cursor: 'pointer'
                   }}
                 >
-                  <option value="" disabled>Choose a role to sign in directly...</option>
+                  <option value="" disabled>Or choose role from dropdown...</option>
                   <option value="Farmer">🌾 Farmer: Ramesh Patel (farmer@agriwise.com)</option>
                   <option value="Buyer">💼 Wholesale Buyer: Ananya Sharma (buyer@agriwise.com)</option>
+                  <option value="Delivery">🚚 Delivery Partner: Vikram Singh (delivery@agriwise.com)</option>
+                  <option value="FPO">👥 FPO Lead: Sanjay Verma (fpo@agriwise.com)</option>
+                  <option value="Admin">🛡️ Platform Admin: Platform Administrator (admin@agriwise.com)</option>
                 </select>
               </div>
             </div>

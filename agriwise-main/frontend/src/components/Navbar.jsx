@@ -11,6 +11,25 @@ import { useLanguage } from '../i18n/LanguageContext';
 import LanguageSelector from './LanguageSelector';
 import LocationBanner from './LocationBanner';
 
+const ALL_ROLES = [
+  { key: 'Farmer', label: 'Farmer / Producer', icon: '🌾', desc: 'Ramesh Patel • Cultivation & Mandi' },
+  { key: 'Buyer', label: 'Wholesale Buyer', icon: '💼', desc: 'Ananya Sharma • Mandi Procurement' },
+  { key: 'Delivery', label: 'Delivery Partner', icon: '🚚', desc: 'Vikram Singh • Fleet & Logistics' },
+  { key: 'FPO', label: 'FPO Lead', icon: '👥', desc: 'Sanjay Verma • Farmer Producer Org' },
+  { key: 'Admin', label: 'Platform Admin', icon: '🛡️', desc: 'Administrator • Telemetry & Audit' }
+];
+
+const getRoleDisplay = (role) => {
+  switch (role) {
+    case 'Buyer': return '💼 Wholesale Buyer';
+    case 'Delivery': return '🚚 Delivery Partner';
+    case 'FPO': return '👥 FPO Lead';
+    case 'Admin': return '🛡️ Platform Admin';
+    case 'Farmer':
+    default: return '🌾 Farmer';
+  }
+};
+
 export default function Navbar({ 
   isLanding = false,
   currentUser, 
@@ -218,7 +237,7 @@ export default function Navbar({
                   transition: 'all 0.18s ease'
                 }}
               >
-                <span>{currentRole === 'Buyer' ? '💼 Wholesale Buyer' : '🌾 Farmer'}</span>
+                <span>{getRoleDisplay(currentRole)}</span>
                 <ChevronDown size={14} style={{ transform: showRoleDropdown ? 'rotate(180deg)' : 'none', transition: 'transform 0.18s ease' }} />
               </button>
 
@@ -231,18 +250,15 @@ export default function Navbar({
                   border: '1px solid rgba(27, 56, 43, 0.12)',
                   borderRadius: '14px',
                   boxShadow: '0 12px 32px rgba(22, 51, 38, 0.15)',
-                  width: '260px',
+                  width: '275px',
                   zIndex: 1000,
                   padding: '6px',
                   animation: 'fadeIn 0.15s ease'
                 }}>
                   <div style={{ padding: '6px 10px 4px', fontSize: '0.68rem', fontWeight: 800, color: '#718779', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                    Select Demo Role
+                    Select Demo Role (1-Click)
                   </div>
-                  {[
-                    { key: 'Farmer', label: 'Farmer / Producer', icon: '🌾', desc: 'Ramesh Patel • Cultivation & Mandi' },
-                    { key: 'Buyer', label: 'Wholesale Buyer', icon: '💼', desc: 'Ananya Sharma • Mandi Procurement' }
-                  ].map(r => (
+                  {ALL_ROLES.map(r => (
                     <button
                       key={r.key}
                       type="button"
@@ -394,7 +410,7 @@ export default function Navbar({
                 transition: 'all 0.18s ease'
               }}
             >
-              <span>{currentRole === 'Buyer' ? '💼 Wholesale Buyer' : '🌾 Farmer'}</span>
+              <span>{getRoleDisplay(currentRole)}</span>
               <ChevronDown size={13} style={{ transform: showRoleDropdown ? 'rotate(180deg)' : 'none', transition: 'transform 0.18s ease' }} />
             </button>
 
@@ -407,18 +423,15 @@ export default function Navbar({
                 border: '1px solid rgba(27, 56, 43, 0.12)',
                 borderRadius: '14px',
                 boxShadow: '0 12px 32px rgba(22, 51, 38, 0.15)',
-                width: '260px',
+                width: '275px',
                 zIndex: 1000,
                 padding: '6px',
                 animation: 'fadeIn 0.15s ease'
               }}>
                 <div style={{ padding: '6px 10px 4px', fontSize: '0.68rem', fontWeight: 800, color: '#718779', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                  Switch Workspace Role
+                  Switch Workspace Role (1-Click)
                 </div>
-                {[
-                  { key: 'Farmer', label: 'Farmer / Producer', icon: '🌾', desc: 'Ramesh Patel • Field Intelligence' },
-                  { key: 'Buyer', label: 'Wholesale Buyer', icon: '💼', desc: 'Ananya Sharma • Mandi Procurement' }
-                ].map(r => (
+                {ALL_ROLES.map(r => (
                   <button
                     key={r.key}
                     type="button"

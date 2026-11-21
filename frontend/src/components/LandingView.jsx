@@ -191,7 +191,7 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
           </div>
         </div>
 
-        {/* Clean Role Selection Dropdown Menu */}
+        {/* Clean Role Selection & Quick Access Launchpad */}
         <div style={{
           background: '#f8faf7',
           border: '1px solid rgba(27, 56, 43, 0.08)',
@@ -201,28 +201,99 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
           flexDirection: 'column',
           gap: '14px'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+          {/* 5 Quick Access 1-Click Buttons */}
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <span style={{ fontSize: '0.74rem', fontWeight: 800, color: '#163326', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                ⚡ 1-Click Quick Access:
+              </span>
+              <span style={{ fontSize: '0.68rem', color: '#6e8577', fontWeight: 600 }}>
+                Directly launch any workspace
+              </span>
+            </div>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
+              gap: '8px'
+            }}>
+              {[
+                { key: 'Farmer', label: 'Farmer', icon: '🌾', user: 'Ramesh Patel', badge: 'Producer', color: '#2d6a4f', bg: '#edf6f0' },
+                { key: 'Buyer', label: 'Buyer', icon: '💼', user: 'Ananya Sharma', badge: 'Wholesale', color: '#b45309', bg: '#fef3c7' },
+                { key: 'Delivery', label: 'Delivery', icon: '🚚', user: 'Vikram Singh', badge: 'Logistics', color: '#0284c7', bg: '#e0f2fe' },
+                { key: 'FPO', label: 'FPO Lead', icon: '👥', user: 'Sanjay Verma', badge: 'Aggregator', color: '#7c3aed', bg: '#f3e8ff' },
+                { key: 'Admin', label: 'Admin', icon: '🛡️', user: 'Platform Admin', badge: 'Governance', color: '#dc2626', bg: '#fee2e2' }
+              ].map(btn => (
+                <button
+                  key={btn.key}
+                  type="button"
+                  onClick={() => {
+                    setSelectedRolePreview(btn.key);
+                    onRoleSwitch(btn.key);
+                  }}
+                  title={`Launch ${btn.label} workspace as ${btn.user}`}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '8px 10px',
+                    borderRadius: '10px',
+                    border: selectedRolePreview === btn.key ? `2px solid ${btn.color}` : '1px solid rgba(27, 56, 43, 0.12)',
+                    background: selectedRolePreview === btn.key ? btn.bg : '#ffffff',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                    transition: 'all 0.16s ease',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = btn.color;
+                    e.currentTarget.style.background = btn.bg;
+                  }}
+                  onMouseLeave={(e) => {
+                    if (selectedRolePreview !== btn.key) {
+                      e.currentTarget.style.borderColor = 'rgba(27, 56, 43, 0.12)';
+                      e.currentTarget.style.background = '#ffffff';
+                    }
+                  }}
+                >
+                  <span style={{ fontSize: '1.15rem' }}>{btn.icon}</span>
+                  <div>
+                    <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#163326', lineHeight: 1.1 }}>
+                      {btn.label}
+                    </div>
+                    <div style={{ fontSize: '0.64rem', color: '#688273', marginTop: '2px' }}>
+                      {btn.user.split(' ')[0]}
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', borderTop: '1px solid rgba(27, 56, 43, 0.08)', paddingTop: '12px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1, minWidth: '280px' }}>
-              <span style={{ fontSize: '0.76rem', fontWeight: 800, color: '#163326', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                Select Role:
+              <span style={{ fontSize: '0.74rem', fontWeight: 700, color: '#688273', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                Role Preview:
               </span>
               <select
                 value={selectedRolePreview}
                 onChange={(e) => setSelectedRolePreview(e.target.value)}
                 style={{
                   flex: 1,
-                  padding: '9px 14px',
+                  padding: '8px 12px',
                   borderRadius: '10px',
                   border: '1px solid rgba(27, 56, 43, 0.16)',
                   background: '#ffffff',
                   color: '#163326',
-                  fontSize: '0.88rem',
+                  fontSize: '0.84rem',
                   fontWeight: 700,
                   cursor: 'pointer'
                 }}
               >
                 <option value="Farmer">🌾 Farmer / Agricultural Producer (Ramesh Patel)</option>
                 <option value="Buyer">💼 Wholesale Buyer & Aggregator (Ananya Sharma)</option>
+                <option value="Delivery">🚚 Delivery Partner & Fleet Logistics (Vikram Singh)</option>
+                <option value="FPO">👥 FPO Lead / Producer Organization (Sanjay Verma)</option>
+                <option value="Admin">🛡️ Platform Admin / Governance (Administrator)</option>
               </select>
             </div>
 
@@ -230,7 +301,7 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
               type="button"
               className="btn-primary"
               onClick={() => onRoleSwitch(selectedRolePreview)}
-              style={{ padding: '9px 20px', fontSize: '0.84rem' }}
+              style={{ padding: '8px 18px', fontSize: '0.84rem' }}
             >
               <span>Launch {selectedRolePreview} Workspace</span>
               <ArrowRight size={15} />
@@ -238,31 +309,77 @@ export default function LandingView({ onRoleSwitch, onLoginSuccess, onOpenLogin 
           </div>
 
           {/* Dynamic Role Preview for Selected Role */}
-          <div style={{
-            background: selectedRolePreview === 'Farmer' ? '#edf6f0' : '#fdf8ec',
-            border: '1px solid rgba(27, 56, 43, 0.08)',
-            borderRadius: '10px',
-            padding: '12px 16px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            gap: '10px'
-          }}>
-            <div>
-              <div style={{ fontSize: '0.86rem', fontWeight: 800, color: '#163326' }}>
-                {selectedRolePreview === 'Farmer' ? '🌾 Farmer Field Desk (Ramesh Patel • Anand, Gujarat)' : '💼 Wholesale Buyer Desk (Ananya Sharma • Mandi Procurement)'}
+          {(() => {
+            const roleInfo = {
+              Farmer: {
+                title: '🌾 Farmer Field Desk (Ramesh Patel • Anand, Gujarat)',
+                desc: 'Crop planning, soil terrain mapping, live APMC Mandi rates, and direct harvest sales.',
+                badge: 'Primary Producer Flow',
+                bg: '#edf6f0',
+                color: '#2d6a4f'
+              },
+              Buyer: {
+                title: '💼 Wholesale Buyer Desk (Ananya Sharma • Mandi Procurement)',
+                desc: 'Discover verified farm produce batches, negotiate forward purchase orders, and track fulfillment.',
+                badge: 'Direct Mandi Commerce',
+                bg: '#fef3c7',
+                color: '#b45309'
+              },
+              Delivery: {
+                title: '🚚 Logistics & Fleet Dispatch (Vikram Singh • Cold-Chain)',
+                desc: 'Route optimization, active consignment transit tracking, proof of delivery, and fleet telemetry.',
+                badge: 'Logistics & Dispatch',
+                bg: '#e0f2fe',
+                color: '#0284c7'
+              },
+              FPO: {
+                title: '👥 Farmer Producer Org (Sanjay Verma • Aggregator)',
+                desc: 'Cluster aggregation, input bulk procurement, member farm monitoring, and institutional contracts.',
+                badge: 'FPO Aggregation',
+                bg: '#f3e8ff',
+                color: '#7c3aed'
+              },
+              Admin: {
+                title: '🛡️ Platform Telemetry & Governance (Platform Administrator)',
+                desc: 'System health monitoring, audit logging, mandi market data feeds, and verification controls.',
+                badge: 'Platform Governance',
+                bg: '#fee2e2',
+                color: '#dc2626'
+              }
+            }[selectedRolePreview] || {
+              title: `${selectedRolePreview} Workspace`,
+              desc: 'Dedicated agronomy and commerce workspace.',
+              badge: 'Workspace',
+              bg: '#edf6f0',
+              color: '#2d6a4f'
+            };
+
+            return (
+              <div style={{
+                background: roleInfo.bg,
+                border: '1px solid rgba(27, 56, 43, 0.08)',
+                borderRadius: '10px',
+                padding: '12px 16px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: '10px'
+              }}>
+                <div>
+                  <div style={{ fontSize: '0.86rem', fontWeight: 800, color: '#163326' }}>
+                    {roleInfo.title}
+                  </div>
+                  <div style={{ fontSize: '0.78rem', color: '#576c60', marginTop: '2px' }}>
+                    {roleInfo.desc}
+                  </div>
+                </div>
+                <span className="badge" style={{ fontSize: '0.72rem', background: '#ffffff', color: roleInfo.color, border: `1px solid ${roleInfo.color}40`, fontWeight: 700 }}>
+                  {roleInfo.badge}
+                </span>
               </div>
-              <div style={{ fontSize: '0.78rem', color: '#576c60', marginTop: '2px' }}>
-                {selectedRolePreview === 'Farmer'
-                  ? 'Crop planning, soil terrain mapping, live APMC Mandi rates, and direct harvest sales.'
-                  : 'Discover verified farm produce batches, negotiate forward purchase orders, and track fulfillment.'}
-              </div>
-            </div>
-            <span className="badge badge-emerald" style={{ fontSize: '0.72rem' }}>
-              {selectedRolePreview === 'Farmer' ? 'Primary Producer Flow' : 'Direct Mandi Commerce'}
-            </span>
-          </div>
+            );
+          })()}
         </div>
       </div>
 

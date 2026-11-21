@@ -257,6 +257,7 @@ export default function App() {
             setCurrentRole(user.role);
             if (user.role === 'Farmer') setActiveTab('overview');
             else if (user.role === 'Buyer') setActiveTab('marketplace');
+            else if (user.role === 'Delivery') setActiveTab('delivery-ops');
             else if (user.role === 'FPO') setActiveTab('fpo');
             else if (user.role === 'Admin') setActiveTab('admin');
             setShowAuthModal(false);
