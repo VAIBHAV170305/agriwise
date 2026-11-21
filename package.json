@@ -6,7 +6,7 @@
     "dev": "concurrently -k -n \"BACKEND,FRONTEND\" -c \"blue,green\" \"npm run backend\" \"npm run frontend\"",
     "build": "npm --prefix frontend run build",
     "frontend": "npm --prefix frontend run dev",
-    "backend": "venv\\Scripts\\python.exe -m uvicorn backend.app.main:app --reload --reload-dir backend --port 8001"
+    "backend": "venv\\Scripts\\python.exe -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --reload"
   },
   "devDependencies": {
     "concurrently": "^10.0.6"
