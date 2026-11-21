@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
+import { api } from '../api';
 
 /**
  * Comprehensive Pan-India Agricultural Cities & Mandi Hubs Database
@@ -158,8 +159,15 @@ export const INDIAN_CITIES_DATABASE = [
   { city: 'Aizawl', state: 'Mizoram', district: 'Aizawl', agroZone: 'Mizoram Wet Hill Zone', latitude: 23.7271, longitude: 92.7176, mandiHub: 'Bawngkawn Market Aizawl', majorCrops: ['Mizo Ginger', 'Birds Eye Chilli', 'Passion Fruit', 'Anthracite Rice'], soilType: 'Acidic Laterite & Forest Loam', phValue: 5.1 },
   { city: 'Itanagar', state: 'Arunachal Pradesh', district: 'Papum Pare', agroZone: 'Eastern Himalayan Sub-Montane', latitude: 27.0844, longitude: 93.6053, mandiHub: 'Naharlagun Daily Market', majorCrops: ['Organic Kiwi', 'Large Cardamom', 'Orange (Mandarin)', 'Ginger'], soilType: 'Acidic Gravelly Forest Soil', phValue: 5.2 },
 
-  // Union Territories
-  { city: 'Delhi', state: 'Delhi NCR', district: 'North Delhi', agroZone: 'Upper Gangetic / NCR Hub', latitude: 28.6139, longitude: 77.2090, mandiHub: "Azadpur Terminal Mandi (Asia's Largest)", majorCrops: ['Wheat', 'Vegetables', 'Flowers', 'Mustard'], soilType: 'Alluvial Loam', phValue: 7.6 },
+  // Delhi NCR & Union Territories
+  { city: 'Delhi', state: 'Delhi NCR', district: 'Delhi', agroZone: 'Upper Gangetic / NCR Hub', latitude: 28.6139, longitude: 77.2090, mandiHub: "Azadpur Terminal Mandi (Asia's Largest)", majorCrops: ['Wheat', 'Vegetables', 'Flowers', 'Mustard'], soilType: 'Alluvial Loam', phValue: 7.6 },
+  { city: 'New Delhi', state: 'Delhi NCR', district: 'New Delhi', agroZone: 'Upper Gangetic / NCR Hub', latitude: 28.6139, longitude: 77.2090, mandiHub: "Azadpur Terminal Mandi", majorCrops: ['Vegetables', 'Wheat', 'Mustard', 'Flowers'], soilType: 'Alluvial Loam', phValue: 7.6 },
+  { city: 'Gurugram', state: 'Haryana', district: 'Gurugram', agroZone: 'Upper Gangetic / NCR Hub', latitude: 28.4595, longitude: 77.0266, mandiHub: 'Gurugram Grain Mandi', majorCrops: ['Mustard', 'Wheat', 'Vegetables', 'Bajra'], soilType: 'Sandy Loam', phValue: 7.8 },
+  { city: 'Noida', state: 'Uttar Pradesh', district: 'Gautam Buddha Nagar', agroZone: 'Upper Gangetic Plain (Zone V)', latitude: 28.5355, longitude: 77.3910, mandiHub: 'Noida Subzi Mandi (Phase 2)', majorCrops: ['Vegetables', 'Wheat', 'Mustard', 'Paddy'], soilType: 'Alluvial Loam', phValue: 7.5 },
+  { city: 'Greater Noida', state: 'Uttar Pradesh', district: 'Gautam Buddha Nagar', agroZone: 'Upper Gangetic Plain (Zone V)', latitude: 28.4744, longitude: 77.5040, mandiHub: 'Dadri Mandi Samiti', majorCrops: ['Wheat', 'Paddy', 'Vegetables', 'Mustard'], soilType: 'Alluvial Loam', phValue: 7.5 },
+  { city: 'Ghaziabad', state: 'Uttar Pradesh', district: 'Ghaziabad', agroZone: 'Upper Gangetic Plain (Zone V)', latitude: 28.6692, longitude: 77.4538, mandiHub: 'Sahibabad Mandi Ghaziabad', majorCrops: ['Wheat', 'Sugarcane', 'Vegetables', 'Mustard'], soilType: 'Deep Alluvial Loam', phValue: 7.5 },
+  { city: 'Faridabad', state: 'Haryana', district: 'Faridabad', agroZone: 'Upper Gangetic / NCR Hub', latitude: 28.4089, longitude: 77.3178, mandiHub: 'Old Faridabad Mandi', majorCrops: ['Wheat', 'Mustard', 'Vegetables', 'Bajra'], soilType: 'Sandy Loam Alluvium', phValue: 7.7 },
+  { city: 'Mumbai', state: 'Maharashtra', district: 'Mumbai Suburban', agroZone: 'Konkan Coastal Zone', latitude: 19.0760, longitude: 72.8777, mandiHub: 'Vashi APMC Market (Navi Mumbai)', majorCrops: ['Paddy', 'Vegetables', 'Mango', 'Coconut'], soilType: 'Coastal Alluvium & Laterite', phValue: 6.8 },
   { city: 'Chandigarh', state: 'Chandigarh', district: 'Chandigarh', agroZone: 'Shivalik Foothills / Union Command', latitude: 30.7333, longitude: 76.7794, mandiHub: 'Sector 26 Grain & Vegetable Market', majorCrops: ['Wheat', 'Basmati Rice', 'Horticulture'], soilType: 'Silt Loam', phValue: 7.4 },
   { city: 'Puducherry', state: 'Puducherry', district: 'Puducherry', agroZone: 'Coromandel Coastal Plain', latitude: 11.9416, longitude: 79.8083, mandiHub: 'Goubert Market Puducherry', majorCrops: ['Paddy', 'Sugarcane', 'Groundnut', 'Coconut'], soilType: 'Coastal Sandy Loam', phValue: 7.0 }
 ];
@@ -228,6 +236,107 @@ export function findClosestIndianCity(lat, lon) {
   return closest;
 }
 
+/**
+ * Fast, resilient multi-provider IP Geolocation
+ * Tries ipwho.is, then ipapi.co, then freeipapi.com
+ */
+async function fetchIpGeolocation() {
+  const fetchWithTimeout = async (url, ms = 4000) => {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), ms);
+    try {
+      const resp = await fetch(url, { signal: controller.signal });
+      clearTimeout(timer);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      return await resp.json();
+    } catch (e) {
+      clearTimeout(timer);
+      throw e;
+    }
+  };
+
+  // Provider 1: ipwho.is (Free, fast, supports CORS)
+  try {
+    const data = await fetchWithTimeout('https://ipwho.is/');
+    if (data && data.success && data.latitude && data.longitude) {
+      return {
+        city: data.city || data.capital || 'Delhi',
+        state: data.region || 'Delhi NCR',
+        district: data.city || 'Central Delhi',
+        latitude: parseFloat(Number(data.latitude).toFixed(4)),
+        longitude: parseFloat(Number(data.longitude).toFixed(4)),
+        provider: 'ipwho.is'
+      };
+    }
+  } catch (e) {
+    // continue
+  }
+
+  // Provider 2: ipapi.co
+  try {
+    const data = await fetchWithTimeout('https://ipapi.co/json/');
+    if (data && data.latitude && data.longitude) {
+      return {
+        city: data.city || 'Delhi',
+        state: data.region || 'Delhi NCR',
+        district: data.city || 'Delhi',
+        latitude: parseFloat(Number(data.latitude).toFixed(4)),
+        longitude: parseFloat(Number(data.longitude).toFixed(4)),
+        provider: 'ipapi.co'
+      };
+    }
+  } catch (e) {
+    // continue
+  }
+
+  // Provider 3: freeipapi.com
+  try {
+    const data = await fetchWithTimeout('https://freeipapi.com/api/json');
+    if (data && data.latitude && data.longitude) {
+      return {
+        city: data.cityName || 'Delhi',
+        state: data.regionName || 'Delhi NCR',
+        district: data.cityName || 'Delhi',
+        latitude: parseFloat(Number(data.latitude).toFixed(4)),
+        longitude: parseFloat(Number(data.longitude).toFixed(4)),
+        provider: 'freeipapi.com'
+      };
+    }
+  } catch (e) {
+    // all failed
+  }
+
+  return null;
+}
+
+/**
+ * Reverse Geocodes coordinates to exact city/town and state
+ * Uses BigDataCloud Client Reverse Geocode (free, high accuracy, CORS-enabled)
+ */
+async function reverseGeocodeCoords(lat, lon) {
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 3500);
+    const resp = await fetch(
+      `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`,
+      { signal: controller.signal }
+    );
+    clearTimeout(timer);
+    if (resp.ok) {
+      const d = await resp.json();
+      const city = d.city || d.locality || null;
+      const state = d.principalSubdivision || null;
+      const adminDistrict = d.localityInfo?.administrative?.find(a => a.adminLevel === 5)?.name || city;
+      if (city || state) {
+        return { city, state, district: adminDistrict };
+      }
+    }
+  } catch (e) {
+    // ignore
+  }
+  return null;
+}
+
 const LocationContext = createContext();
 
 export function LocationProvider({ children }) {
@@ -238,7 +347,7 @@ export function LocationProvider({ children }) {
     } catch {
       // fallback
     }
-    // Default specifically to Meerut, Uttar Pradesh per user preference
+    // Default specifically to Meerut, Uttar Pradesh per agronomy hub baseline
     return {
       city: 'Meerut',
       state: 'Uttar Pradesh',
@@ -247,6 +356,7 @@ export function LocationProvider({ children }) {
       latitude: 28.9845,
       longitude: 77.7064,
       isGps: false,
+      isLiveSynced: false,
       mandiHub: 'Meerut Mandi (Sardhana Road)',
       address: 'Meerut, Uttar Pradesh (Upper Gangetic Plain)',
       soilType: 'Deep Alluvial Loam',
@@ -286,51 +396,177 @@ export function LocationProvider({ children }) {
     return INDIAN_CITIES_DATABASE.filter(c => c.state === selectedState);
   }, [selectedState]);
 
-  // HTML5 Live Browser Geolocation Detection
-  const detectLocation = () => {
-    if (!navigator.geolocation) {
-      setErrorMsg('GPS geolocation is not supported by your browser.');
-      return;
-    }
-
+  // Multi-Tier Live Location Detection (GPS Hardware -> IP Geolocation -> Server Fallback)
+  const detectLocation = async (interactive = true) => {
     setDetecting(true);
     setErrorMsg(null);
 
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const lat = parseFloat(pos.coords.latitude.toFixed(4));
-        const lon = parseFloat(pos.coords.longitude.toFixed(4));
+    const emitNotification = (title, message, type = 'info') => {
+      if (interactive) {
+        window.dispatchEvent(new CustomEvent('agriwise-toast', {
+          detail: { title, message, type }
+        }));
+      }
+    };
+
+    const applyLocation = (newLoc, sourceName) => {
+      setLocation(newLoc);
+      if (newLoc.state) setSelectedState(newLoc.state);
+      setDetecting(false);
+      setErrorMsg(null);
+      try {
+        localStorage.setItem('agriwise_user_location', JSON.stringify(newLoc));
+      } catch (e) {}
+
+      window.dispatchEvent(new CustomEvent('agriwise-location-updated', { detail: newLoc }));
+
+      emitNotification(
+        'Live Location Synced',
+        `Live location synchronized with ${newLoc.city}, ${newLoc.state} (${sourceName}).`,
+        'success'
+      );
+    };
+
+    // 1. First Tier: HTML5 Browser Geolocation (GPS Satellite / Wi-Fi trilateration)
+    const tryHtml5Gps = () => new Promise((resolve, reject) => {
+      if (!navigator.geolocation) {
+        return reject(new Error('Geolocation not supported by browser'));
+      }
+      navigator.geolocation.getCurrentPosition(
+        resolve,
+        reject,
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 60000 }
+      );
+    });
+
+    try {
+      const pos = await tryHtml5Gps();
+      const lat = parseFloat(pos.coords.latitude.toFixed(4));
+      const lon = parseFloat(pos.coords.longitude.toFixed(4));
+      const closest = findClosestIndianCity(lat, lon);
+
+      // Reverse geocode to resolve exact city / district name
+      const rev = await reverseGeocodeCoords(lat, lon);
+      const finalCity = rev?.city || closest.city;
+      const finalState = rev?.state || closest.state;
+      const finalDistrict = rev?.district || closest.district;
+
+      const newLoc = {
+        city: finalCity,
+        state: finalState,
+        district: finalDistrict,
+        agroZone: closest.agroZone,
+        latitude: lat,
+        longitude: lon,
+        isGps: true,
+        isLiveSynced: true,
+        source: 'GPS',
+        syncedAt: new Date().toISOString(),
+        mandiHub: closest.mandiHub || `${finalCity} APMC Mandi`,
+        address: `${finalCity}, ${finalState} (${lat.toFixed(4)}° N, ${lon.toFixed(4)}° E)`,
+        soilType: closest.soilType || 'Regional Alluvial / Clay Loam',
+        phValue: closest.phValue || 7.2
+      };
+
+      applyLocation(newLoc, 'GPS Satellite');
+      return;
+    } catch (gpsError) {
+      console.warn('GPS unavailable or timed out, engaging high-accuracy IP Geolocation fallback...', gpsError);
+    }
+
+    // 2. Second Tier: High-Speed Multi-Provider IP Geolocation
+    try {
+      const ipData = await fetchIpGeolocation();
+      if (ipData && ipData.latitude && ipData.longitude) {
+        const lat = parseFloat(ipData.latitude.toFixed(4));
+        const lon = parseFloat(ipData.longitude.toFixed(4));
         const closest = findClosestIndianCity(lat, lon);
 
+        const rev = await reverseGeocodeCoords(lat, lon);
+        const finalCity = rev?.city || ipData.city || closest.city;
+        const finalState = rev?.state || ipData.state || closest.state;
+        const finalDistrict = rev?.district || ipData.district || closest.district;
+
         const newLoc = {
-          city: closest.city,
-          state: closest.state,
-          district: closest.district,
+          city: finalCity,
+          state: finalState,
+          district: finalDistrict,
           agroZone: closest.agroZone,
           latitude: lat,
           longitude: lon,
           isGps: true,
-          mandiHub: closest.mandiHub,
-          address: `${closest.city}, ${closest.state} (${lat}° N, ${lon}° E)`,
-          soilType: closest.soilType || 'Regional Alluvial / Clay Loam',
+          isLiveSynced: true,
+          source: 'IP_NETWORK',
+          syncedAt: new Date().toISOString(),
+          mandiHub: closest.mandiHub || `${finalCity} APMC Mandi`,
+          address: `${finalCity}, ${finalState} (${lat.toFixed(4)}° N, ${lon.toFixed(4)}° E)`,
+          soilType: closest.soilType || 'Regional Agricultural Soil',
           phValue: closest.phValue || 7.2
         };
 
-        setLocation(newLoc);
-        setSelectedState(closest.state);
-        setDetecting(false);
-      },
-      (err) => {
-        setDetecting(false);
-        let msg = 'Could not retrieve GPS location.';
-        if (err.code === 1) msg = 'Location access was not granted. Please select your Indian state & city from the dropdown.';
-        else if (err.code === 2) msg = 'Location unavailable. Showing selected regional hub.';
-        else if (err.code === 3) msg = 'Location request timed out.';
-        setErrorMsg(msg);
-      },
-      { timeout: 10000, enableHighAccuracy: true }
-    );
+        applyLocation(newLoc, 'Network IP');
+        return;
+      }
+    } catch (ipError) {
+      console.warn('IP Geolocation fallback failed, trying backend server detector...', ipError);
+    }
+
+    // 3. Third Tier: Backend Server IP Detector
+    try {
+      const backendLoc = await api.detectLiveLocation();
+      if (backendLoc && backendLoc.latitude && backendLoc.longitude) {
+        const lat = parseFloat(Number(backendLoc.latitude).toFixed(4));
+        const lon = parseFloat(Number(backendLoc.longitude).toFixed(4));
+        const closest = findClosestIndianCity(lat, lon);
+
+        const newLoc = {
+          city: backendLoc.city || closest.city,
+          state: backendLoc.state || closest.state,
+          district: backendLoc.city || closest.district,
+          agroZone: closest.agroZone,
+          latitude: lat,
+          longitude: lon,
+          isGps: true,
+          isLiveSynced: true,
+          source: 'SERVER_IP',
+          syncedAt: new Date().toISOString(),
+          mandiHub: closest.mandiHub || `${backendLoc.city} APMC Mandi`,
+          address: `${backendLoc.city}, ${backendLoc.state} (${lat.toFixed(4)}° N, ${lon.toFixed(4)}° E)`,
+          soilType: closest.soilType || 'Regional Agricultural Soil',
+          phValue: closest.phValue || 7.2
+        };
+
+        applyLocation(newLoc, 'Agronomy Radar');
+        return;
+      }
+    } catch (srvErr) {
+      console.warn('Backend server location detector unavailable:', srvErr);
+    }
+
+    // Fallback if completely offline
+    setDetecting(false);
+    const fallbackMsg = 'Live coordinates unavailable. Using regional agricultural hub.';
+    setErrorMsg(fallbackMsg);
+    if (interactive) {
+      emitNotification('Location Notice', fallbackMsg, 'warning');
+    }
   };
+
+  // Auto-detect live location in the background upon first loading the app
+  useEffect(() => {
+    let mounted = true;
+    try {
+      const saved = localStorage.getItem('agriwise_user_location');
+      const parsed = saved ? JSON.parse(saved) : null;
+      // If never live-synced before or default, detect live location in background
+      if (!parsed || !parsed.isLiveSynced) {
+        detectLocation(false);
+      }
+    } catch {
+      detectLocation(false);
+    }
+    return () => { mounted = false; };
+  }, []);
 
   const setManualRegion = (regionObj) => {
     setLocation({
@@ -341,6 +577,8 @@ export function LocationProvider({ children }) {
       latitude: regionObj.latitude,
       longitude: regionObj.longitude,
       isGps: false,
+      isLiveSynced: true,
+      source: 'MANUAL_PIN',
       mandiHub: regionObj.mandiHub || `${regionObj.city || regionObj.district} APMC Mandi`,
       address: `${regionObj.city || regionObj.district}, ${regionObj.state} (${regionObj.agroZone})`,
       soilType: regionObj.soilType || 'Regional Agricultural Soil',
@@ -349,6 +587,19 @@ export function LocationProvider({ children }) {
     setSelectedState(regionObj.state);
     setErrorMsg(null);
     setShowLocationModal(false);
+  };
+
+  // Quick helper to set location by city name
+  const setCityLocation = (cityName) => {
+    if (!cityName) return;
+    const q = cityName.toLowerCase().trim();
+    const found = INDIAN_CITIES_DATABASE.find(c => 
+      c.city.toLowerCase() === q || 
+      c.district.toLowerCase() === q
+    );
+    if (found) {
+      setManualRegion(found);
+    }
   };
 
   // State Change handler that cascades to default city in that state
@@ -382,6 +633,7 @@ export function LocationProvider({ children }) {
       errorMsg,
       detectLocation,
       setManualRegion,
+      setCityLocation,
       showLocationModal,
       setShowLocationModal,
       availableRegions: INDIAN_CITIES_DATABASE,

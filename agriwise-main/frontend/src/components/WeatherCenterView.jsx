@@ -327,7 +327,7 @@ export default function WeatherCenterView() {
 
           <button
             type="button"
-            onClick={detectLocation}
+            onClick={() => detectLocation(true)}
             disabled={detecting}
             style={{
               background: '#163326',

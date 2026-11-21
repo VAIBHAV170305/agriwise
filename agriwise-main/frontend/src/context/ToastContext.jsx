@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { CheckCircle2, AlertTriangle, AlertCircle, Info, X } from 'lucide-react';
 
 const ToastContext = createContext(null);
@@ -10,11 +10,11 @@ export function ToastProvider({ children }) {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
-  const showToast = useCallback((message, type = 'success', duration = 3600) => {
-    const id = Date.now() + Math.random().toString(36).substring(2, 6);
-    const newToast = { id, message, type };
-    
-    setToasts((prev) => [...prev, newToast]);
+  const showToast = useCallback(({ message, title, type = 'info', duration = 3800 }) => {
+    const id = Date.now() + Math.random().toString(36).substring(2, 9);
+    const newToast = { id, message, title, type, duration };
+
+    setToasts((prev) => [...prev.slice(-3), newToast]); // keep maximum 4 active toasts
 
     if (duration > 0) {
       setTimeout(() => {
@@ -24,13 +24,21 @@ export function ToastProvider({ children }) {
     return id;
   }, [removeToast]);
 
+  useEffect(() => {
+    const handleCustomToast = (e) => {
+      if (e?.detail) {
+        showToast(e.detail);
+      }
+    };
+    window.addEventListener('agriwise-toast', handleCustomToast);
+    return () => window.removeEventListener('agriwise-toast', handleCustomToast);
+  }, [showToast]);
+
   return (
     <ToastContext.Provider value={{ showToast, removeToast }}>
       {children}
-
-      {/* Floating Bottom Toast Container */}
+      {/* Floating Bottom Toast Container with Smooth Ease-in/Ease-out */}
       <div 
-        className="toast-container" 
         style={{
           position: 'fixed',
           bottom: '24px',
@@ -38,77 +46,136 @@ export function ToastProvider({ children }) {
           transform: 'translateX(-50%)',
           display: 'flex',
           flexDirection: 'column',
+          alignItems: 'center',
           gap: '10px',
-          zIndex: 10000,
+          zIndex: 9999,
           pointerEvents: 'none',
           maxWidth: '92vw',
-          width: '420px'
+          width: '460px'
         }}
       >
         {toasts.map((toast) => {
+          const isCritical = toast.type === 'critical' || toast.type === 'error';
           const isSuccess = toast.type === 'success';
           const isWarning = toast.type === 'warning';
-          const isError = toast.type === 'error';
+
+          // Color palette with contrasting crimson red for critical alerts
+          let bg = '#ffffff';
+          let border = '1px solid rgba(27, 56, 43, 0.16)';
+          let accentColor = '#163326';
+          let icon = <Info size={18} color="#163326" />;
+
+          if (isCritical) {
+            bg = '#fff5f5';
+            border = '1px solid #fecdd3';
+            accentColor = '#d90429';
+            icon = <AlertCircle size={18} color="#d90429" />;
+          } else if (isSuccess) {
+            bg = '#f4fbf6';
+            border = '1px solid #b7e4c7';
+            accentColor = '#2d6a4f';
+            icon = <CheckCircle2 size={18} color="#2d6a4f" />;
+          } else if (isWarning) {
+            bg = '#fffbeb';
+            border = '1px solid #fde68a';
+            accentColor = '#b45309';
+            icon = <AlertTriangle size={18} color="#b45309" />;
+          }
 
           return (
             <div
               key={toast.id}
-              className="toast-notification animate-toast-in"
+              className="toast-notification-card"
               style={{
                 pointerEvents: 'auto',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                padding: '12px 18px',
-                background: '#123524',
-                color: '#ffffff',
+                width: '100%',
+                background: bg,
+                border: border,
                 borderRadius: '14px',
-                boxShadow: '0 12px 36px rgba(18, 53, 36, 0.28), 0 2px 8px rgba(0, 0, 0, 0.1)',
-                border: `1px solid ${
-                  isSuccess ? '#10b981' : isWarning ? '#f59e0b' : isError ? '#ef4444' : 'rgba(255, 255, 255, 0.18)'
-                }`,
-                backdropFilter: 'blur(10px)'
+                padding: '12px 16px',
+                boxShadow: isCritical 
+                  ? '0 10px 30px rgba(217, 4, 41, 0.16), 0 2px 8px rgba(0,0,0,0.06)' 
+                  : '0 10px 30px rgba(22, 51, 38, 0.12), 0 2px 8px rgba(0,0,0,0.04)',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '12px',
+                position: 'relative',
+                overflow: 'hidden',
+                animation: 'toastSlideUp 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards'
               }}
             >
-              {/* Type Accent Icon */}
-              <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
-                {isSuccess && <CheckCircle2 size={19} color="#34d399" />}
-                {isWarning && <AlertTriangle size={19} color="#fbbf24" />}
-                {isError && <AlertCircle size={19} color="#f87171" />}
-                {!isSuccess && !isWarning && !isError && <Info size={19} color="#60a5fa" />}
+              {/* Left Accent Strip */}
+              <div style={{
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                bottom: 0,
+                width: '4px',
+                background: accentColor
+              }} />
+
+              {/* Icon */}
+              <div style={{ flexShrink: 0, marginTop: '2px' }}>
+                {icon}
               </div>
 
-              {/* Message */}
-              <div style={{
-                flex: 1,
-                fontSize: '0.86rem',
-                fontWeight: 600,
-                lineHeight: 1.35,
-                color: '#f8faf7'
-              }}>
-                {toast.message}
+              {/* Body */}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                {toast.title && (
+                  <div style={{ 
+                    fontSize: '0.86rem', 
+                    fontWeight: 700, 
+                    color: accentColor, 
+                    lineHeight: 1.2,
+                    marginBottom: '2px'
+                  }}>
+                    {toast.title}
+                  </div>
+                )}
+                <div style={{ 
+                  fontSize: '0.82rem', 
+                  color: isCritical ? '#991b1b' : '#264634', 
+                  lineHeight: 1.45,
+                  wordBreak: 'break-word'
+                }}>
+                  {toast.message}
+                </div>
               </div>
 
               {/* Dismiss Button */}
               <button
-                type="button"
                 onClick={() => removeToast(toast.id)}
                 style={{
-                  background: 'transparent',
+                  background: 'none',
                   border: 'none',
-                  color: 'rgba(255, 255, 255, 0.6)',
-                  cursor: 'pointer',
                   padding: '2px',
+                  color: '#718579',
+                  cursor: 'pointer',
+                  borderRadius: '4px',
                   display: 'flex',
                   alignItems: 'center',
-                  borderRadius: '6px',
-                  transition: 'color 0.15s ease'
+                  justifyContent: 'center',
+                  flexShrink: 0
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.color = '#ffffff'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(255, 255, 255, 0.6)'; }}
+                title="Dismiss"
               >
                 <X size={15} />
               </button>
+
+              {/* Toast Expiry Progress Bar (Google Play Store style subtle bottom bar) */}
+              {toast.duration > 0 && (
+                <div 
+                  style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    height: '2.5px',
+                    background: accentColor,
+                    opacity: 0.65,
+                    animation: `toastProgress ${toast.duration}ms linear forwards`
+                  }} 
+                />
+              )}
             </div>
           );
         })}
@@ -118,9 +185,9 @@ export function ToastProvider({ children }) {
 }
 
 export function useToast() {
-  const context = useContext(ToastContext);
-  if (!context) {
-    throw new Error('useToast must be used within a ToastProvider');
+  const ctx = useContext(ToastContext);
+  if (!ctx) {
+    throw new Error('useToast must be used within ToastProvider');
   }
-  return context;
+  return ctx;
 }

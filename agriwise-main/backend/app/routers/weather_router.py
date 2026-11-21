@@ -1,6 +1,7 @@
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Request
 from sqlalchemy.orm import Session
 from typing import Optional, List
+import requests
 from ..schemas import WeatherResponse
 from ..services.weather_service import weather_service
 from ..auth import get_optional_current_user
@@ -8,6 +9,39 @@ from ..database import get_db
 from ..models import User, Farm, CropRecord
 
 router = APIRouter(prefix="/weather", tags=["Weather Intelligence"])
+
+@router.get("/detect")
+def detect_user_location(request: Request):
+    """
+    Server-side IP location detection fallback using client IP.
+    """
+    client_ip = request.headers.get("x-forwarded-for") or (request.client.host if request.client else None)
+    if client_ip and "," in client_ip:
+        client_ip = client_ip.split(",")[0].strip()
+    
+    if client_ip and client_ip not in ["127.0.0.1", "localhost", "::1"]:
+        try:
+            resp = requests.get(f"https://ipwho.is/{client_ip}", timeout=3)
+            if resp.status_code == 200:
+                d = resp.json()
+                if d.get("success"):
+                    return {
+                        "city": d.get("city") or "Delhi",
+                        "state": d.get("region") or "Delhi NCR",
+                        "latitude": float(d.get("latitude", 28.6139)),
+                        "longitude": float(d.get("longitude", 77.2090)),
+                        "source": "SERVER_IP"
+                    }
+        except Exception:
+            pass
+
+    return {
+        "city": "Delhi",
+        "state": "Delhi NCR",
+        "latitude": 28.6139,
+        "longitude": 77.2090,
+        "source": "SERVER_HUB"
+    }
 
 @router.get("", response_model=WeatherResponse)
 def get_weather(

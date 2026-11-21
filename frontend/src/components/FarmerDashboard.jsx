@@ -4,7 +4,7 @@ import {
   MapPin, Leaf, DollarSign, Calendar, ArrowRight, Zap, RefreshCw,
   Clock, Package, ShoppingBag, CheckCircle2, ChevronRight, CloudRain,
   Info, Sparkles, Plus, Award, BarChart3, Droplets, Thermometer,
-  Compass, CheckSquare, Layers
+  Compass, CheckSquare, Layers, Navigation
 } from 'lucide-react';
 import { api } from '../api';
 import { useLanguage } from '../i18n/LanguageContext';
@@ -154,14 +154,17 @@ export default function FarmerDashboard({ onNavigate }) {
               📍 {location?.city || 'Meerut'}, {location?.state || 'Uttar Pradesh'} ({location?.agroZone || 'Upper Gangetic Plain'})
             </span>
             <span style={{
-              background: '#dcfce7',
-              color: '#15803d',
+              background: location?.isLiveSynced ? '#dcfce7' : '#fef3c7',
+              color: location?.isLiveSynced ? '#15803d' : '#92400e',
               padding: '4px 10px',
               borderRadius: '999px',
               fontSize: '0.72rem',
-              fontWeight: 800
+              fontWeight: 800,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px'
             }}>
-              🟢 Live Telemetry Synchronized
+              <span>{location?.isLiveSynced ? (location?.source === 'GPS' ? '🟢 Live GPS Active' : '🌐 Live Network Synced') : '📍 Pinned Location'}</span>
             </span>
           </div>
 
@@ -175,6 +178,30 @@ export default function FarmerDashboard({ onNavigate }) {
 
         {/* Quick Launch Buttons */}
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+          <button 
+            type="button"
+            onClick={() => detectLocation(true)}
+            disabled={detecting}
+            style={{
+              background: '#ffffff',
+              color: '#163326',
+              border: '1px solid rgba(22, 51, 38, 0.15)',
+              borderRadius: '12px',
+              padding: '10px 14px',
+              fontSize: '0.84rem',
+              fontWeight: 700,
+              cursor: detecting ? 'default' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.03)'
+            }}
+            title="Auto-detect and sync your live GPS / Network coordinates"
+          >
+            <Navigation size={14} className={detecting ? 'animate-spin' : ''} color="#2d6a4f" /> 
+            <span>{detecting ? 'Locating...' : 'Sync Live GPS'}</span>
+          </button>
+
           <button 
             type="button"
             onClick={() => onNavigate('create-product')}
@@ -361,10 +388,10 @@ export default function FarmerDashboard({ onNavigate }) {
             </div>
           </div>
           <div style={{ fontSize: '2rem', fontWeight: 800, color: '#163326', marginTop: '8px', lineHeight: 1.1 }}>
-            26.5°C <span style={{ fontSize: '0.85rem', color: '#dc2626', fontWeight: 800 }}>🌧️ Rain in 4 Days</span>
+            {metrics.weather_temp != null ? `${metrics.weather_temp}°C` : '26.5°C'} <span style={{ fontSize: '0.85rem', color: '#dc2626', fontWeight: 800 }}>🌧️ Rain in 4 Days</span>
           </div>
           <p style={{ fontSize: '0.78rem', color: '#0369a1', marginTop: '6px', fontWeight: 700 }}>
-            19.4 mm on Tuesday • Spray Window Safe Today
+            {location?.city || 'Meerut'}: 19.4 mm on Tuesday • Spray Window Safe Today
           </p>
         </div>
 

@@ -200,6 +200,7 @@ export const api = {
     }
     return api.request(url);
   },
+  detectLiveLocation: () => api.request('/weather/detect'),
 
   // Disease
   analyzeDisease: (formData) => api.request('/disease/analyze', { method: 'POST', body: formData }),
@@ -254,8 +255,15 @@ export const api = {
   updateUserRole: (id, role) => api.request(`/admin/users/${id}/role`, { method: 'PATCH', body: JSON.stringify({ role }) }),
   getAuditLogs: () => api.request('/admin/audit-logs'),
 
-  // Decision Support
-  getDecisionSupport: () => api.request('/decision-support/dashboard'),
+  // Decision Support & Actionable Intelligence
+  getDecisionSupport: (lat, lon, location) => {
+    const params = new URLSearchParams();
+    if (lat != null) params.append('lat', lat);
+    if (lon != null) params.append('lon', lon);
+    if (location) params.append('location', location);
+    const qs = params.toString();
+    return api.request(`/decision-support/dashboard${qs ? '?' + qs : ''}`);
+  },
 
   // Delivery Partner Logistics & Telemetry
   getAssignedDeliveries: () => api.request('/delivery/orders/assigned'),

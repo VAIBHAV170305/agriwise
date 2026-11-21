@@ -371,7 +371,7 @@ export default function RapidoLocationSelector({
           </label>
           <button
             type="button"
-            onClick={detectLocation}
+            onClick={() => detectLocation(true)}
             disabled={detecting}
             style={{
               width: '100%',

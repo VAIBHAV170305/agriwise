@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { CheckCircle2, AlertTriangle, AlertCircle, Info, X } from 'lucide-react';
 
 const ToastContext = createContext(null);
@@ -23,6 +23,16 @@ export function ToastProvider({ children }) {
     }
     return id;
   }, [removeToast]);
+
+  useEffect(() => {
+    const handleCustomToast = (e) => {
+      if (e?.detail) {
+        showToast(e.detail);
+      }
+    };
+    window.addEventListener('agriwise-toast', handleCustomToast);
+    return () => window.removeEventListener('agriwise-toast', handleCustomToast);
+  }, [showToast]);
 
   return (
     <ToastContext.Provider value={{ showToast, removeToast }}>

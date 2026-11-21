@@ -129,7 +129,7 @@ export default function LocationBanner({ variant = 'hero' }) {
       {/* Right Actions: Search / Change Pinpoint or Auto-Detect GPS */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
         <button
-          onClick={detectLocation}
+          onClick={() => detectLocation(true)}
           disabled={detecting}
           className="btn-secondary"
           style={{

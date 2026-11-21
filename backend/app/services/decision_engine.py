@@ -1,10 +1,18 @@
+from typing import Optional
 from sqlalchemy.orm import Session
 from ..models import Farm, CropRecord, FarmActivity, FarmExpense, DiseaseAnalysis, Order
 from .weather_service import weather_service
 from .demand_forecaster import demand_service
 
 class DecisionEngine:
-    def get_farmer_decision_support(self, db: Session, user_id: int) -> dict:
+    def get_farmer_decision_support(
+        self, 
+        db: Session, 
+        user_id: int,
+        lat: Optional[float] = None,
+        lon: Optional[float] = None,
+        location_name: Optional[str] = None
+    ) -> dict:
         farms = db.query(Farm).filter(Farm.owner_id == user_id).all()
         farm_ids = [f.id for f in farms]
         
@@ -16,9 +24,29 @@ class DecisionEngine:
         total_expense = sum(e.amount for e in expenses)
         total_acreage = sum(f.area for f in farms)
 
-        # Weather context
-        default_location = farms[0].location if farms else "Central Agricultural Belt"
-        weather_data = weather_service.get_weather(location_name=default_location)
+        # Weather & Live GPS/Network Location context
+        resolved_lat = lat
+        resolved_lon = lon
+        resolved_location = location_name
+
+        if resolved_lat is None and farms and farms[0].latitude:
+            resolved_lat = farms[0].latitude
+        if resolved_lon is None and farms and farms[0].longitude:
+            resolved_lon = farms[0].longitude
+        if not resolved_location and farms and farms[0].location:
+            resolved_location = farms[0].location
+
+        resolved_lat = resolved_lat if resolved_lat is not None else 28.9845
+        resolved_lon = resolved_lon if resolved_lon is not None else 77.7064
+        resolved_location = resolved_location or "Meerut, Uttar Pradesh"
+
+        active_crop_names = [c.crop_name for c in crops]
+        weather_data = weather_service.get_weather(
+            lat=resolved_lat,
+            lon=resolved_lon,
+            location_name=resolved_location,
+            active_crops=active_crop_names or None
+        )
 
         # Generate intelligent actionable signals
         signals = []
@@ -86,6 +114,9 @@ class DecisionEngine:
                 "total_acreage": round(total_acreage, 2),
                 "active_crops_count": len([c for c in crops if c.status == "ACTIVE"]),
                 "total_expenses": total_expense,
+                "location": resolved_location,
+                "latitude": resolved_lat,
+                "longitude": resolved_lon,
                 "weather_temp": weather_data["temperature"],
                 "weather_condition": weather_data["condition"],
             },
